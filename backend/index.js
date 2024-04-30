@@ -1,5 +1,6 @@
 require('dotenv/config');
 require('./db');
+const color = require("colors");
 const express = require('express');
 const cors = require("cors")
 
@@ -8,13 +9,16 @@ const port = 3001;
 
 
 //import Routers
+const newsRouter = require ("./routes/news");
 const tasksRouter = require('./routes/tasks');
 const subtasksRouter = require('./routes/subtasks');
 const commentsRouter = require("./routes/comments");
 const notesRouter = require("./routes/notes");
 const usersRouter = require('./routes/users');
 const roleRouter = require('./routes/roles');
-const permissionRouter = require('./routes/permissions')
+const permissionRouter = require('./routes/permissions');
+
+
 
 //middlewares
 app.use(express.json());
@@ -25,6 +29,7 @@ app.use(express.json());
 app.use('/tasks', tasksRouter);
 app.use('/subtasks', subtasksRouter);
 app.use("/comments", commentsRouter);
+app.use('/news', newsRouter);
 app.use("/notes", notesRouter);
 app.use('/users', usersRouter);
 app.use('/roles',roleRouter);
@@ -32,5 +37,5 @@ app.use('/permissions',permissionRouter)
 
 
 app.listen(port, () => {
-	console.log(`Example app listening on port ${port}`);
+	console.log(`Example app listening on port ${port}`.bgGreen);
 });
