@@ -1,14 +1,13 @@
 import './App.css';
-import { Button } from '@material-tailwind/react';
-import GoodNews from './components/GoodNews';
-// import GoodNews from './components/GoodNews';
+
+//components
+import Tasks from './components/Tasks';
 
 import Actionbar from './components/Actionbar';
 
 function App() {
 	return (
 		<>
-			<GoodNews/>
 			<Tasks />
 			<Actionbar />
 		</>
