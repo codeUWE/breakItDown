@@ -21,10 +21,11 @@ function GoodNews() {
 
   return (
     <div>
-      <div className="relative flex w-full max-w-[24rem]">
+      <div className="m-5 p-3 relative flex w-full max-w-[24rem]">
         <Input
           type="text"
-          label="Good News"
+          label="Share some good news"
+        // placeholder='Good news'
           value={inputValue}
           onChange={onChange}
           className="pr-20"
@@ -33,28 +34,30 @@ function GoodNews() {
           }}
         />
 
-        <Button
+        <Button 
           onClick={addItem}
           size="sm"
           color={inputValue ? "blue" : "blue-gray"}
           disabled={!inputValue}
-          className="!absolute right-1 top-1 rounded"
+          className="m-3 !absolute right-1 top-1 rounded"
         >
           Post
         </Button>
       </div>
 
-         <div className='p-10 m-4'>
+         {/* <div className='p-10 m-4'>
         <h1 className='text-1xl font-bold'>Good News Display</h1>
         {items.map((item,index) => (
           <div className='item' key={index}>{item} </div>
         ))}
-      </div>
-
-      {/* Render TestimonialCard component for each item in items */}
+      </div> */}
+<div className='m-5 p-3 relative'>
+        {/* Render TestimonialCard component for each item in items */}
       {items.map((item, index) => (
         <TestimonialCard key={index} inputValue={item} />
       ))}
+</div>
+  
     </div>
   );
 }
