@@ -1,13 +1,17 @@
 import './App.css';
 import { Button } from '@material-tailwind/react';
+import GoodNews from './components/GoodNews';
+// import GoodNews from './components/GoodNews';
 
 function App() {
 	return (
 		<>
-			<h1 className="text-3xl font-bold text-red-600 underline">
+			<h1 className="text-3xl font-bold text-red-600">
 				Hello world!
 			</h1>
-			<Button>Button</Button>
+			{/* <Button>Button</Button> */}
+
+			<GoodNews/>
 		</>
 	);
 }

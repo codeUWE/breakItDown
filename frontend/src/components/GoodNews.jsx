@@ -1,46 +1,62 @@
-import React from 'react'
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { Input, Button } from '@material-tailwind/react';
+import { TestimonialCard } from './TestimonialCard';
 
 function GoodNews() {
+  const [inputValue, setInputValue] = useState("");
+  const [items, setItems] = useState([]);
 
-    const [inputValue, setInputValue] = useState ("");
-    const [items, setItems] = useState ([]);
+  const onChange = ({ target }) => setInputValue(target.value);
+ 
+  const addItem = () => {
+    if (inputValue.trim() !== "") {
 
-    const addItem = () => {
-
-        if (inputValue.trim() !== "") {
-            setItems (prevItems => [ ...prevItems, inputValue]);
-            setInputValue("");
-
-        }
-
-    };
+    //  take out unwanted quotes from the input
+      const newTestimonial = inputValue.trim().replace(/^"(.*)"$/, '$1');
+      // Every new items goes in here
+      setItems(prevItems => [...prevItems, newTestimonial]);
+      setInputValue(""); // Clear the input field after adding the item
+    }
+  };
 
   return (
-    <div className='container'>
-
-      <div>
-         <input className='flex justify-center w-64 p-4 text-sm text-gray-1000 border border-gray-700 rounded-lg bg-green-50' type="text" 
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        placeholder='Share some good news...'
+    <div>
+      <div className="relative flex w-full max-w-[24rem]">
+        <Input
+          type="text"
+          label="Good News"
+          value={inputValue}
+          onChange={onChange}
+          className="pr-20"
+          containerProps={{
+            className: "min-w-0",
+          }}
         />
-        <div className='p-2'>
-           <button className=' flex justify-center bg-gray-200 p-2' onClick={addItem}>Post</button>
-        </div>
 
+        <Button
+          onClick={addItem}
+          size="sm"
+          color={inputValue ? "blue" : "blue-gray"}
+          disabled={!inputValue}
+          className="!absolute right-1 top-1 rounded"
+        >
+          Post
+        </Button>
       </div>
 
-      <div className='p-10 m-4'>
+         <div className='p-10 m-4'>
         <h1 className='text-1xl font-bold'>Good News Display</h1>
         {items.map((item,index) => (
           <div className='item' key={index}>{item} </div>
-
         ))}
-
       </div>
+
+      {/* Render TestimonialCard component for each item in items */}
+      {items.map((item, index) => (
+        <TestimonialCard key={index} inputValue={item} />
+      ))}
     </div>
-  )
+  );
 }
 
 export default GoodNews;
