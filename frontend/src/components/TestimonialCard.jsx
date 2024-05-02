@@ -4,24 +4,24 @@ import { Card, CardHeader, CardBody, Typography, Avatar } from '@material-tailwi
 export function TestimonialCard({ inputValue, onDelete, onEdit }) {
   const [timestamp, setTimestamp] = useState('');
   const [showButtons, setShowButtons] = useState(false);
-  const [editedValue, setEditedValue] = useState(inputValue); // State to hold edited value
+  const [editedValue, setEditedValue] = useState(inputValue);
 
   useEffect(() => {
     const interval = setInterval(() => {
       const currentTime = new Date().toLocaleString();
       setTimestamp(currentTime);
-    }, 60000); // Update timestamp every minute
+    }, 60000);
 
-    return () => clearInterval(interval); // Cleanup function
-  }, []); // Run effect only once on component mount
+    return () => clearInterval(interval);
+  }, []);
 
   const handleToggleButtons = () => {
     setShowButtons(!showButtons);
   };
 
   const handleEdit = () => {
-    onEdit(editedValue); // Call onEdit with the new value
-    setShowButtons(false); // Hide buttons after editing
+    onEdit(editedValue); // Pass only the editedValue to onEdit
+    setShowButtons(false);
   };
 
   const handleInputChange = (e) => {
@@ -29,7 +29,7 @@ export function TestimonialCard({ inputValue, onDelete, onEdit }) {
   };
 
   return (
-    <div className="ml-25"> {/* Add margin-left to move the TestimonialCard to the right */}
+    <div className="ml-25">
       <Card color="transparent" shadow={false} className="max-w-[26rem]">
         <CardHeader
           color="transparent"
@@ -55,18 +55,20 @@ export function TestimonialCard({ inputValue, onDelete, onEdit }) {
           </div>
         </CardHeader>
         <CardBody className="mb-8 p-2 justify-center">
-          <Typography className="text-xs">
-            {showButtons ? (
-              <input
-                type="text"
-                value={editedValue}
-                onChange={handleInputChange}
-                className="w-full border-b border-gray-400 py-1 focus:outline-none"
-              />
-            ) : (
-              inputValue
-            )}
-          </Typography>
+          {inputValue && ( // Check if inputValue is not empty
+            <Typography className="text-xs">
+              {showButtons ? (
+                <input
+                  type="text"
+                  value={editedValue}
+                  onChange={handleInputChange}
+                  className="w-full border-b border-gray-400 py-1 focus:outline-none"
+                />
+              ) : (
+                inputValue
+              )}
+            </Typography>
+          )}
           {showButtons && (
             <div className="flex justify-end mt-3 text-xs">
               <button onClick={handleEdit} className="text-gray-400 mr-2">Save</button>
@@ -77,7 +79,7 @@ export function TestimonialCard({ inputValue, onDelete, onEdit }) {
             {timestamp}
           </Typography>
         </CardBody>
-        <div className="flex justify-center mt-1">
+        <div className="flex justify-center mt-3">
           <button onClick={handleToggleButtons} className="text-black-800 text-xs flex justify-between">
             {showButtons ? 'Cancel' : 'Update'}
           </button>
