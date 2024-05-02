@@ -1,4 +1,14 @@
 
+
+// function SignUpCard() {
+// 	return <>
+// 	<h1>SignUp card</h1>
+// 	</>
+// }
+
+// export default SignUpCard;
+
+
 import {
 	Card,
 	CardHeader,
@@ -12,7 +22,7 @@ import {
 import{Link} from 'react-router-dom'
 import google48 from '../assets/google48.png'
 import github48 from '../assets/github48.png'
-export default function LoginCard() {
+export default function SignUpCard() {
 	return (
     <div className='flex items-center justify-center mt-20 '>
 		<Card className="w-96  ">
@@ -22,15 +32,17 @@ export default function LoginCard() {
 				className="mb-4 grid h-20 w-22 place-items-center"
 			>
 				<Typography variant="h3" color="white" className='font-outfit'>
-					Log In
+					Sign Up
 				</Typography>
 			</CardHeader>
 			<CardBody className="flex flex-col gap-4 font-inter">
+			<Input label="Name" size="lg" />
 				<Input label="Email" size="lg" />
 				<Input label="Password" size="lg" />
-				<div className="-ml-2.5">
+				<Input label="Confirm Password" size="lg" />
+				{/* <div className="-ml-2.5">
 					<Checkbox label="Remember Me" />
-				</div>
+				</div> */}
 			</CardBody>
 			<CardFooter className="pt-0 flex flex-col items-center font-inter">
 				{/*wip-  make loading ={true} on clicking */}
@@ -41,20 +53,20 @@ export default function LoginCard() {
 					className="rounded-full "
 					loading={false}
 				>
-					Log In
+					Register
 				</Button>
 				</Link>
 				<Typography variant="small" className="mt-6 mb-4 flex justify-center">
-					Don&apos;t have an account?
-					<Link to="/signup">
+					Already  have an account?
+					<Link to="/login">
 					<Typography
 						as="a"
-						href="#signup"
+						
 						variant="small"
 						color="indigo"
 						className="ml-1 font-bold"
 					>
-						Sign up
+						Log In
 					</Typography>
 					</Link>
 				</Typography>
@@ -89,3 +101,4 @@ export default function LoginCard() {
     </div>
 	);
 }
+
