@@ -1,20 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardBody, Typography, Avatar } from '@material-tailwind/react';
 
-export function TestimonialCard({ inputValue }) {
+export function TestimonialCard({ inputValue, onDelete, onEdit }) {
   const [timestamp, setTimestamp] = useState('');
+  const [showButtons, setShowButtons] = useState(false);
+  const [editedValue, setEditedValue] = useState(inputValue); // State to hold edited value
 
   useEffect(() => {
     const interval = setInterval(() => {
       const currentTime = new Date().toLocaleString();
       setTimestamp(currentTime);
-    }, 6000); // Update timestamp every minute
+    }, 60000); // Update timestamp every minute
 
     return () => clearInterval(interval); // Cleanup function
   }, []); // Run effect only once on component mount
 
+  const handleToggleButtons = () => {
+    setShowButtons(!showButtons);
+  };
+
+  const handleEdit = () => {
+    onEdit(editedValue); // Call onEdit with the new value
+    setShowButtons(false); // Hide buttons after editing
+  };
+
+  const handleInputChange = (e) => {
+    setEditedValue(e.target.value);
+  };
+
   return (
-    <div className="ml-25"> {/* Add margin-left s0 it can move the TestimonialCard to the right */}
+    <div className="ml-25"> {/* Add margin-left to move the TestimonialCard to the right */}
       <Card color="transparent" shadow={false} className="max-w-[26rem]">
         <CardHeader
           color="transparent"
@@ -39,14 +54,34 @@ export function TestimonialCard({ inputValue }) {
             </Typography>
           </div>
         </CardHeader>
-        <CardBody className="mb-8 p-1 justify-center items-center">
+        <CardBody className="mb-8 p-2 justify-center">
           <Typography className="text-xs">
-            {inputValue}
+            {showButtons ? (
+              <input
+                type="text"
+                value={editedValue}
+                onChange={handleInputChange}
+                className="w-full border-b border-gray-400 py-1 focus:outline-none"
+              />
+            ) : (
+              inputValue
+            )}
           </Typography>
+          {showButtons && (
+            <div className="flex justify-end mt-3 text-xs">
+              <button onClick={handleEdit} className="text-gray-400 mr-2">Save</button>
+              <button onClick={onDelete} className="text-gray-400">Delete</button>
+            </div>
+          )}
           <Typography className="text-xs text-gray-500 mt-1">
             {timestamp}
           </Typography>
         </CardBody>
+        <div className="flex justify-center mt-1">
+          <button onClick={handleToggleButtons} className="text-black-800 text-xs flex justify-between">
+            {showButtons ? 'Cancel' : 'Update'}
+          </button>
+        </div>
       </Card>
     </div>
   );
