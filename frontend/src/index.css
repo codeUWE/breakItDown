@@ -3,3 +3,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.bg-custom-color {
+    background-color: #acabf9;
+}
