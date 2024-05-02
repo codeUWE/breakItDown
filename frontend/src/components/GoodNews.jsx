@@ -20,38 +20,56 @@ function GoodNews() {
   };
 
   return (
-    <div>
-      <div className="m-5 p-5 relative flex w-full max-w-[24rem]">
-        <span className='font-bold'>
-          <p>
-            Recent Collaborators
-          </p>
-        </span>
-        <Input 
-          type="text"
-          placeholder='hdshhdhsdh'
-          label="Share some good news"
-          value={inputValue}
-          onChange={onChange}
-          className="pr-20 w-[30.82px] h-[48.82px] border border-gray-300 rounded-full outline-none" // Add border but remove outline
-          containerProps={{
-            className: "flex-1 min-w-0",
-          }}
-          
-        />
-        <img
-            src='./src/assets/playicon.png' 
-            alt='play' 
-            className='w-[25px] h-[25px] cursor-pointer' // Add cursor pointer to indicate it's clickable
-            onClick={addItem} // Attach onClick handler to call addItem function
-        />
-      </div>
-         {/* <div className='p-10 m-4'>
-        <h1 className='text-1xl font-bold'>Good News Display</h1>
-        {items.map((item,index) => (
-          <div className='item' key={index}>{item} </div>
-        ))}
-      </div> */}
+<div >
+  <div className=" p-5 relative flex justify-center w-full max-w-[24rem]">
+    <span className='font-bold'>
+    <p>
+     Recent <br />Collaborators
+    </p>
+    </span>
+
+  <div className='mr-9 p-2 flex items-center w-[48px] h-[48px] '>
+        <img className='-m-1' src="./src/assets/user2.png" alt="" />
+        <img className='-m-1' src="./src/assets/user3.png" alt="" />
+        <img className='-m-1' src="./src/assets/user1.png" alt="" />
+    </div>
+
+
+        
+    <div className="relative flex-1 min-w-0">
+        <input
+        type="text"
+        placeholder="Share some good news"
+        value={inputValue}
+        onChange={onChange}
+        className=" pl-10 pr-10 ml-4 w-[390.82px] h-[48.82px]  border border-gray-900 rounded-full outline-none" // Add margin-left (ml-10) and padding-left (pl-10) and padding-right (pr-10)
+      />
+
+    </div>
+
+      <div className='flex'>
+      
+     <img
+    src='./src/assets/playicon.png' 
+    alt='play' 
+    className='absolute flex justify-between transform -translate-y-1/2 right- w-[25px] h-[25px] cursor-pointer ' // Add cursor pointer to indicate it's clickable
+    onClick={addItem} // Attach onClick handler to call addItem function
+      />
+
+ 
+      </div> 
+
+
+
+  </div>
+
+    
+
+  
+
+
+
+      
 <div className=' flex items-center justify-center h-screen'>
   <div className='ml-15 p-3 relative max-w-[362.11px] max-h-[222.31px] overflow-auto border border-gray-300 rounded'>
     {/* Render TestimonialCard component for each item in items */}
@@ -62,7 +80,7 @@ function GoodNews() {
     ))}
   </div>
 </div>
-    </div>
+</div>
   );
 }
 
