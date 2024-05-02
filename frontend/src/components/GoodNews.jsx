@@ -21,43 +21,46 @@ function GoodNews() {
 
   return (
     <div>
-      <div className="m-5 p-3 relative flex w-full max-w-[24rem]">
-        <Input
+      <div className="m-5 p-5 relative flex w-full max-w-[24rem]">
+        <span className='font-bold'>
+          <p>
+            Recent Collaborators
+          </p>
+        </span>
+        <Input 
           type="text"
           label="Share some good news"
-        // placeholder='Good news'
           value={inputValue}
           onChange={onChange}
-          className="pr-20"
+          className="pr-10 w-[390.82px] h-[48.82px] border border-gray-300 rounded-md outline-none" // Add border but remove outline
           containerProps={{
-            className: "min-w-0",
+            className: "flex-1 min-w-0",
           }}
+          
         />
-
-        <Button 
-          onClick={addItem}
-          size="sm"
-          color={inputValue ? "blue" : "blue-gray"}
-          disabled={!inputValue}
-          className="m-3 !absolute right-1 top-1 rounded"
-        >
-          Post
-        </Button>
+        <img
+            src='./src/assets/playicon.png' 
+            alt='play' 
+            className='w-[25px] h-[25px] cursor-pointer' // Add cursor pointer to indicate it's clickable
+            onClick={addItem} // Attach onClick handler to call addItem function
+        />
       </div>
-
          {/* <div className='p-10 m-4'>
         <h1 className='text-1xl font-bold'>Good News Display</h1>
         {items.map((item,index) => (
           <div className='item' key={index}>{item} </div>
         ))}
       </div> */}
-<div className='m-5 p-3 relative'>
-        {/* Render TestimonialCard component for each item in items */}
-      {items.map((item, index) => (
-        <TestimonialCard key={index} inputValue={item} />
-      ))}
+<div className=' flex items-center justify-center h-screen'>
+  <div className='ml-15 p-3 relative max-w-[362.11px] max-h-[222.31px] overflow-auto border border-gray-300 rounded'>
+    {/* Render TestimonialCard component for each item in items */}
+    {/* slice.reverse ensures that newly added content is displayed first*/} 
+
+    {items.slice(0).reverse().map((item, index) => (
+      <TestimonialCard key={index} inputValue={item} className="text-xs" />
+    ))}
+  </div>
 </div>
-  
     </div>
   );
 }

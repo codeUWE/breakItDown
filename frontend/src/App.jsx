@@ -10,12 +10,15 @@ import Team from './components/Team';
 import Notes from './components/Notes';
 
 import Actionbar from './components/Actionbar';
+import GoodNews from './components/GoodNews';
 
 function App() {
 	return (
 		<>
-			<Tasks />
-			<Actionbar />
+
+		<GoodNews/>
+			{/* <Tasks />
+			<Actionbar /> */}
 		</>
 	);
 }
