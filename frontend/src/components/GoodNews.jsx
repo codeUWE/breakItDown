@@ -29,10 +29,11 @@ function GoodNews() {
         </span>
         <Input 
           type="text"
+          placeholder='hdshhdhsdh'
           label="Share some good news"
           value={inputValue}
           onChange={onChange}
-          className="pr-10 w-[390.82px] h-[48.82px] border border-gray-300 rounded-md outline-none" // Add border but remove outline
+          className="pr-20 w-[30.82px] h-[48.82px] border border-gray-300 rounded-full outline-none" // Add border but remove outline
           containerProps={{
             className: "flex-1 min-w-0",
           }}
