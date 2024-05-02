@@ -44,7 +44,7 @@ function GoodNews() {
             placeholder="Share some good news"
             value={inputValue}
             onChange={onChange}
-            className="rounded-full flex-2 pl-10 pr-10 ml-10 w-[390.82px] h-[48.82px] border border-gray-900 outline-none placeholder-underline"
+            className=" rounded-full flex-2 pl-10 pr-10 ml-10 w-[390.82px] h-[48.82px] border border-gray-900 outline-none placeholder-underline"
           />
         </div>
         <div className="absolute top-1/2 right-0 transform translate-y-1/2">
