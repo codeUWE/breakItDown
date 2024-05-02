@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 
 //components
 import Tasks from './components/Tasks';
-import SignUp from './components/SignUp';
+import SignUpCard from './components/SignUpCard';
 import LoginCard from './components/LoginCard';
 import Dashboard from './components/Dashboard';
 import Layout from './components/Layout';
@@ -16,7 +16,7 @@ function App() {
 			<main>
 				<Routes>
 					<Route path="/login" element={<LoginCard />} />
-					<Route path="/signup" element={<SignUp />} />
+					<Route path="/signup" element={<SignUpCard />} />
 					<Route path="/" element={<Layout />}>
 						<Route path="/dashboard" element={<Dashboard />} />
 						<Route path="/tasks" element={<Tasks />} />
