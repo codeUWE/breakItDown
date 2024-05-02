@@ -10,12 +10,14 @@ import Team from './components/Team';
 import Notes from './components/Notes';
 
 import Actionbar from './components/Actionbar';
+import SignUpError from './components/SignUpError';
 
 function App() {
 	return (
 		<>
 			<Tasks />
 			<Actionbar />
+			<SignUpError/>
 		</>
 	);
 }
