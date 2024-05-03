@@ -2,6 +2,7 @@ require('dotenv/config');
 require('./db');
 const express = require('express');
 const cors = require("cors")
+const cookieParser = require("cookie-parser")
 
 const app = express();
 const port = 3001;
@@ -15,10 +16,12 @@ const notesRouter = require("./routes/notes");
 const usersRouter = require('./routes/users');
 const roleRouter = require('./routes/roles');
 const permissionRouter = require('./routes/permissions')
+const authRouter = require('./routes/auth')
 
 //middlewares
 app.use(express.json());
-
+app.use(cors())
+app.use(cookieParser())
 
 
 //Routers
@@ -29,7 +32,7 @@ app.use("/notes", notesRouter);
 app.use('/users', usersRouter);
 app.use('/roles',roleRouter);
 app.use('/permissions',permissionRouter)
-
+app.use('/auth',authRouter)
 
 app.listen(port, () => {
 	console.log(`Example app listening on port ${port}`);
