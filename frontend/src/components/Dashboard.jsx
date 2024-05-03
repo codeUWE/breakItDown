@@ -1,7 +1,10 @@
 import React from 'react';
+import Actionbar from './Actionbar';
 
 function Dashboard() {
-	return <div>Dashboard</div>;
+	return <div>
+		<Actionbar />
+	</div>;
 }
 
 export default Dashboard;
