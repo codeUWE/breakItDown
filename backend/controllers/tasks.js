@@ -2,13 +2,48 @@ const Task = require('../models/tasks');
 
 const getTasks = async (req, res) => {
 	try {
-		const tasks = await Task.find({}).populate(
-			'subtasks',
-			'title description status assignee deadline isClosed'
-		);
-		res.json(tasks);
+		const tasks = await Task.find({})
+			.populate('owner lead', 'name email')
+			.populate({
+				path: 'collaborators',
+				select: 'name email',
+			})
+			.populate({
+				path: 'subtasks',
+				select: 'title description status priority deadline isClosed',
+				populate: {
+					path: 'assignee',
+					select: 'name email',
+				},
+			});
+		// .populate({
+		// 	path: 'comments',
+		// 	match: { isDeleted: false },
+		// 	select: 'body user',
+		// 	populate: { path: 'user', select: 'name' },
+		// })
+		// .populate({
+		// 	path: 'notes',
+		// 	match: { isDeleted: false, isShared: true },
+		// 	select: 'title body tags',
+		// });
+
+		const tasksWithProgress = tasks.map((task) => {
+			const totalSubtasks = task.subtasks.length;
+			const completedSubtasks = task.subtasks.filter(
+				(subtask) => subtask.status === 'done'
+			).length;
+			return {
+				...task.toObject(),
+				totalSubtasks,
+				completedSubtasks,
+				progress: `${completedSubtasks}/${totalSubtasks}`,
+			};
+		});
+
+		res.json(tasksWithProgress);
 	} catch (error) {
-		console.log(error);
+		console.error('Error fetching tasks:', error);
 		res.status(500).send('Something went wrong!');
 	}
 };
@@ -16,13 +51,51 @@ const getTasks = async (req, res) => {
 const getTask = async (req, res) => {
 	try {
 		const { id } = req.params;
-		const task = await Task.findById(id).populate(
-			'subtasks',
-			'title description status assignee deadline isClosed'
-		);
-		res.json(task);
+		const task = await Task.findById(id)
+			.populate('owner lead', 'name email')
+			.populate({
+				path: 'collaborators',
+				select: 'name email',
+			})
+			.populate({
+				path: 'subtasks',
+				select: 'title description status priority deadline isClosed',
+				populate: {
+					path: 'assignee',
+					select: 'name email',
+				},
+			});
+		// .populate({
+		// 	path: 'comments',
+		// 	match: { isDeleted: false },
+		// 	select: 'body user',
+		// 	populate: { path: 'user', select: 'name' },
+		// })
+		// .populate({
+		// 	path: 'notes',
+		// 	match: { isDeleted: false, isShared: true },
+		// 	select: 'title body tags',
+		// });
+
+		if (!task) {
+			return res.status(404).send('Task not found');
+		}
+
+		const totalSubtasks = task.subtasks.length;
+		const completedSubtasks = task.subtasks.filter(
+			(subtask) => subtask.status === 'done'
+		).length;
+
+		const taskWithProgress = {
+			...task.toObject(),
+			totalSubtasks,
+			completedSubtasks,
+			progress: `${completedSubtasks}/${totalSubtasks}`,
+		};
+
+		res.json(taskWithProgress);
 	} catch (error) {
-		console.log(error);
+		console.error('Error fetching task:', error);
 		res.status(500).send('Something went wrong!');
 	}
 };
