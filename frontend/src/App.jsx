@@ -1,9 +1,10 @@
 import './App.css';
+import {Routes, Route} from "react-router-dom";
 
 //components
 import Task from './components/Task';
 import SingleTaskBoard from './components/SingleTaskBoard';
-import SignUp from './components/SignUp';
+// import SignUp from './components/SignUp';
 import SignUpCard from './components/SignUpCard';
 import LoginCard from './components/LoginCard';
 import Dashboard from './components/Dashboard';
@@ -11,18 +12,9 @@ import Layout from './components/Layout';
 import Team from './components/Team';
 import Notes from './components/Notes';
 
-import Actionbar from './components/Actionbar';
-import GoodNews from './components/GoodNews';
-import OpenSubTasks from './components/OpenSubTasks';
-import Schedule from './components/Schedule';
-// import Actionbar from './components/Actionbar';
-// import Landing from "./components/Landing";
-
 function App() {
 	return (
 		<>
-
-
 
 			<main>
 				<Routes>
