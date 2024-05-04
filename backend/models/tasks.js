@@ -13,10 +13,8 @@ const taskSchema = new Schema(
 			enum: ['backlog', 'inProgress', 'done'],
 			default: 'backlog',
 		},
-		amountSubtask: { type: Number },
 		subtasks: [{ type: Schema.Types.ObjectId, ref: 'Subtask' }],
 		isClosed: { type: Boolean, default: false },
-		updates: { type: String },
 		comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
 	},
 	{
