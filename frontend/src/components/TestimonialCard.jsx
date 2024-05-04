@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardBody, Typography, Avatar } from '@material-tailwind/react';
-
+  
 
 export function TestimonialCard({ onDelete, onEdit, post, setPosts }) {
   const [timestamp, setTimestamp] = useState('');
@@ -61,13 +61,13 @@ export function TestimonialCard({ onDelete, onEdit, post, setPosts }) {
               </Typography>
             </div>
             <Typography color="blue-gray" className="text-xs">
-              {post.user.position}
+              {/* {post.user.position} */}
             </Typography>
           </div> 
            
         </CardHeader> 
       
-        <CardBody className="p-2 justify-center ">
+        <CardBody className="p-2 justify-center overflow-auto ">
        
 
             <div>
@@ -81,13 +81,23 @@ export function TestimonialCard({ onDelete, onEdit, post, setPosts }) {
                 <Typography className=" text-xs ml-2">{post.user.name}</Typography>
               </div> */}
               <Typography className="text-xs">{post.message}</Typography>
+               {/* partitioning */}
+        <div className='mr-12 w-[483] m-2 border-t border-gray-600 flex-grow'>
+
+         
+        
+</div>
 {/*               
               {/* <div className="flex justify-end mt-3 text-xs">
                 <button onClick={() => handleEdit( editedValue)} className="text-gray-400 mr-2">Edit</button>
                 <button onClick={() => handleDelete()} className="text-gray-400">Delete</button>
               </div> */} 
-              <Typography className="text-xs text-gray-500 mt-1">{post.timestamp}
-              </Typography>
+             <Typography className="text-xs text-gray-500 mt-1">
+  <div>
+    <p>Sent at:</p>
+    <p>{post.timestamp}</p>
+  </div>
+</Typography>
             </div>
           
         </CardBody>  

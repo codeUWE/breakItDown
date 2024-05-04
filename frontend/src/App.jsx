@@ -11,14 +11,25 @@ import Notes from './components/Notes';
 
 import Actionbar from './components/Actionbar';
 import GoodNews from './components/GoodNews';
+import OpenSubTasks from './components/OpenSubTasks';
+import Schedule from './components/Schedule';
+// import Actionbar from './components/Actionbar';
+// import Landing from "./components/Landing";
 
 function App() {
 	return (
 		<>
 
-		<GoodNews/>
+		<GoodNews/>	
+		<OpenSubTasks/>
+		{/* <Schedule/> */}
+
+		
+	
+	
+		
 			{/* <Tasks />
-			<Actionbar /> */}
+			// <Actionbar /> */}
 		</>
 	);
 }
