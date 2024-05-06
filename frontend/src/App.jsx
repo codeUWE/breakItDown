@@ -11,10 +11,20 @@ import Dashboard from './components/Dashboard';
 import Layout from './components/Layout';
 import Team from './components/Team';
 import Notes from './components/Notes';
+import GoodNews from './components/GoodNews';
+import WidgetOpenSubTasks from './components/WidgetOpenSubTasks';
+import Schedule from './components/Schedule';
+// import SampleWidget from './components/SampleWidget';
+
+
 
 function App() {
 	return (
 		<>
+		<Schedule/>
+<GoodNews/>
+{/* <SampleWidget/> */}
+<WidgetOpenSubTasks/>
 
 			<main>
 				<Routes>
@@ -26,6 +36,7 @@ function App() {
 						<Route path="/tasks/:id" element={<SingleTaskBoard />} />
 						<Route path="/team" element={<Team />} />
 						<Route path="/notes" element={<Notes />} />
+						
 					</Route>
 				</Routes>
 			</main>

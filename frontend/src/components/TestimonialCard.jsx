@@ -40,6 +40,7 @@ export function TestimonialCard({ onDelete, onEdit, post, setPosts }) {
     <div className=" ml-35">
       
       <Card color="transparent" shadow={false} className="w-[522.85px] ">
+        
         <CardHeader
           color="transparent"
           floated={false}
@@ -92,10 +93,11 @@ export function TestimonialCard({ onDelete, onEdit, post, setPosts }) {
                 <button onClick={() => handleEdit( editedValue)} className="text-gray-400 mr-2">Edit</button>
                 <button onClick={() => handleDelete()} className="text-gray-400">Delete</button>
               </div> */} 
-             <Typography className="text-xs text-gray-500 mt-1">
+             <Typography className="flex justify-end items-end text-xs text-gray-500 ">
   <div>
+    
     <p>Sent at:</p>
-    <p>{post.timestamp}</p>
+   {post.timestamp}
   </div>
 </Typography>
             </div>

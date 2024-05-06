@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { TestimonialCard } from './TestimonialCard';
-import Schedule from './Schedule';
+// import Schedule from './Schedule';
 // import App from "./App.css";
-import OpenSubTasks from './OpenSubTasks';
+// import OpenSubTasks from './OpenSubTasks';
 import { Avatar } from '@material-tailwind/react';
 
 function GoodNews() {
@@ -82,7 +82,7 @@ function GoodNews() {
        
 
         <div className='flex justify-end '>
-          <div className='w-[522px] h-[230px] bg-blue-gray-150 mr-20 ml-14 rounded-[20px] border border-gray-900 outline-none placeholder-underline w-[522.85px] relative h-[200px] overflow-auto'>
+          <div className=' mr-20 ml-14 rounded-[20px] border border-gray-900 outline-none placeholder-underline w-[522.85px] relative h-[200px] overflow-auto'>
 
             <div className='ml-2 font-semibold flex justify-between items-center'>
             <h2 className="text-blue-600 mr-auto">Good News</h2>
@@ -94,7 +94,7 @@ function GoodNews() {
 
             {posts.reverse().map((item, index) => (
               <TestimonialCard
-                // timestamp = {item.timestamp}
+                timestamp = {item.timestamp}
                 setPosts={setPosts}
                 post={item}
                 key={index}
