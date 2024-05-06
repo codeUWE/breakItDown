@@ -10,23 +10,14 @@ const getTasks = async (req, res) => {
 			})
 			.populate({
 				path: 'subtasks',
-				select: 'title description status priority deadline isClosed',
+				select:
+					'title description detailedInformation status priority deadline isClosed',
+				options: { sort: { deadline: 1 } },
 				populate: {
 					path: 'assignee',
 					select: 'name email',
 				},
 			});
-		// .populate({
-		// 	path: 'comments',
-		// 	match: { isDeleted: false },
-		// 	select: 'body user',
-		// 	populate: { path: 'user', select: 'name' },
-		// })
-		// .populate({
-		// 	path: 'notes',
-		// 	match: { isDeleted: false, isShared: true },
-		// 	select: 'title body tags',
-		// });
 
 		const tasksWithProgress = tasks.map((task) => {
 			const totalSubtasks = task.subtasks.length;
@@ -59,23 +50,25 @@ const getTask = async (req, res) => {
 			})
 			.populate({
 				path: 'subtasks',
-				select: 'title description status priority deadline isClosed',
+				select:
+					'title description detailedInformation status priority deadline isClosed',
+				options: { sort: { deadline: 1 } }, // Hier fügen wir die Sortierung hinzu
 				populate: {
 					path: 'assignee',
 					select: 'name email',
 				},
+				// .populate({
+				// 	path: 'comments',
+				// 	match: { isDeleted: false },
+				// 	select: 'body user',
+				// 	populate: { path: 'user', select: 'name' },
+				// })
+				// .populate({
+				// 	path: 'notes',
+				// 	match: { isDeleted: false, isShared: true },
+				// 	select: 'title body tags',
+				// });
 			});
-		// .populate({
-		// 	path: 'comments',
-		// 	match: { isDeleted: false },
-		// 	select: 'body user',
-		// 	populate: { path: 'user', select: 'name' },
-		// })
-		// .populate({
-		// 	path: 'notes',
-		// 	match: { isDeleted: false, isShared: true },
-		// 	select: 'title body tags',
-		// });
 
 		if (!task) {
 			return res.status(404).send('Task not found');

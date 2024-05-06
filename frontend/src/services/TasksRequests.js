@@ -11,6 +11,7 @@ export const getTaskById = async (id) => {
 	return data;
 };
 
+
 //Update Subtask Status
 export const updateSubtask = async (id, updates) => {
 	const { data } = await axios.put(
@@ -30,3 +31,12 @@ export const update = async (id) => {
 	const { data } = await axios.put(`http://localhost:3001/subtasks/${id}`);
 	return data;
 };
+
+//Get unassigned Task
+export const getUnassignedTasks = async () => {
+	const { data } = await axios.get(`http://localhost:3001/tasks/unassigned`);
+	console.log(data);
+	return data;
+};
+
+

@@ -1,5 +1,5 @@
 import './App.css';
-import { Routes, Route } from 'react-router-dom';
+import {Routes, Route} from "react-router-dom";
 
 //components
 import Task from './components/Task';
@@ -15,6 +15,7 @@ import Notes from './components/Notes';
 function App() {
 	return (
 		<>
+
 			<main>
 				<Routes>
 					<Route path="/login" element={<LoginCard />} />
@@ -28,6 +29,7 @@ function App() {
 					</Route>
 				</Routes>
 			</main>
+
 		</>
 	);
 }

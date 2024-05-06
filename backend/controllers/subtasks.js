@@ -11,7 +11,9 @@ const getSubtasks = async (req, res) => {
 			.populate({
 				path: 'assignee',
 				select: 'name email',
-			});
+			})
+			.sort('deadline');
+
 		res.json(subtasks);
 	} catch (error) {
 		console.error('Error fetching subtasks:', error);
@@ -59,7 +61,6 @@ const createSubtask = async (req, res) => {
 			detailedInformation,
 			status,
 			priority,
-			deadline,
 			task: taskId,
 			assignee,
 		});
@@ -95,20 +96,20 @@ const updateSubtask = async (req, res) => {
 const deleteSubtask = async (req, res) => {
 	try {
 		const { id } = req.params;
-		const subtask = await Subtask.findById(id);
+
+		// Directly remove the subtask and its reference from the task
+		const subtask = await Subtask.findByIdAndDelete(id);
 		if (!subtask) {
 			return res.status(404).send('Subtask not found');
 		}
 
-		// Remove the subtask reference from the task
 		await Task.findByIdAndUpdate(
 			subtask.task,
 			{ $pull: { subtasks: id } },
 			{ new: true, safe: true }
 		);
 
-		await subtask.remove();
-		res.send({ message: 'Subtask deleted successfully' });
+		res.send({ message: 'Subtask deleted successfully', deletedSubtaskId: id });
 	} catch (error) {
 		console.error('Error deleting subtask:', error);
 		res.status(500).send('Something went wrong!');
