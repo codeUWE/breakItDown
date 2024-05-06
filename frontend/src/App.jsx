@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 //components
 import Task from './components/Task';
 import SingleTaskBoard from './components/SingleTaskBoard';
-import SignUp from './components/SignUp';
+// import SignUp from './components/SignUp';
 import SignUpCard from './components/SignUpCard';
 import LoginCard from './components/LoginCard';
 import Dashboard from './components/Dashboard';
