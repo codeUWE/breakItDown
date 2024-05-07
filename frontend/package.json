@@ -16,13 +16,9 @@
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
-<<<<<<< HEAD
     "react-hook-form": "^7.51.3",
-    "react-router-dom": "^6.23.0"
-=======
     "react-router-dom": "^6.23.0",
     "tailwind-scrollbar-hide": "^1.1.7"
->>>>>>> main
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
