@@ -26,7 +26,8 @@ const createRole = async (req, res) => {
   // Controller function to get a role by its ID
   const getRoleById = async (req, res) => {
     try {
-      const role = await Role.findById(req.params.id);
+      const role = await Role.findById(req.params.id).populate({path: 'permissions',
+      model: 'Permission'});
       if (!role) {
         return res.status(404);
       }

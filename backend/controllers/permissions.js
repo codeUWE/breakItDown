@@ -56,6 +56,7 @@ const updatePermission = async (req, res) => {
 // Controller function to delete a permission by ID
 const deletePermission = async (req, res) => {
   try {
+   
     const deletedPermission = await Permission.findByIdAndDelete(req.params.id);
     if (!deletedPermission) {
       return res.status(404);
