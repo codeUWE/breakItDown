@@ -21,6 +21,24 @@ const getSubtasks = async (req, res) => {
 	}
 };
 
+// / Finding unassigned or empty tasks
+	const findUnassignedSubtasks = async (req, res) => {
+		try {
+			// Logic to find unassigned subtasks
+			const unassignedSubtasks = await Subtask.find({ assignee: { $exists: false } })
+													.populate("assignee", "name email");
+			
+			// Return the unassigned subtasks
+			return res.json(unassignedSubtasks);
+		} catch (error) {
+			console.error("Error fetching unassigned subtasks:", error);
+			// Log the unassignedSubtasks if there's an error (optional)
+			console.log(unassignedSubtasks);
+			res.status(500).send("Something went wrong");
+		}
+	};
+
+
 const getSubtask = async (req, res) => {
 	try {
 		const { id } = req.params;
@@ -64,6 +82,7 @@ const createSubtask = async (req, res) => {
 			task: taskId,
 			assignee,
 		});
+
 
 		// Update the task to include this new subtask
 		await Task.findByIdAndUpdate(
@@ -122,4 +141,5 @@ module.exports = {
 	createSubtask,
 	updateSubtask,
 	deleteSubtask,
+	findUnassignedSubtasks
 };

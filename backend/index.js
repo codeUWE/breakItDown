@@ -46,6 +46,22 @@ app.use("/roles", roleRouter);
 app.use("/permissions", permissionRouter);
 app.use("/auth", authRouter);
 
+// // Constructing image Url for each users
+// const users = usersRouter;
+// // Construct image URL for each Pokémon entry
+// function constructImageUrl(userId) {
+//   return `https://randomuser.me/api/portraits/med/men/users/${userId}.png`;
+// }
+
+// user.forEach((user) => {
+//   const imageUrl = constructImageUrl(user.id);
+//   user.image_url = imageUrl;
+// });
+
+
+
+
+
 app.listen(port, () => {
 	console.log(`Example app listening on port ${port}`.bgGreen);
 });

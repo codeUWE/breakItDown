@@ -12,6 +12,9 @@ import Dashboard from "./components/Dashboard";
 import Layout from "./components/Layout";
 import Team from "./components/Team";
 import Notes from "./components/Notes";
+import Schedule from "./components/Schedule";
+
+
 
 function App() {
   return (
@@ -23,13 +26,16 @@ function App() {
           <Route path="/admindashboard" element={<AdminDashboard />} />
           <Route path="/" element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
+         
             <Route path="/tasks" element={<Task />} />
             <Route path="/tasks/:id" element={<SingleTaskBoard />} />
             <Route path="/team" element={<Team />} />
             <Route path="/notes" element={<Notes />} />
           </Route>
-        </Routes>
-      </main>
+        </Routes> 
+    
+      </main>  
+     
     </>
   );
 }
