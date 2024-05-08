@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser');
 
 
 const app = express();
-const port = 3001;
+const port = 8001;
 
 //import Routers
 const projectsRouter = require("./routes/projects");
@@ -27,7 +27,7 @@ const newsRouter = require ("./routes/news");
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5175"],
     credentials: true,
   })
 );

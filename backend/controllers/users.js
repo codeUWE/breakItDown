@@ -80,35 +80,35 @@ const deleteUser = async (req, res) => {
 	}
 };
 
-async function constructImageUrl(userId) {
-	// Construct the image URL based on the user's ID
-	return `https://randomuser.me/api/portraits/men/${userId}.jpg`;
-  }
+// async function constructImageUrl(userId) {
+// 	// Construct the image URL based on the user's ID
+// 	return `https://randomuser.me/api/portraits/men/${userId}.jpg`;
+//   }
   
-  async function updateUserImageUrls() {
-	try {
-	  // Fetch all users from the database
-	  const users = await User.find();
+//   async function updateUserImageUrls() {
+// 	try {
+// 	  // Fetch all users from the database
+// 	  const users = await User.find();
   
-	  // Iterate over each user
-	  for (const user of users) {
-		// Construct the image URL
-		const imageUrl = await constructImageUrl(user.id);
+// 	  // Iterate over each user
+// 	  for (const user of users) {
+// 		// Construct the image URL
+// 		const imageUrl = await constructImageUrl(user.id);
 		
-		// Update the user document with the image URL
-		await User.findByIdAndUpdate(user._id, { image_url: imageUrl });
-	  }
+// 		// Update the user document with the image URL
+// 		await User.findByIdAndUpdate(user._id, { image_url: imageUrl });
+// 	  }
   
-	  console.log('Image URLs updated successfully.');
-	} catch (error) {
-	  console.error('Error updating image URLs:', error);
-	}
-  }
+// 	  console.log('Image URLs updated successfully.');
+// 	} catch (error) {
+// 	  console.error('Error updating image URLs:', error);
+// 	}
+//   }
   
-  // Call the function to update image URLs
-  updateUserImageUrls();
+//   // Call the function to update image URLs
+//   updateUserImageUrls();
   
 
 
 
-module.exports = { getUsers, getUser, createUser, updateUser, deleteUser,updateUserImageUrls };
+module.exports = { getUsers, getUser, createUser, updateUser, deleteUser };
