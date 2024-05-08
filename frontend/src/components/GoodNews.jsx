@@ -4,6 +4,7 @@ import { TestimonialCard } from './TestimonialCard';
 // import App from "./App.css";
 // import OpenSubTasks from './OpenSubTasks';
 import { Avatar } from '@material-tailwind/react';
+import axios from 'axios';
 
 function GoodNews() {
   const [inputValue, setInputValue] = useState("");
@@ -56,12 +57,12 @@ function GoodNews() {
   return (
     <div>
       {/* Good News component */}
-      <div>
-        <div className="p-3 relative flex justify-center w-full max-w-[24rem]">
-          <span className='w-[117px] h-[48px] font-bold'>
+      {/* <div className='flex justify-center'>
+        <div className=" p-3 relative flex justify-center w-full max-w-[24rem]">
+          <span className='w-[117px] h-[48px] font-bold flex'>
             <p >Recent Collaborators</p>
           </span>
-          <div className='mr-9 p-2 flex items-center w-[48px] h-[48px] '>
+          <div className='mr-9 p-2 flex items-center justify-between w-[48px] h-[48px] '>
             <img className='-m-1' src="./src/assets/user2.png" alt="random-user1" />
             <img className='-m-1' src="./src/assets/user3.png" alt="random-user2" />
             <img className='-m-1' src="./src/assets/user1.png" alt="random-user3" />
@@ -79,9 +80,10 @@ function GoodNews() {
      <img src="./src/assets/office.png" alt="Ms_Office" className='w-[35px] h-[35px]'/>
      <img src="./src/assets/npm.png" alt="NPM" className='w-[35px] h-[35px]' />
 </div>
-       
+</div>  */}
 
-        <div className='flex justify-end '>
+<div className='flex justify-end mt-6'>
+  {/* <div className='flex justify-end mr-2'> */}
           <div className=' mr-20 ml-14 rounded-[20px] border border-gray-900 outline-none placeholder-underline w-[522.85px] relative h-[200px] overflow-auto'>
 
             <div className='ml-2 font-semibold flex justify-between items-center'>
@@ -104,28 +106,34 @@ function GoodNews() {
               />
             ))}
 
-            <div className='input-field flex items-center border-gray-300 rounded'>
+            <div className='input-field flex justify-center items-center border-gray-300 rounded'>
               <input
                 type="text"
                 placeholder="Share some good news"
                 value={inputValue}
                 onChange={onChange}
                 className="rounded-[15px] ml-2 w-[506.63px] h-[36.87px] border border-gray-900 outline-none placeholder-underline"
+
               />
-              <img
-                src='./src/assets/playicon.png' 
+           
+                <img
+                src='./src/assets/sent.png' 
                 alt='play' 
                 className='w-[25px] h-[25px] cursor-pointer'
                 onClick={handleSend}
               />
+       
+              
             </div>
           </div>
-        </div>
+        {/* </div> */}
       </div>
 
       
+</div>
+        
      
-    </div>
+   
   );
 }
 

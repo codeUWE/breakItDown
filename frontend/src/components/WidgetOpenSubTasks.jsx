@@ -23,19 +23,23 @@ function WidgetOpenSubTasks() {
   const currentTasks = unassignedTasks.slice(startIndex, startIndex + 1);
 
   return (
-    <div className='flex justify-end items-end relative'>
-      <div className='flex justify-end items-end p-12 mr-8'>
+
+  
+
+    <div className='flex justify-end items-end p-12 mr-8'>
+      {/* <div className='flex justify-center items-center p-12 mr-8'> */}
         <div className='flex justify-center items-center border border-gray-900 rounded-[30px] w-[865px] h-[260px] overflow-auto'>
-          <Card className='ml-6' color="transparent" shadow={true}>
-            <div className="mb-10 font-semibold flex justify-between items-center">
-              <h2>Open SubTasks</h2>
-              <div className="flex justify-end items-end">
+          <Card className='flex justify-center items-between py-40 ml-6' color="transparent" shadow={true}>
+            <div className="mb-1 font-semibold flex justify-between items-center">
+              <h2 className='flex justify-start'>Open SubTasks</h2>   
                 <img src="./src/assets/yellowdot.png" alt="" className="w-[18px] h-[18px] mr-6" />
               </div>
-            </div>
+  
             {currentTasks.map((task, index) => (
+              
               <div className='' key={task._id}>
                 <h3 className='mb-4 text-xs font-semibold'>{task.title}</h3>
+                {/* </div> */}
                 
                 <span className='flex items-end justify-end mr-12'>
                   <p className='font-bold'>
@@ -45,11 +49,10 @@ function WidgetOpenSubTasks() {
                        <img src="./src/assets/done.png" alt="" className='w-[53px] h-[32px]' />
                        <img src="./src/assets/caution.png" alt="" className='w-[46px] h-[29px]' />
                     </div>
+                    
                    
                     
                   </p>
-
-
                 </span>
                 <img src="./src/assets/wireanchor2.png" alt="" className='ml-4 w-[21px] h-[13px]' />
                 <p className='text-xs text-blue-600 ml-10 '>Task: {task.task.description}</p>
@@ -69,8 +72,9 @@ function WidgetOpenSubTasks() {
             </div>
           </Card>
         </div>
-      </div>
+      {/* </div> */}
     </div>
+     
   );
 }
 
