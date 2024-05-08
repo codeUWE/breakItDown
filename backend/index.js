@@ -1,17 +1,16 @@
 
 require('dotenv/config');
 require('./db');
-const color = require("colors");
+const color = require('colors');
 const express = require('express');
-const cors = require("cors")
-const cookieParser = require("cookie-parser")
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 
 const app = express();
-const port = 3001;
+const port = 8001;
 
 //import Routers
-
 const projectsRouter = require("./routes/projects");
 const tasksRouter = require("./routes/tasks");
 const subtasksRouter = require("./routes/subtasks");
@@ -28,7 +27,7 @@ const newsRouter = require ("./routes/news");
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5175"],
     credentials: true,
   })
 );
@@ -45,6 +44,19 @@ app.use("/users", usersRouter);
 app.use("/roles", roleRouter);
 app.use("/permissions", permissionRouter);
 app.use("/auth", authRouter);
+
+// // Constructing image Url for each users
+// const users = usersRouter;
+// // Construct image URL for each Pokémon entry
+// function constructImageUrl(userId) {
+//   return `https://randomuser.me/api/portraits/med/men/users/${userId}.png`;
+// }
+
+// user.forEach((user) => {
+//   const imageUrl = constructImageUrl(user.id);
+//   user.image_url = imageUrl;
+// });
+
 
 app.listen(port, () => {
 	console.log(`Example app listening on port ${port}`.bgGreen);

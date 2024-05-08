@@ -1,17 +1,56 @@
-import React from 'react';
+import '@mobiscroll/react/dist/css/mobiscroll.min.css';
+import { Eventcalendar, getJson, Page, setOptions, localeDe } from '@mobiscroll/react';
+import { useEffect, useMemo, useState } from 'react';
+
+setOptions({
+  locale: localeDe,
+  theme: 'ios',
+  themeVariant: 'light'
+});
 
 function Schedule() {
+  const [myEvents, setEvents] = useState([]);
+
+  const weekView = useMemo(() => ({ agenda: { type: 'week' } }), []);
+
+  useEffect(() => {
+    getJson(
+      'https://trial.mobiscroll.com/events/?vers=5&callback?',
+      (events) => {
+        setEvents(events);
+      },
+      'jsonp',
+    );
+  }, []);
+
+  // Filter events to display only 4 weeks of data at a time
+  const filteredEvents = useMemo(() => {
+    const today = new Date();
+    const fourWeeksLater = new Date();
+    fourWeeksLater.setDate(today.getDate() + 28); // 4 weeks later
+
+    return myEvents.filter(event => {
+      const eventDate = new Date(event.start);
+      return eventDate >= today && eventDate <= fourWeeksLater;
+    });
+  }, [myEvents]);
+
   return (
-    <div className='ml-10 mt-20 bg-gray-400 rounded-[20px] flex justify-start items-start absolute inset-2 py-4 w-[460.7px] h-[504.74px]'>
-      <div className='ml-4 font-semibold'>
-          <p>
-            Schedule
-        </p>
+    <Page>
+      <div className="mbsc-grid">
+        <div className="mbsc-row">
+          <div className="mbsc-col-sm-12 mbsc-col-md-4">
+            <div className="mbsc-form-group">
+              <div className="mbsc-form-group-title">Weekly agenda</div>
+              <div className=""> {/* Reverse the order of the child elements */}
+                <Eventcalendar view={weekView} data={filteredEvents} className="mb-" /> {/* Use mb-auto to push the calendar to the top */}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      
-     
-    </div>
-  )
+    </Page>
+  );
 }
 
 export default Schedule;
