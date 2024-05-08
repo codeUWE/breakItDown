@@ -71,7 +71,7 @@ const getProfile = async (req, res) => {
     const {
       user: { id },
     } = req;
-    const user = User.findById(id);
+    const user = await User.findById(id);
     res.json(user);
     // const {body:{name,email,password,roles}}=req;
     // const found = await User.findOne({email})
