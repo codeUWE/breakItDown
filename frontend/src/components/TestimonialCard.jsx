@@ -6,11 +6,11 @@ export function TestimonialCard({ onDelete, onEdit, post, setPosts }) {
   const [timestamp, setTimestamp] = useState('');
   // const [posts, setPosts] = useState([]);
   const [editedValue, setEditedValue] = useState('');
-  // const [user, setUser] = useState({
-  //   name: "Random 'dane' Joe",
-  //   position: 'Frontend Lead @ WBS',
-  //   avatarSrc: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80'
-  // });
+  const [user, setUser] = useState({
+    name: "Random 'dane' Joe",
+    position: 'Frontend Lead @ WBS',
+    avatarSrc: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80'
+  });
 
 
   // const handleEdit = (index, newValue) => {
@@ -40,6 +40,7 @@ export function TestimonialCard({ onDelete, onEdit, post, setPosts }) {
     <div className=" ml-35">
       
       <Card color="transparent" shadow={false} className="w-[522.85px] ">
+        
         <CardHeader
           color="transparent"
           floated={false}
@@ -80,10 +81,14 @@ export function TestimonialCard({ onDelete, onEdit, post, setPosts }) {
                 />
                 <Typography className=" text-xs ml-2">{post.user.name}</Typography>
               </div> */}
-              <Typography className="text-xs">{post.message}</Typography>
+              <Typography className=" text-xs">{post.message}</Typography>
                {/* partitioning */}
         <div className='mr-12 w-[483] m-2 border-t border-gray-600 flex-grow'>
-
+<div className='text-xs flex justify-end'>
+    
+    <p>Sent: </p>
+   {post.timestamp}
+  </div>
          
         
 </div>
@@ -92,11 +97,8 @@ export function TestimonialCard({ onDelete, onEdit, post, setPosts }) {
                 <button onClick={() => handleEdit( editedValue)} className="text-gray-400 mr-2">Edit</button>
                 <button onClick={() => handleDelete()} className="text-gray-400">Delete</button>
               </div> */} 
-             <Typography className="text-xs text-gray-500 mt-1">
-  <div>
-    <p>Sent at:</p>
-    <p>{post.timestamp}</p>
-  </div>
+             <Typography className="flex justify-end items-end text-xs text-gray-500 ">
+  
 </Typography>
             </div>
           

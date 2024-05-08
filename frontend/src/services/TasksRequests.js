@@ -5,6 +5,7 @@ export const getAllTasks = async () => {
 	const { data } = await axios.get('http://localhost:3001/tasks');
 	return data;
 };
+
 // Get Task via id
 export const getTaskById = async (id) => {
 	const { data } = await axios.get(`http://localhost:3001/tasks/${id}`);
@@ -38,6 +39,7 @@ export const updateSubtask = async (id, updates) => {
 		throw error;
 	}
 };
+
 //Post Subtask
 export const createSubtask = async (payload) => {
 	const { data } = await axios.post(`http://localhost:3001/subtasks/`, payload);
@@ -49,6 +51,7 @@ export const deleteSubtask = async (id) => {
 	const { data } = await axios.delete(`http://localhost:3001/subtasks/${id}`);
 	return data;
 };
+
 //Update Subtask
 export const update = async (id) => {
 	const { data } = await axios.put(`http://localhost:3001/subtasks/${id}`);
@@ -57,7 +60,9 @@ export const update = async (id) => {
 
 //Get unassigned Task
 export const getUnassignedTasks = async () => {
-	const { data } = await axios.get(`http://localhost:3001/tasks/unassigned`);
-	console.log(data);
+	const {data} = await axios.get('http://localhost:3001/subtasks/unassigned');
 	return data;
 };
+
+export default getUnassignedTasks;
+

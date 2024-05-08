@@ -9,6 +9,7 @@
 }
 
 .input-field {
+
 	font-size: 13px;
 }
 
@@ -23,3 +24,11 @@
 		scrollbar-width: none; /* Firefox */
 	}
 }
+
+    font-size: 13px;
+}
+
+.red-slash {
+    color: red;
+  }
+
