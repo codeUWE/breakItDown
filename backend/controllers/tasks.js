@@ -3,6 +3,7 @@ const Task = require('../models/tasks');
 const getTasks = async (req, res) => {
 	try {
 		const tasks = await Task.find({})
+			.sort('deadline')
 			.populate('owner lead', 'name email')
 			.populate({
 				path: 'collaborators',
@@ -24,6 +25,7 @@ const getTasks = async (req, res) => {
 			const completedSubtasks = task.subtasks.filter(
 				(subtask) => subtask.status === 'done'
 			).length;
+
 			return {
 				...task.toObject(),
 				totalSubtasks,
@@ -114,10 +116,38 @@ const updateTask = async (req, res) => {
 			body,
 			params: { id },
 		} = req;
-		const updatedTask = await Task.findByIdAndUpdate(id, body, { new: true });
-		res.send(updatedTask);
+
+		// Überprüfen, ob die Task-ID vorhanden ist
+		if (!id) {
+			return res.status(400).send('Task ID is required');
+		}
+
+		// Task aktualisieren
+		const updatedTask = await Task.findByIdAndUpdate(id, body, { new: true })
+			.populate('owner lead', 'name email')
+			.populate({
+				path: 'collaborators',
+				select: 'name email',
+			})
+			.populate({
+				path: 'subtasks',
+				select:
+					'title description detailedInformation status priority deadline isClosed',
+				options: { sort: { deadline: 1 } },
+				populate: {
+					path: 'assignee',
+					select: 'name email',
+				},
+			});
+
+		if (!updatedTask) {
+			return res.status(404).send('Task not found');
+		}
+
+		// Rückgabe des aktualisierten Tasks
+		res.json(updatedTask);
 	} catch (error) {
-		console.log(error);
+		console.error('Error updating task:', error);
 		res.status(500).send('Something went wrong!');
 	}
 };

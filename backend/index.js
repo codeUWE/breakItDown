@@ -1,17 +1,16 @@
 
 require('dotenv/config');
 require('./db');
-const color = require("colors");
+const color = require('colors');
 const express = require('express');
-const cors = require("cors")
-const cookieParser = require("cookie-parser")
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 
 const app = express();
 const port = 3001;
 
 //import Routers
-
 const projectsRouter = require("./routes/projects");
 const tasksRouter = require("./routes/tasks");
 const subtasksRouter = require("./routes/subtasks");
@@ -57,9 +56,6 @@ app.use("/auth", authRouter);
 //   const imageUrl = constructImageUrl(user.id);
 //   user.image_url = imageUrl;
 // });
-
-
-
 
 
 app.listen(port, () => {
