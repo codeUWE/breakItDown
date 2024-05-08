@@ -1,26 +1,66 @@
+/* eslint-disable react/prop-types */
 import SpeechBubble from '../assets/speechBubble.png';
 import stepInto from '../assets/stepInto.png';
-import { Avatar } from '@material-tailwind/react';
+import { Avatar, Tooltip } from '@material-tailwind/react';
 import { useNavigate } from 'react-router-dom';
 
 function TaskLayout({ task }) {
 	const navigate = useNavigate();
+
+	const formatDate = (dateString) => {
+		if (!dateString) return 'Invalid Date';
+		try {
+			const date = new Date(dateString);
+			const monthShortNames = [
+				'Jan',
+				'Feb',
+				'Mar',
+				'Apr',
+				'May',
+				'Jun',
+				'Jul',
+				'Aug',
+				'Sep',
+				'Oct',
+				'Nov',
+				'Dec',
+			];
+			let day = date.getDate().toString();
+			day = day.padStart(2, '0');
+			const month = monthShortNames[date.getMonth()];
+
+			return `${month} ${day}`;
+		} catch (error) {
+			console.error('Error while formatting the date:', error);
+			return 'Invalid Date';
+		}
+	};
+
+	console.log('Received date:', task.deadline);
+
 	return (
 		<>
-			<div className="w-[288px] h-[110px] rounded-[20px] border-[2px] border-black  flex">
-				<div className="flex flex-col justify-center items-center border-e-2 border-black p-2 ">
-					<h2 className="m-0 font-outfit font-[700] text-[16px]">APR</h2>
+			<div className="w-[350px] h-[155px] rounded-[20px] border-[2px] border-black  flex bg-white">
+				<div className="flex flex-col w-[60px] justify-center items-center border-e-2 border-black  bg-red-600 text-white rounded-s-[18px]">
+					<h2 className="m-0 font-outfit font-[700] text-[16px]">
+						{formatDate(task.deadline).split(' ')[0]}
+					</h2>
 					<h2 className="m-0 font-outfit font-[700] text-[24px] leading-none tracking-tighter">
-						30.
+						{formatDate(task.deadline).split(' ')[1]}
 					</h2>
 				</div>
-				<div className="w-full grid grid-rows-4 grid-col-6 ps-1 pe-1 pt-[4px] pb-[10px]">
-					<h2 className="font-outfit font-[500] text-[20px] row-start-1 col-start-1 col-span-5">
-						{task.title}
-					</h2>
-					<h3 className="font-outfit font-[300] text-[18px] row-start-2 col-start-1 col-span-3 tracking-tight mt-1">
-						<span className="text-[#FE4A49] font-outfit font-[500] ">X</span>{' '}
-						Subtasks
+				<div className="w-full grid grid-rows-4 grid-col-6 ps-3 pe-1 pt-[4px] pb-[10px]">
+					<Tooltip
+						content={task.title}
+						className="bg-[#363636] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
+					>
+						<h2 className="font-outfit font-[500] text-[20px] row-start-1 col-start-1 col-span-5 truncate ">
+							{task.title}
+						</h2>
+					</Tooltip>
+
+					<h3 className="font-outfit font-[300] text-[13px] row-start-2 row-end-2 col-start-1 col-span-4 tracking-tight mt-1  ">
+						{task.description}
 					</h3>
 					<img
 						src={SpeechBubble}

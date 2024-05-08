@@ -102,7 +102,7 @@ function SingleTaskSubtask({ subtask, onUpdate, onDelete, currentUser }) {
 			<div className="w-full flex flex-col px-6 gap-2">
 				<div className="w-full flex justify-between items-center">
 					<div className="w-[500px] h-max-[40px] ">
-						<h2 className="font-outfit text-[24px] font-[500] text-[#5a5a5a] ">
+						<h2 className="font-outfit text-[24px] font-[500] text-[#2c2c2c] ">
 							{title}
 						</h2>
 						<p className=" font-outfit text-[16px] font-[300] text-[#5a5a5a] text-ellipsis">
@@ -252,7 +252,7 @@ function SingleTaskSubtask({ subtask, onUpdate, onDelete, currentUser }) {
 						/>
 						<button
 							onClick={toggleDetails}
-							className="font-outfit font-[200] text-[13px] text-[#5a5a5a] w-[76px] h-[19px] bg-[#fffaed] rounded-[20px] "
+							className="font-outfit font-[300] text-[13px] text-[#5a5a5a] w-[76px] h-[19px] bg-[#fffaed] rounded-[20px] "
 						>
 							<h4>see more</h4>
 						</button>
