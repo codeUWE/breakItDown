@@ -12,13 +12,16 @@ import Dashboard from "./components/Dashboard";
 import Layout from "./components/Layout";
 import Team from "./components/Team";
 import Notes from "./components/Notes";
-import Schedule from "./components/Schedule";
+// import Schedule from "./components/Schedule";
+// import TeamView from "./components/TeamView";
 
 
 
 function App() {
   return (
     <>
+
+    {/* <TeamView/> */}
       <main>
         <Routes>
           <Route path="/login" element={<LoginCard />} />
