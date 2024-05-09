@@ -1,17 +1,40 @@
 const Subtask = require('../models/subtasks');
 const Task = require('../models/tasks');
 
+const updateTaskStatusBasedOnSubtasks = async (taskId) => {
+	try {
+		const task = await Task.findById(taskId).populate('subtasks');
+		if (!task) {
+			console.log('Task not found');
+			return;
+		}
+
+		let newStatus = '';
+		const subtaskStatuses = task.subtasks.map((subtask) => subtask.status);
+
+		if (subtaskStatuses.every((status) => status === 'done')) {
+			newStatus = 'done';
+		} else if (subtaskStatuses.some((status) => status === 'done')) {
+			newStatus = 'inProgress';
+		} else if (subtaskStatuses.every((status) => status === 'backlog')) {
+			newStatus = 'backlog';
+		} else {
+			newStatus = 'inProgress';
+		}
+
+		task.status = newStatus;
+		await task.save();
+		console.log(`Task ${task._id} status updated to ${newStatus}`);
+	} catch (error) {
+		console.error('Error updating task status based on subtasks:', error);
+	}
+};
+
 const getSubtasks = async (req, res) => {
 	try {
 		const subtasks = await Subtask.find({})
-			.populate({
-				path: 'task',
-				select: 'title description status',
-			})
-			.populate({
-				path: 'assignee',
-				select: 'name email',
-			})
+			.populate('task', 'title description status')
+			.populate('assignee', 'name email')
 			.sort('deadline');
 
 		res.json(subtasks);
@@ -21,36 +44,12 @@ const getSubtasks = async (req, res) => {
 	}
 };
 
-// / Finding unassigned or empty tasks
-	const findUnassignedSubtasks = async (req, res) => {
-		try {
-			// Logic to find unassigned subtasks
-			const unassignedSubtasks = await Subtask.find({ assignee: { $exists: false } })
-													.populate("assignee", "name email");
-			
-			// Return the unassigned subtasks
-			return res.json(unassignedSubtasks);
-		} catch (error) {
-			console.error("Error fetching unassigned subtasks:", error);
-			// Log the unassignedSubtasks if there's an error (optional)
-			console.log(unassignedSubtasks);
-			res.status(500).send("Something went wrong");
-		}
-	};
-
-
 const getSubtask = async (req, res) => {
 	try {
 		const { id } = req.params;
 		const subtask = await Subtask.findById(id)
-			.populate({
-				path: 'task',
-				select: 'title description status',
-			})
-			.populate({
-				path: 'assignee',
-				select: 'name email',
-			});
+			.populate('task', 'title description status')
+			.populate('assignee', 'name email');
 		if (!subtask) {
 			return res.status(404).send('Subtask not found');
 		}
@@ -70,27 +69,34 @@ const createSubtask = async (req, res) => {
 			priority,
 			status,
 			deadline,
-			task: taskId,
+			task,
 			assignee,
 		} = req.body;
+		console.log(
+			title,
+			description,
+			detailedInformation,
+			priority,
+			status,
+			deadline,
+			task,
+			assignee
+		);
 		const createdSubtask = await Subtask.create({
 			title,
 			description,
 			detailedInformation,
 			status,
 			priority,
-			task: taskId,
+			task,
 			assignee,
 		});
 
-
-		// Update the task to include this new subtask
 		await Task.findByIdAndUpdate(
-			taskId,
+			task,
 			{ $push: { subtasks: createdSubtask._id } },
 			{ new: true, safe: true, upsert: false }
 		);
-
 		res.json(createdSubtask);
 	} catch (error) {
 		console.error('Error creating subtask:', error);
@@ -105,6 +111,12 @@ const updateSubtask = async (req, res) => {
 		const updatedSubtask = await Subtask.findByIdAndUpdate(id, body, {
 			new: true,
 		});
+
+		// Update Task Status if the subtask is updated
+		if (updatedSubtask) {
+			await updateTaskStatusBasedOnSubtasks(updatedSubtask.task);
+		}
+
 		res.json(updatedSubtask);
 	} catch (error) {
 		console.error('Error updating subtask:', error);
@@ -115,8 +127,6 @@ const updateSubtask = async (req, res) => {
 const deleteSubtask = async (req, res) => {
 	try {
 		const { id } = req.params;
-
-		// Directly remove the subtask and its reference from the task
 		const subtask = await Subtask.findByIdAndDelete(id);
 		if (!subtask) {
 			return res.status(404).send('Subtask not found');
@@ -127,11 +137,27 @@ const deleteSubtask = async (req, res) => {
 			{ $pull: { subtasks: id } },
 			{ new: true, safe: true }
 		);
-
 		res.send({ message: 'Subtask deleted successfully', deletedSubtaskId: id });
 	} catch (error) {
 		console.error('Error deleting subtask:', error);
 		res.status(500).send('Something went wrong!');
+	}
+};
+
+const findUnassignedSubtasks = async (req, res) => {
+	try {
+		// Logic to find unassigned subtasks
+		const unassignedSubtasks = await Subtask.find({
+			assignee: { $exists: false },
+		}).populate('assignee', 'name email');
+
+		// Return the unassigned subtasks
+		return res.json(unassignedSubtasks);
+	} catch (error) {
+		console.error('Error fetching unassigned subtasks:', error);
+		// Log the unassignedSubtasks if there's an error (optional)
+		console.log(unassignedSubtasks);
+		res.status(500).send('Something went wrong');
 	}
 };
 
@@ -141,5 +167,5 @@ module.exports = {
 	createSubtask,
 	updateSubtask,
 	deleteSubtask,
-	findUnassignedSubtasks
+	findUnassignedSubtasks,
 };

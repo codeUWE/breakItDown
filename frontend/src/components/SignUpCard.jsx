@@ -83,7 +83,7 @@ export default function SignUpCard() {
             className="rounded-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 transition duration-300 ease-in-out"
           />
 
-          <Typography variant="small" className="mt-6 mb-4 flex justify-center">
+          {/* <Typography variant="small" className="mt-6 mb-4 flex justify-center">
             Already have an account?
             <Link to="/login">
               <Typography
@@ -95,7 +95,7 @@ export default function SignUpCard() {
                 Log In
               </Typography>
             </Link>
-          </Typography>
+          </Typography> */}
           <div className="flex items-center justify-evenly">
             <Button
               size="lg"

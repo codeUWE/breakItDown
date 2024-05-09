@@ -4,6 +4,7 @@ const taskSchema = new Schema(
 	{
 		title: { type: String, required: true },
 		description: { type: String, required: true },
+		startDate: { type: Date },
 		deadline: { type: Date },
 		owner: { type: Schema.Types.ObjectId, ref: 'User' },
 		lead: { type: Schema.Types.ObjectId, ref: 'User' },
