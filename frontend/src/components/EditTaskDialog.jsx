@@ -14,6 +14,7 @@ function EditTaskDialog({ task, open, onClose, onUpdate }) {
 	const [formData, setFormData] = useState({
 		title: task?.title,
 		description: task?.description,
+		startDate: task?.startDate ? task?.startDate.substring(0, 10) : '',
 		deadline: task?.deadline ? task?.deadline.substring(0, 10) : '',
 	});
 
@@ -22,6 +23,7 @@ function EditTaskDialog({ task, open, onClose, onUpdate }) {
 			setFormData({
 				title: task.title,
 				description: task.description,
+				startDate: task.startDate ? task.startDate.substring(0, 10) : '',
 				deadline: task.deadline ? task.deadline.substring(0, 10) : '',
 			});
 		}
@@ -59,6 +61,13 @@ function EditTaskDialog({ task, open, onClose, onUpdate }) {
 					value={formData.description}
 					onChange={handleChange}
 					label="Description"
+				/>
+				<Input
+					type="date"
+					name="startDate"
+					value={formData.startDate}
+					onChange={handleChange}
+					label="Start Date"
 				/>
 				<Input
 					type="date"
