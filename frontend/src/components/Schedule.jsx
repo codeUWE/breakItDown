@@ -1,59 +1,55 @@
+import '@mobiscroll/react/dist/css/mobiscroll.min.css';
+import { Eventcalendar, getJson, Page, setOptions, localeDe } from '@mobiscroll/react';
+import { useEffect, useMemo, useState } from 'react';
 
-import React, { useState, useEffect } from 'react';
-import { update } from '../services/TasksRequests'; // Assuming this import is correct
-import { Avatar } from '@material-tailwind/react'; // Assuming this import is correct
+setOptions({
+  locale: localeDe,
+  theme: 'ios',
+  themeVariant: 'light'
+});
 
 function Schedule() {
-  const [currentDate, setCurrentDate] = useState('');
+  const [myEvents, setEvents] = useState([]);
+
+  const weekView = useMemo(() => ({ agenda: { type: 'week' } }), []);
 
   useEffect(() => {
-    // Function to update the date string
-    const updateDate = () => {
-      const now = new Date();
-      const day = String(now.getDate()).padStart(2, '0');
-      const month = String(now.getMonth() + 1).padStart(2, '0');
-      const year = now.getFullYear();
-
-      const dateString = `${day} / ${month} / ${year}`;
-      setCurrentDate(dateString);
-    };
-
-    // Call updateDate immediately to display the date when the component mounts
-    updateDate();
-
-    // Calculate the time until the next midnight (in milliseconds)
-    const now = new Date();
-    const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-    const timeUntilMidnight = midnight - now;
-
-    // Update the date every 24 hours (starting from midnight) to ensure accurate date display
-    const interval = setTimeout(() => {
-      updateDate();
-      setInterval(updateDate, 86400000); // Update every 24 hours
-    }, timeUntilMidnight);
-
-    // Clear the timeout on component unmount
-    return () => clearTimeout(interval);
+    getJson(
+      'https://trial.mobiscroll.com/events/?vers=5&callback?',
+      (events) => {
+        setEvents(events);
+      },
+      'jsonp',
+    );
   }, []);
 
+  // Filter events to display only 4 weeks of data at a time
+  const filteredEvents = useMemo(() => {
+    const today = new Date();
+    const fourWeeksLater = new Date();
+    fourWeeksLater.setDate(today.getDate() + 28); // 4 weeks later
+
+    return myEvents.filter(event => {
+      const eventDate = new Date(event.start);
+      return eventDate >= today && eventDate <= fourWeeksLater;
+    });
+  }, [myEvents]);
+
   return (
-    <div className='border border-gray-900 rounded-[20px] w-[460.7px] h-[504.74px]'>
-      
-      <div className='ml-4 p-4 flex justify-start font-semibold'>
-        <p className='text-4xl'>Schedule</p>
+    <Page>
+      <div className="mbsc-grid">
+        <div className="mbsc-row">
+          <div className="mbsc-col-sm-12 mbsc-col-md-4">
+            <div className="mbsc-form-group">
+              <div className="mbsc-form-group-title">Weekly agenda</div>
+              <div className=""> {/* Reverse the order of the child elements */}
+                <Eventcalendar view={weekView} data={filteredEvents} className="mb-" /> {/* Use mb-auto to push the calendar to the top */}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div className='flex justify-start ml-4 p-2'>
-        <p className='font-bold ml-4 flex w-[98px] h-[20px]'>{currentDate}</p>
-      </div>
-
-
-      <div className='flex flex-col items-center justify-center h-screen mt-2'>
-        <img src="./src/assets/expand.png" alt="" className='w-[13px]' />
-      </div>
-
-
-    </div>
+    </Page>
   );
 }
 
