@@ -1,19 +1,22 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { getTaskById, updateTask } from '../services/TasksRequests';
+import { getTaskById, updateTask, deleteTask } from '../services/TasksRequests';
 import { useEffect, useState, useRef } from 'react';
 import SingleTaskSubtask from './SingleTaskSubtask';
 import SingleTaskProgress from './SingleTaskProgress';
 import AddSubtaskDialog from './AddSubtaskDialog';
 import EditTaskDialog from './EditTaskDialog';
+import DeleteTaskDialog from './DeleteTaskDialog';
 
 import Sent from '../assets/sent.png';
 import SpeechBubble from '../assets/speechBubble.png';
 import plus from '../assets/plus.png';
 import edit from '../assets/edit.png';
+import deleteIcon from '../assets/deleteIcon.png';
 import back from '../assets/back.png';
 import user from '../assets/user.png';
 import collaborators from '../assets/collaborators.png';
 import deadline from '../assets/deadline.png';
+import startDate from '../assets/startDate.png';
 import status from '../assets/status.png';
 import more from '../assets/more.png';
 
@@ -22,13 +25,14 @@ import { Avatar } from '@material-tailwind/react';
 function SingleTaskBoard() {
 	const { id } = useParams();
 	const navigate = useNavigate();
+	const currentUser = { _id: 'currentUserId' };
 
 	const [task, setTask] = useState(null);
 	const [activeTab, setActiveTab] = useState('subtasks');
 	const [sortMode, setSortMode] = useState('deadline');
-	const currentUser = { _id: 'currentUserId' };
 	const [addOpen, setAddOpen] = useState(false);
 	const [editOpen, setEditOpen] = useState(false);
+	const [deleteOpen, setDeleteOpen] = useState(false);
 	const [showMoreDetails, setShowMoreDetails] = useState(false);
 	const moreDetailsRef = useRef(null);
 
@@ -47,6 +51,7 @@ function SingleTaskBoard() {
 			.join('/');
 	}
 	const deadlineFormatted = task ? formatDate(task.deadline) : 'No Date';
+	const startDateFormatted = task ? formatDate(task.startDate) : 'No Date';
 
 	// Status Label
 	function getStatusLabel(status) {
@@ -157,6 +162,23 @@ function SingleTaskBoard() {
 		setEditOpen(false);
 	};
 
+	const handleDeleteOpen = () => {
+		setDeleteOpen(true);
+	};
+
+	const handleDeleteClose = () => {
+		setDeleteOpen(false);
+	};
+
+	const handleDeleteTask = async () => {
+		try {
+			await deleteTask(task._id);
+			navigate(-1);
+		} catch (error) {
+			console.error(`Error deleting task:`, error);
+		}
+	};
+
 	const handleTaskUpdate = async (updatedTask) => {
 		try {
 			const updated = await updateTask(task._id, updatedTask);
@@ -184,9 +206,15 @@ function SingleTaskBoard() {
 			<div className="w-[1200px] h-[550px] rounded-[30px] border-[5px] border-[#363636] bg-[#daf0fd] shadow-2xl p-1 relative">
 				<button
 					onClick={() => task && handleEditOpen()}
-					className="absolute top-10 left-[440px]"
+					className="absolute top-10 left-[455px]"
 				>
 					<img src={edit} alt="edit icon" width={20} />
+				</button>
+				<button
+					onClick={() => task && handleDeleteOpen()}
+					className="absolute top-20 left-[455px]"
+				>
+					<img src={deleteIcon} alt="edit icon" width={20} />
 				</button>
 				<button onClick={() => navigate(-1)} className="absolute top-4 right-6">
 					<img src={back} alt="edit icon" width={22} />
@@ -198,9 +226,15 @@ function SingleTaskBoard() {
 					onClose={handleEditClose}
 					onUpdate={handleTaskUpdate}
 				/>
+				<DeleteTaskDialog
+					open={deleteOpen}
+					onClose={handleDeleteClose}
+					onDelete={handleDeleteTask}
+					task={task}
+				/>
 				<div className="p-3 flex justify-center items-center w-full h-full rounded-3xl">
 					<div className="w-[38%] h-full flex flex-col justify-start items-center">
-						<h2 className="self-start font-outfit font-[700] text-[40px] text-[#363636] tracking-tight">
+						<h2 className="self-start font-outfit font-[700] text-[40px] text-[#363636] tracking-tight leading-tight mb-2">
 							{task?.title}
 						</h2>
 						<div className="taskInformation w-full flex flex-wrap justify-center items-center">
@@ -256,18 +290,33 @@ function SingleTaskBoard() {
 											/>
 										</div>
 									</div>
-									<div className="w-1/2 h-[40px] flex items-center justify-start gap-3">
-										<img
-											src={deadline}
-											alt="lead icon"
-											width={18}
-											className="ms-[2px]"
-										/>
-										<h5>
-											<span className="font-outfit text-[16px] font-[400] text-[#5a5a5a]">
-												{deadlineFormatted}
-											</span>
-										</h5>
+									<div className="w-1/2 h-[40px] flex items-center justify-between gap-3 pe-5">
+										<div className="flex items-center gap-2">
+											<img
+												src={startDate}
+												alt="lead icon"
+												width={18}
+												className="ms-[2px]"
+											/>
+											<h5>
+												<span className="font-outfit text-[16px] font-[400] text-[#5a5a5a]">
+													{startDateFormatted}
+												</span>
+											</h5>
+										</div>
+										<div className="flex items-center gap-2">
+											<img
+												src={deadline}
+												alt="lead icon"
+												width={18}
+												className="ms-[2px]"
+											/>
+											<h5>
+												<span className="font-outfit text-[16px] font-[400] text-[#5a5a5a]">
+													{deadlineFormatted}
+												</span>
+											</h5>
+										</div>
 									</div>
 								</div>
 								<h2 className="self-start font-outfit font-[300] text-[15px] text-[#363636] tracking-tight">
@@ -306,7 +355,6 @@ function SingleTaskBoard() {
 						</div>
 					</div>
 					<div className="w-[62%] h-full flex flex-col justify-start items-center ps-6 pt-1">
-						{/* Logik hier: Wenn subtasks aktiv sind, dann die Liste anzeigen. Andernfalls, Fortschritt anzeigen */}
 						<div className="w-full flex justify-around items-center font-outfit text-[48px] font-[700] text-[#363636] tracking-tight mb-4">
 							<button
 								className={`h2 ${
