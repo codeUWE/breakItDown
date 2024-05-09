@@ -5,6 +5,13 @@ import { Routes, Route } from 'react-router-dom';
 import Task from './components/Task';
 import SingleTaskBoard from './components/SingleTaskBoard';
 // import SignUp from './components/SignUp';
+import SignUpCard from "./components/SignUpCard";
+import LoginCard from "./components/LoginCard";
+import AdminDashboard from "./components/AdminDashboard";
+import Dashboard from "./components/Dashboard";
+import Layout from "./components/Layout";
+import Team from "./components/Team";
+import Notes from "./components/Notes";
 import SignUpCard from './components/SignUpCard';
 import LoginCard from './components/LoginCard';
 import AdminDashboard from './components/AdminDashboard';
@@ -36,6 +43,7 @@ function App() {
 			</main>
 		</>
 	);
+
 }
 
 export default App;
