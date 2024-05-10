@@ -18,6 +18,13 @@ const getTasks = async (req, res) => {
 					path: 'assignee',
 					select: 'name email',
 				},
+			})
+			.populate({
+				path: 'comments',
+				match: { isDeleted: false },
+				select: 'body user createdAt',
+				options: { sort: { createdAt: 1 } }, // sort by creation date
+				populate: { path: 'user', select: 'name' },
 			});
 
 		const tasksWithProgress = tasks.map((task) => {
@@ -54,22 +61,18 @@ const getTask = async (req, res) => {
 				path: 'subtasks',
 				select:
 					'title description detailedInformation status priority deadline isClosed',
-				options: { sort: { deadline: 1 } }, // Hier fügen wir die Sortierung hinzu
+				options: { sort: { deadline: 1 } },
 				populate: {
 					path: 'assignee',
 					select: 'name email',
 				},
-				// .populate({
-				// 	path: 'comments',
-				// 	match: { isDeleted: false },
-				// 	select: 'body user',
-				// 	populate: { path: 'user', select: 'name' },
-				// })
-				// .populate({
-				// 	path: 'notes',
-				// 	match: { isDeleted: false, isShared: true },
-				// 	select: 'title body tags',
-				// });
+			})
+			.populate({
+				path: 'comments',
+				match: { isDeleted: false },
+				select: 'body user createdAt',
+				options: { sort: { createdAt: 1 } }, // sort by creation date
+				populate: { path: 'user', select: 'name' },
 			});
 
 		if (!task) {
@@ -190,10 +193,13 @@ const updateTask = async (req, res) => {
 				path: 'collaborators',
 				select: 'name email',
 			})
-			// .populate({
-			// 	path: 'comments',
-			// 	match: { isDeleted: false },
-			// 	select: 'body user',;
+			.populate({
+				path: 'comments',
+				match: { isDeleted: false },
+				select: 'body user createdAt',
+				options: { sort: { createdAt: 1 } }, // sort by creation date
+				populate: { path: 'user', select: 'name' },
+			})
 			.populate({
 				path: 'subtasks',
 				select:
