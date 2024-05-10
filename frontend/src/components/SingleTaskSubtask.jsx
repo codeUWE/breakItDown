@@ -81,6 +81,10 @@ function SingleTaskSubtask({ subtask, onUpdate, onDelete, currentUser }) {
 		handleUpdate({ status: newStatus });
 	};
 
+	const handlePriorityChange = (newPriority) => {
+		handleUpdate({ priority: newPriority });
+	};
+
 	const handleDelete = async () => {
 		const result = await deleteSubtask(_id);
 		if (result) {
@@ -94,6 +98,31 @@ function SingleTaskSubtask({ subtask, onUpdate, onDelete, currentUser }) {
 		});
 		if (updatedSubtask) {
 			onUpdate(updatedSubtask);
+		}
+	};
+
+	const getPriorityLabel = (priority) => {
+		switch (priority) {
+			case 'low':
+				return {
+					label: 'Low',
+					className: 'bg-[#438CDB] text-white',
+				};
+			case 'medium':
+				return {
+					label: 'Medium',
+					className: 'bg-[#681FDE] text-white',
+				};
+			case 'high':
+				return {
+					label: 'High',
+					className: 'bg-[#FF3D00] text-white',
+				};
+			default:
+				return {
+					label: 'Unknown',
+					className: 'bg-[#d3d3d3] text-black',
+				};
 		}
 	};
 
@@ -145,9 +174,13 @@ function SingleTaskSubtask({ subtask, onUpdate, onDelete, currentUser }) {
 								</span>
 							))}
 						</p>
-						<h3 className="font-outfit text-[15px] font-[700] text-[#5a5a5a] w-16 text-center ">
-							{priority}
-						</h3>
+						<span
+							className={`font-outfit font-[400] text-[13px] text-white w-[90px] h-[21px] rounded-[20px] flex justify-center items-center gap-1 ${
+								getPriorityLabel(priority).className
+							}`}
+						>
+							<h4>{getPriorityLabel(priority).label}</h4>
+						</span>
 						{status === 'backlog' && (
 							<span className="font-outfit font-[200] text-[13px] text-white w-[90px] h-[21px] bg-[#5a5a5a] rounded-[20px] flex justify-center items-center gap-1 ">
 								<div className="w-[4px] h-[4px] rounded-full bg-white "></div>

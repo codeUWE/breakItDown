@@ -1,9 +1,9 @@
-import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import './App.css';
+import { Routes, Route } from 'react-router-dom';
 
 //components
-import Task from "./components/Task";
-import SingleTaskBoard from "./components/SingleTaskBoard";
+import Task from './components/Task';
+import SingleTaskBoard from './components/SingleTaskBoard';
 // import SignUp from './components/SignUp';
 import SignUpCard from "./components/SignUpCard";
 import LoginCard from "./components/LoginCard";
@@ -12,8 +12,10 @@ import Dashboard from "./components/Dashboard";
 import Layout from "./components/Layout";
 import Team from "./components/Team";
 import Notes from "./components/Notes";
+
 import Schedule from "./components/Schedule";
 import Authorize from "./components/Authorize";
+import ProjectProgress from './components/ProjectProgress';
 
 function App() {
   return (
@@ -32,6 +34,7 @@ function App() {
 
             <Route path="/tasks" element={<Task />} />
             <Route path="/tasks/:id" element={<SingleTaskBoard />} />
+            <Route path="/tasks/progress" element={<ProjectProgress />} />
             <Route path="/team" element={<Team />} />
             <Route path="/notes" element={<Notes />} />
           </Route>
@@ -39,8 +42,9 @@ function App() {
       </main>
     </>
   );
+
 }
 
-//663dd4b97f0e93af9836c3ad
+
 
 export default App;
