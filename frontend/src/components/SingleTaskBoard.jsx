@@ -337,7 +337,7 @@ function SingleTaskBoard() {
 								height={25}
 							/>
 						</div>
-						<div className="w-full h-full overflow-auto no-scrollbar rounded-[20px] border-black border-[1px]">
+						<div className="w-full h-full overflow-auto no-scrollbar">
 							<Comments />
 						</div>
 					</div>
