@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "missing": "^0.0.1",
     "react-google-charts": "^4.0.1"
   }
 }
