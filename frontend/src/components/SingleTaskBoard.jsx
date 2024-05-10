@@ -7,7 +7,6 @@ import AddSubtaskDialog from './AddSubtaskDialog';
 import EditTaskDialog from './EditTaskDialog';
 import DeleteTaskDialog from './DeleteTaskDialog';
 
-import Sent from '../assets/sent.png';
 import SpeechBubble from '../assets/speechBubble.png';
 import plus from '../assets/plus.png';
 import edit from '../assets/edit.png';
@@ -21,6 +20,7 @@ import status from '../assets/status.png';
 import more from '../assets/more.png';
 
 import { Avatar } from '@material-tailwind/react';
+import Comments from './Comments';
 
 function SingleTaskBoard() {
 	const { id } = useParams();
@@ -337,21 +337,8 @@ function SingleTaskBoard() {
 								height={25}
 							/>
 						</div>
-						<div className="w-full h-full rounded-[20px] border-black border-[1px] flex flex-col justify-end items-center p-2 relative">
-							<div className="w-[90%] flex justify-between items-center relative">
-								<input
-									type="text"
-									className="bg-transparent border-[#363636] border-[2px] rounded-[20px] w-full "
-								/>
-								<img
-									src={Sent}
-									alt="Sent icon für Nachricht"
-									width={18}
-									height={18}
-									className="absolute right-2"
-								/>
-							</div>
-							<div className="w-[20px] h-[20px] bg-orange-800 rounded-full border-black border-[4px] self-start absolute top-5 left-[92%] "></div>
+						<div className="w-full h-full overflow-auto no-scrollbar">
+							<Comments />
 						</div>
 					</div>
 					<div className="w-[62%] h-full flex flex-col justify-start items-center ps-6 pt-1">
