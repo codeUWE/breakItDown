@@ -11,12 +11,12 @@ const register = async (req, res) => {
     } = req;
     const found = await User.findOne({ email });
     if (found) throw new Error("User already Exists");
-    // console.log(password)
+  
     const hash = await bcrypt.hash(password, 10);
-    // console.log(hash)
+  
     //get admin role
-    const role = await Role.findOne({ name: "admin" });
-    console.log(role);
+    const role = await Role.findOne({ name: "Admin" });
+    
     const user = await User.create({
       email,
       password: hash,
@@ -34,7 +34,9 @@ const login = async (req, res) => {
     const {
       body: { email, password },
     } = req;
-    const user = await User.findOne({ email }).select("+password");
+    const user = await User.findOne({ email })
+      .select("+password")
+      .populate("role");
 
     if (!user) throw new Error("User doesn't Exists");
     console.log(user);
@@ -44,7 +46,7 @@ const login = async (req, res) => {
     if (!match) throw new Error("Incorrect Password");
     //put profile pic here (inside the cookie)
     // add multiple roles and
-    const payload = { id: user._id, email: user.email };
+    const payload = { id: user._id, email: user.email, role: user.role };
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: "480m",
     });
@@ -71,7 +73,7 @@ const getProfile = async (req, res) => {
     const {
       user: { id },
     } = req;
-    const user = await User.findById(id);
+    const user = await User.findById(id).populate("role");
     res.json(user);
     // const {body:{name,email,password,roles}}=req;
     // const found = await User.findOne({email})
