@@ -30,7 +30,12 @@ export default function AuthProvider({ children }) {
       .post("/auth/login", data)
       .then((response) => {
         setUser(response.data);
-        navigate("/dashboard");
+        // console.log(response.data);
+        if (response.data.role.name === "Admin") {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/dashboard");
+        }
       })
       .catch((err) => {
         console.log(err);

@@ -8,7 +8,7 @@ import {
   Checkbox,
   Button,
 } from "@material-tailwind/react";
-import {useContext} from 'react'
+import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import google48 from "../assets/google48.png";
 import github48 from "../assets/github48.png";
@@ -18,7 +18,7 @@ import axiosClient from "../axiosClient";
 
 export default function LoginCard() {
   const navigate = useNavigate();
-  const {user,isLoading,login} = useContext(AuthContext)
+  const { user, isLoading, login } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -27,7 +27,7 @@ export default function LoginCard() {
   } = useForm();
   const onSubmit = (data) => {
     console.log(data);
-    login(data)
+    login(data);
     // axiosClient
     //   .post("auth/login", data)
     //   .then((response) => {
@@ -120,6 +120,16 @@ export default function LoginCard() {
           </div>
         </CardFooter>
       </Card>
+
+      {/* errors will return when field validation fails  */}
+
+      {errors.email?.type === "required" && <span>{errors.email.message}</span>}
+      {errors.password?.type === "required" && (
+        <span>{errors.password.message}</span>
+      )}
+      {errors.password?.type === "minLength" && (
+        <span>{errors.password.message}</span>
+      )}
     </form>
   );
 }

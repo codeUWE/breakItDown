@@ -1,15 +1,26 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
-import NavBar from './NavBar';
-import { TemporaryNavbar } from './TemporaryNavbar';
+import { useContext } from "react";
+import { Navigate, Outlet } from "react-router-dom";
+import NavBar from "./NavBar";
+import { AuthContext } from "../context/AuthProvider";
 
 function Layout() {
-	return (
-		<div>
-			<NavBar />
-			<Outlet />
-		</div>
-	);
+  const { isLoading, user } = useContext(AuthContext);
+  return (
+    <>
+      {!isLoading && (
+        <>
+          {user ? (
+            <div>
+              <NavBar />
+              <Outlet />
+            </div>
+          ) : (
+            <Navigate to="/login" />
+          )}
+        </>
+      )}
+    </>
+  );
 }
 
 export default Layout;
