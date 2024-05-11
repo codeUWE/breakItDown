@@ -4,17 +4,15 @@ import { Routes, Route } from 'react-router-dom';
 //components
 import Task from './components/Task';
 import SingleTaskBoard from './components/SingleTaskBoard';
-// import SignUp from './components/SignUp';
 import SignUpCard from './components/SignUpCard';
 import LoginCard from './components/LoginCard';
 import AdminDashboard from './components/AdminDashboard';
 import Dashboard from './components/Dashboard';
 import Layout from './components/Layout';
 import Notes from './components/Notes';
-
-import Schedule from './components/Schedule';
 import Authorize from './components/Authorize';
 import ProjectProgress from './components/ProjectProgress';
+import TeamView from './components/TeamView';
 
 function App() {
 	return (
@@ -28,9 +26,7 @@ function App() {
 						<Route path="/admin" element={<Authorize role={'Admin'} />}>
 							<Route path="dashboard" element={<AdminDashboard />} />
 						</Route>
-						{/* <Route path="/admindashboard" element={<AdminDashboard />} /> */}
 						<Route path="/dashboard" element={<Dashboard />} />
-
 						<Route path="/tasks" element={<Task />} />
 						<Route path="/tasks/:id" element={<SingleTaskBoard />} />
 						<Route path="/tasks/progress" element={<ProjectProgress />} />

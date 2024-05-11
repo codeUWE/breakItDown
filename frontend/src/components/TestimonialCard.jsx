@@ -12,6 +12,7 @@ export function TestimonialCard({ onDelete, onEdit, post }) {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(`http://localhost:3001/users/${post.user._id}`);
+        console.log(response.data)
         setUserData(response.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -35,7 +36,7 @@ export function TestimonialCard({ onDelete, onEdit, post }) {
       <Card color="transparent" shadow={false} className="w-[522.85px] ">
         <CardHeader color="transparent" floated={false} shadow={false} className="mx-0 flex items-center pt-0">
           {userData && (
-            <Avatar size="xs" variant="circular" src={userData.profilePicture} alt={userData.name} />
+            <Avatar size="xs" variant="circular" src={userData.profilePicture} alt={userData.id.name} />
           )}
           <div className="flex flex-col">
             <div>
