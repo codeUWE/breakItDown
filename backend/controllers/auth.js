@@ -80,7 +80,16 @@ const getProfile = async (req, res) => {
 		const {
 			user: { id },
 		} = req;
-		const user = await User.findById(id).populate('role');
+		const user = await User.findById(id)
+			.populate('role')
+			.populate({
+				path: 'role',
+				populate: {
+					path: 'permissions',
+					model: 'Permission',
+					select: 'name',
+				},
+			});
 		res.json(user);
 		// const {body:{name,email,password,roles}}=req;
 		// const found = await User.findOne({email})
