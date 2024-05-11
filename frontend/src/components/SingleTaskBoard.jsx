@@ -211,6 +211,20 @@ function SingleTaskBoard() {
 	return (
 		<div className="p-10 w-full h-full flex justify-center items-center">
 			<div className="w-[1200px] h-[550px] rounded-[30px] border-[5px] border-[#363636] bg-[#daf0fd] shadow-2xl p-1 relative">
+				{/* Delete, Edit and Back Buttons and Dialogs */}
+				<button onClick={() => navigate(-1)} className="absolute top-4 right-6">
+					<img src={back} alt="edit icon" width={22} />
+				</button>
+				{hasPermission(user.role.permissions, ['editTicket']) ? (
+					<button
+						onClick={() => task && handleEditOpen()}
+						className="absolute top-12 left-[455px]"
+					>
+						<img src={edit} alt="edit icon" width={20} />
+					</button>
+				) : (
+					''
+				)}
 				{hasPermission(user.role.permissions, ['deleteTicket']) ? (
 					<button
 						onClick={() => task && handleDeleteOpen()}
@@ -221,20 +235,6 @@ function SingleTaskBoard() {
 				) : (
 					''
 				)}
-				{hasPermission(user.role.permissions, ['editTicket']) ? (
-					<button
-						onClick={() => task && handleEditOpen()}
-						className="absolute top-20 left-[455px]"
-					>
-						<img src={edit} alt="edit icon" width={20} />
-					</button>
-				) : (
-					''
-				)}
-
-				<button onClick={() => navigate(-1)} className="absolute top-4 right-6">
-					<img src={back} alt="edit icon" width={22} />
-				</button>
 
 				<EditTaskDialog
 					task={task}
@@ -248,6 +248,7 @@ function SingleTaskBoard() {
 					onDelete={handleDeleteTask}
 					task={task}
 				/>
+				{/* Task Information left side */}
 				<div className="p-3 flex justify-center items-center w-full h-full rounded-3xl">
 					<div className="w-[38%] h-full flex flex-col justify-start items-center">
 						<h2 className="self-start font-outfit font-[700] text-[40px] text-[#363636] tracking-tight leading-tight mb-2">
@@ -341,7 +342,7 @@ function SingleTaskBoard() {
 							</div>
 						</div>
 						<div className="w-full mt-2 border-[.5px] border-black "></div>
-						{/* later on place here a component <Comment/> */}
+						{/* Comments */}
 						<div className="w-full flex justify-start items-center gap-2">
 							<h2 className="font-outfit font-[700] text-[24px] text-[#363636] tracking-tighter">
 								Comments
@@ -357,6 +358,7 @@ function SingleTaskBoard() {
 							<Comments />
 						</div>
 					</div>
+					{/* Right side of the div - Subtasks and Progress */}
 					<div className="w-[62%] h-full flex flex-col justify-start items-center ps-6 pt-1">
 						<div className="w-full flex justify-around items-center font-outfit text-[48px] font-[700] text-[#363636] tracking-tight mb-4">
 							<button
