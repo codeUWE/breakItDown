@@ -7,12 +7,17 @@ import AddSubtaskDialog from './AddSubtaskDialog';
 import EditTaskDialog from './EditTaskDialog';
 import DeleteTaskDialog from './DeleteTaskDialog';
 
+//userIntegration
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthProvider';
+import { hasPermission } from '../services/utils';
+
 import SpeechBubble from '../assets/speechBubble.png';
 import plus from '../assets/plus.png';
 import edit from '../assets/edit.png';
 import deleteIcon from '../assets/deleteIcon.png';
 import back from '../assets/back.png';
-import user from '../assets/user.png';
+import userIcon from '../assets/user.png';
 import collaborators from '../assets/collaborators.png';
 import deadline from '../assets/deadline.png';
 import startDate from '../assets/startDate.png';
@@ -23,9 +28,11 @@ import { Avatar } from '@material-tailwind/react';
 import Comments from './Comments';
 
 function SingleTaskBoard() {
+	//user
+	const { isLoading, user } = useContext(AuthContext);
+
 	const { id } = useParams();
 	const navigate = useNavigate();
-	const currentUser = { _id: 'currentUserId' };
 
 	const [task, setTask] = useState(null);
 	const [activeTab, setActiveTab] = useState('subtasks');
@@ -204,21 +211,30 @@ function SingleTaskBoard() {
 	return (
 		<div className="p-10 w-full h-full flex justify-center items-center">
 			<div className="w-[1200px] h-[550px] rounded-[30px] border-[5px] border-[#363636] bg-[#daf0fd] shadow-2xl p-1 relative">
-				<button
-					onClick={() => task && handleEditOpen()}
-					className="absolute top-10 left-[455px]"
-				>
-					<img src={edit} alt="edit icon" width={20} />
-				</button>
-				<button
-					onClick={() => task && handleDeleteOpen()}
-					className="absolute top-20 left-[455px]"
-				>
-					<img src={deleteIcon} alt="edit icon" width={20} />
-				</button>
+				{/* Delete, Edit and Back Buttons and Dialogs */}
 				<button onClick={() => navigate(-1)} className="absolute top-4 right-6">
 					<img src={back} alt="edit icon" width={22} />
 				</button>
+				{hasPermission(user.role.permissions, ['editTicket']) ? (
+					<button
+						onClick={() => task && handleEditOpen()}
+						className="absolute top-12 left-[455px]"
+					>
+						<img src={edit} alt="edit icon" width={20} />
+					</button>
+				) : (
+					''
+				)}
+				{hasPermission(user.role.permissions, ['deleteTicket']) ? (
+					<button
+						onClick={() => task && handleDeleteOpen()}
+						className="absolute top-20 left-[455px]"
+					>
+						<img src={deleteIcon} alt="edit icon" width={20} />
+					</button>
+				) : (
+					''
+				)}
 
 				<EditTaskDialog
 					task={task}
@@ -232,6 +248,7 @@ function SingleTaskBoard() {
 					onDelete={handleDeleteTask}
 					task={task}
 				/>
+				{/* Task Information left side */}
 				<div className="p-3 flex justify-center items-center w-full h-full rounded-3xl">
 					<div className="w-[38%] h-full flex flex-col justify-start items-center">
 						<h2 className="self-start font-outfit font-[700] text-[40px] text-[#363636] tracking-tight leading-tight mb-2">
@@ -239,7 +256,7 @@ function SingleTaskBoard() {
 						</h2>
 						<div className="taskInformation w-full flex flex-wrap justify-center items-center">
 							<div className="w-1/2 h-[40px] flex items-center justify-start gap-3">
-								<img src={user} alt="lead icon" width={23} />
+								<img src={userIcon} alt="lead icon" width={23} />
 								<Avatar
 									src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWgel"
 									alt="avatar"
@@ -325,7 +342,7 @@ function SingleTaskBoard() {
 							</div>
 						</div>
 						<div className="w-full mt-2 border-[.5px] border-black "></div>
-						{/* later on place here a component <Comment/> */}
+						{/* Comments */}
 						<div className="w-full flex justify-start items-center gap-2">
 							<h2 className="font-outfit font-[700] text-[24px] text-[#363636] tracking-tighter">
 								Comments
@@ -341,6 +358,7 @@ function SingleTaskBoard() {
 							<Comments />
 						</div>
 					</div>
+					{/* Right side of the div - Subtasks and Progress */}
 					<div className="w-[62%] h-full flex flex-col justify-start items-center ps-6 pt-1">
 						<div className="w-full flex justify-around items-center font-outfit text-[48px] font-[700] text-[#363636] tracking-tight mb-4">
 							<button
@@ -378,15 +396,20 @@ function SingleTaskBoard() {
 												<option value="status">Status</option>
 											</select>
 										</div>
-										<button
-											onClick={handleAddOpen}
-											className="py-1 px-4 bg-[#363636] text-white rounded-2xl flex items-center gap-2"
-										>
-											<img src={plus} alt="Add Subtask" width={12} />
-											<h5 className="font-outfit font-[300] text-[12px] ">
-												Add Subtask
-											</h5>
-										</button>
+										{hasPermission(user.role.permissions, ['addSubtask']) ? (
+											<button
+												onClick={handleAddOpen}
+												className="py-1 px-4 bg-[#363636] text-white rounded-2xl flex items-center gap-2"
+											>
+												<img src={plus} alt="Add Subtask" width={12} />
+												<h5 className="font-outfit font-[300] text-[12px] ">
+													Add Subtask
+												</h5>
+											</button>
+										) : (
+											''
+										)}
+
 										<AddSubtaskDialog
 											open={addOpen}
 											onClose={handleAddClose}
@@ -401,7 +424,6 @@ function SingleTaskBoard() {
 												subtask={subtask}
 												onUpdate={handleSubtaskUpdate}
 												onDelete={handleSubtaskDelete}
-												currentUser={currentUser}
 											/>
 										))}
 									</div>
