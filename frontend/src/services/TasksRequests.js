@@ -52,7 +52,8 @@ export const updateSubtask = async (id, updates) => {
 	try {
 		const { data } = await axios.put(
 			`http://localhost:3001/subtasks/${id}`,
-			updates
+			updates,
+			{ withCredentials: true }
 		);
 		return data;
 	} catch (error) {
@@ -76,6 +77,17 @@ export const deleteSubtask = async (id) => {
 //Update Subtask
 export const update = async (id) => {
 	const { data } = await axios.put(`http://localhost:3001/subtasks/${id}`);
+	return data;
+};
+//Assign Subtask
+export const assignSubtask = async (id) => {
+	const { data } = await axios.patch(
+		`http://localhost:3001/subtasks/${id}`,
+		{},
+		{
+			withCredentials: true,
+		}
+	);
 	return data;
 };
 
