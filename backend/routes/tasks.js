@@ -1,4 +1,5 @@
 const express = require('express');
+const { authenticate } = require('../middlewares/auth');
 
 const {
 	getTasksForGantt,
@@ -13,6 +14,10 @@ const tasksRouter = express.Router();
 
 tasksRouter.route('/gantt').get(getTasksForGantt);
 tasksRouter.route('/').get(getTasks).post(createTask);
-tasksRouter.route('/:id').get(getTask).put(updateTask).delete(deleteTask);
+tasksRouter
+	.route('/:id')
+	.get(getTask)
+	.put(authenticate, updateTask)
+	.delete(deleteTask);
 
 module.exports = tasksRouter;

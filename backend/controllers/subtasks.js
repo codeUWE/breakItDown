@@ -124,6 +124,30 @@ const updateSubtask = async (req, res) => {
 	}
 };
 
+const assignSubtask = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const { user } = req;
+		const assignedSubtask = await Subtask.findByIdAndUpdate(
+			id,
+			{ assignee: user.id },
+			{
+				new: true,
+			}
+		);
+
+		// Update Task Status if the subtask is updated
+		if (assignedSubtask) {
+			await updateTaskStatusBasedOnSubtasks(assignedSubtask.task);
+		}
+
+		res.json(assignedSubtask);
+	} catch (error) {
+		console.error('Error updating subtask:', error);
+		res.status(500).send('Something went wrong!');
+	}
+};
+
 const deleteSubtask = async (req, res) => {
 	try {
 		const { id } = req.params;
@@ -168,4 +192,5 @@ module.exports = {
 	updateSubtask,
 	deleteSubtask,
 	findUnassignedSubtasks,
+	assignSubtask,
 };
