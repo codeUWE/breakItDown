@@ -9,7 +9,24 @@ function TeamView() {
   const [editedSocialNetworks, setEditedSocialNetworks] = useState('');
   const [roles, setRoles] = useState([]);
   const [users, setUsers] = useState([]);
+  const [loggedInUser, setLoggedInUser] = useState(null);
 
+  const productOwnerRole = roles.find(role => role.name === "Product Owner");
+  const productLeaderRole = roles.find(role => role.name === "Team Leader");
+  const productDeveloperRole = roles.find(role => role.name === "Developer");
+  const productDeveloperName = users.find(users => users.name === "Bill Dev")
+  const productOwnerName = users.find(users => users.name === "John Doe");
+  const productLeaderUserName = users.find(users => users.name === "Jane Doe" )
+  // const productOwnerName = users.find(users => users.name === "Jane Doe");
+  // const productOwnerEmail = users.find(users => users.email === "john@admin.com");
+  
+
+
+
+
+
+
+  
   useEffect(() => {
     // Fetch roles
     getAllRoles()
@@ -23,15 +40,43 @@ function TeamView() {
 
     // Fetch users
     getAllUsers()
-      .then(data => {
-        console.log('Users:', data); // Log the roles data
-        setUsers(data);
+      .then(users => {
+        console.log('Users:', users); // Log the roles data
+        setUsers(users);
+
+        if(users.length >0) {
+          setLoggedInUser(users[0]);
+        }
       })
       .catch(error => {
         console.error('Error fetching users:', error);
       });
+
+// // Simulate logged-in user (replace with actual logic to get logged-in user)
+// const users = JSON.parse(localStorage.getItem('users'));
+// if (users) {
+//   setLoggedInUser(users);
+// }
+
+
   }, []);
 
+  // const filterUsersByRole = (roleId) => {
+  //   return users.filter(user => user.roleId === roleId);
+  // };
+  
+  // // Usage example
+  // const developerRoleId = "662bc0e4e2f80bbd2cb97d91"; // Example role ID for developers
+  // const developerUsers = filterUsersByRole(developerRoleId);
+  // console.log("Developer Users:", developerUsers);
+
+
+  // Filter users by role
+  // const getProductOwners = () => {
+  //   const productOwnerRoleId = roles.find(role => role.name === "Product Owner")?.id;
+  //   if (!productOwnerRoleId) return [];
+  //   return users.filter(user => user.roleId === productOwnerRoleId);
+  // };
 
 
   const handleEditClick = () => {
@@ -44,6 +89,11 @@ function TeamView() {
     setIsEditing(false);
   };
 
+  const handleCancelClick = () => {
+    setIsEditing(false);
+    setEditedSocialNetworks(''); // Reset the edited value
+  };
+
   const handleInputChange = (e) => {
     setEditedSocialNetworks(e.target.value);
   };
@@ -54,7 +104,6 @@ function TeamView() {
         <div>
           <div className='ml-[12px] w-[292px] h-[508px] rounded-[20px] border-[2px] border-black flex justify-start'>
             <div>
-           
               <img
                 src="./src/assets/editpen.png"          
                 alt="edit_pencil"
@@ -67,16 +116,21 @@ function TeamView() {
                 className='h-[169px] ml-[110px] flex justify-center items-center mr-[718px]'
               />
               <div className='flex justify-center mr-[590px] relative z-[12px]'>
-                <img src="./src/assets/user2.png" alt="user2" className='w-[89px] h-[89px] absolute top-[-30px] ml-[40px]'/>
+                {loggedInUser && loggedInUser.profilePicture && (
+                   <img 
+                   src={loggedInUser.profilePicture} alt="user2" className='w-[90px] h-[90px] absolute top-[-30px] ml-[40px] rounded-full'/>
+                )}
+               
               </div>
               <div className='text-xs ml-[100px] relative top-[14px]'>
                 <div className='absolute bottom-[-145px]'>
                   <div className='flex justify-start font-bold text-3xl'>
-                    <h1>Name</h1>
+                    <h1>{loggedInUser && loggedInUser.name} </h1>
                   </div>
-                  <p>Email:</p>
-                  <p>Role: </p>
-                  <p>Skills: </p>
+                  <p>{loggedInUser && loggedInUser.email}</p>
+                
+                  {/* <p>Role:{loggedInUser && loggedInUser.role} </p> */}
+                  {/* <p>Skills: </p> */}
                   <p className=''>Social Networks: {isEditing ? (
                     <>
                      
@@ -90,41 +144,52 @@ function TeamView() {
           </div>
           {/* Add a pop-up modal for editing */}
           {isEditing && (
-          <div className="fixed top-0 left-[100px] w-full h-full flex justify-start items-center">
-          <div className="bg-white p-4 rounded shadow">
-            <h2 className="text-xl font-bold mb-4">Edit Social Networks</h2>
-            <input
-  type="text"
-  value={editedSocialNetworks}
-  onChange={handleInputChange}
-  className="w-full border border-gray-300 rounded px-2 py-1 mb-2"
-  autoFocus  // Add the autoFocus attribute here
-/>
-            <div className="flex justify-center"> {/* Adjusted positioning */}
-              <button onClick={handleSaveClick} className="bg-blue-500 text-white px-4 py-2 rounded mr-2">Save</button>
-              <button onClick={() => setIsEditing(false)} className="bg-gray-300 text-gray-700 px-4 py-2 rounded">Cancel</button>
+            <div className="fixed top-[240px] left-[100px] w-full h-full flex justify-start items-start">
+              <div className="bg-gray-300 p-4 rounded">
+                <h2 className="text-xl font-bold mb-4">Edit Social Networks</h2>
+                <input
+                  type="text"
+                  value={editedSocialNetworks}
+                  onChange={handleInputChange}
+                  className="w-full border border-gray-300 rounded px-2 py-1 mb-2"
+                  autoFocus
+                />
+                <div className="flex justify-center">
+                  <button onClick={handleSaveClick} className="bg-blue-500 text-white px-4 py-2 rounded mr-2">
+                    Save
+                  </button>
+                  <button onClick={handleCancelClick} className="bg-gray-300 text-gray-700 px-4 py-2 rounded">
+                    Cancel
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
           )}
           
-          {/* End of pop-up modal */}
-          <div className='absolute bottom-1'>
+           {/* End of pop-up modal */}
+           <div className='absolute bottom-1'>
             <div className='ml-[322px] w-[308px] h-[328px] rounded-[20px] border-[2px] border-black flex justify-start' style={{ marginBottom: '5px' }}>
               <div className="relative">
-                <h1 className="font-bold text-3xl ml-[109px] absolute top-[6px]">Leaders</h1>
+              <h1 className="font-bold text-3xl ml-[109px] absolute top-[6px] whitespace-nowrap">
+  {productLeaderRole && (
+    <p key={productLeaderRole.id}>{productLeaderRole.name}</p>
+  )}
+</h1>
               </div>
               <img src="./src/assets/logo_flag.png" alt="logo-flag" className='ml-[27px] w-[68px] h-[325px]  flex justify-start items-start mr-[740px]'/>
               {/* First developer */}
               <div className="absolute top-[50px] left-[340px] flex flex-col items-start ">
-                <img src="./src/assets/user4.png" alt="user2" className='w-[89px] h-[89px]'/>
+                <img src= {productLeaderUserName?.profilePicture} alt="user2" className='w-[100px] h-[100px] rounded-full'/>
 
                 <div className='flex'>
                   <div className='absolute top-2 left-[100px]'>
-                    <p className="text-xs">Name:</p>
-                    <p className="text-xs">Email:</p>
-                    <p className="text-xs">Skills</p>
-                    <p className="text-xs">Social Networks</p>
+                    {productLeaderUserName && (
+                      <p key={productLeaderUserName.id}> {productLeaderUserName.name}  </p>
+                    )}
+                  {/* <p key={productLeaderRole.id}>{productLeaderRole.name}</p> */}
+                    <p className="text-xs"> {productLeaderUserName?.email}  </p>
+                    {/* <p className="text-xs">Skills</p> */}
+                    <p className="text-xs"> {productLeaderUserName?.socialConnections}  </p>
                   </div>
                   <img src="./src/assets/user5.png" alt="user2" className='w-[89px] h-[89px] absolute bottom-[-125px]'/>
                   <div className='absolute bottom-[-120px] left-[100px]'>
@@ -140,14 +205,22 @@ function TeamView() {
           {/* Replace "down right" with "Developers" and make it bold */}
           <div className='absolute bottom-2 left-1/2 transform -translate-x-1/2 flex justify-between ml-[296px]'>
             <div className='mb-1 ml-10 w-[499px] h-[328px] rounded-[20px] border-[2px] border-black'>
-              <h1 className="ml-[12px] mt-1 font-bold text-3xl">Developers</h1>
+              <h1 className="ml-[12px] mt-2 font-bold text-3xl"> {productDeveloperRole && ( 
+               <p key={productDeveloperRole.id}>{productDeveloperRole.name}</p> 
+               
+               )}</h1>
               
              <div className='text-xs flex justify-start flex-col'>
-              <img src="./src/assets/user4.png" alt="user2" className='w-[49px] h-[49px] ml-2 m-6'/>
+              {/* <img src="./src/assets/user4.png" alt="user2" className='w-[49px] h-[49px] ml-2 m-6'/> */}
            
            <div className='absolute top-[72px] ml-[90px]'>
-            <p>Name</p>
-            <p>Email</p>
+           {productDeveloperName && ( 
+               <p key={productDeveloperName.id}>{productDeveloperName.name} </p> 
+               
+               
+               )}
+           
+            <p> </p>
             
            </div>
             
@@ -204,54 +277,62 @@ function TeamView() {
               </div>
             </div> 
           </div>
+
+
           <div className='absolute top-2 right-2'>
+
             <div className='relative'>
               <div>
                 {/* <img src="./src/assets/user3.png" alt="user2" className='m-[74px] w-[89px] h-[89px] absolute top-[-30px] ml-[18px]'/>   */}
               </div>
             </div>
             <div className='w-[816px] h-[172px] rounded-[20px] border-[2px] border-black flex justify-end items-start'>
-              <h1 className=' font-bold text-3xl absolute left-[109px]'>Owner</h1>
+              <h1 className=' font-bold text-3xl absolute left-[109px]'>
+{productOwnerRole && (
+      <p key={productOwnerRole.id}>{productOwnerRole.name}</p>
+    )}</h1>
               <img src="./src/assets/logo_flag.png" alt="logo-flag" className='h-[169px] flex justify-start items-start mr-[718px] sticky'/>
- {/* Map and render product owners */}
- {roles.map(role => (
-            role.name === 'Product Owner' && (
-              <div key={role._id} className="text-xs absolute top-1/2 left-[500px] transform -translate-y-1/2">
-                <p className='ml-12'>Skills: {roles[0].name.permission} </p>
-                <p>Social Networks:</p>
-                {/* Get users by role ID and map to render */}
-                {/* {getUsersByRole(role._id).map(user => ( */}
-                  <div className='flex flex-col absolute right-[439px] top-[4px] '> 
-                    {/* <p>Name:{user.name} </p> */}
-                    <p>Email:</p>
-                  </div>
-                {/* ))} */}
-              </div>
-            )
-          ))}
-        </div> 
+ 
 
-
-
-
-
-              <img src="./src/assets/user3.png" alt="user2" className='m-[74px] w-[89px] h-[89px] absolute left-[-60px] top-[-30px]'/> 
+              <img src="https://images.unsplash.com/photo-1521119989659-a83eee488004?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHBvcnRyYWl0fGVufDB8fDB8fHww" alt="user2" className='m-[74px] w-[89px] h-[89px] absolute left-[-60px] top-[-30px]'/> 
 
 
 
               <div className="text-xs absolute top-1/2 left-[500px] transform -translate-y-1/2">
-                <p>Skills:</p>
+              {/* {roles.map(roles => <p key={roles.id}>{roles.name}
+
+</p>)} */}
+{/* 
+{productOwnerRole && (
+      <p key={productOwnerRole.id}>{productOwnerRole.name}</p>
+    )} */}
+
+
+{productOwnerName && ( 
+               <p key={productOwnerName.id}>{productOwnerName.socialConnections}</p> 
+               
+               )}
                 <p>Social Networks:</p>
-                <div className='flex flex-col absolute right-[439px] top-[4px] '> 
-                  <p>Name: </p>
-                  <p>Email:</p>
+                <div className='flex flex-col absolute right-[320px] top-[4px] ' style={{ width: '150px' }}> {/* Adjust width as needed */}
+               {productOwnerName && ( 
+               <p key={productOwnerName.id}>{productOwnerName.name}</p> 
+               
+               )}
+                
+                 {/* {users.map(users => <p key={users.id}>{users.email}
+
+</p>)} */}
+                 {productOwnerName && ( 
+               <p key={productOwnerName.id}>{productOwnerName.email}</p> 
+               
+               )}
                 </div>
               </div>
             </div> 
           </div> 
         </div>
       </div>
-    // </div>
+    </div>
   );
 }
 
