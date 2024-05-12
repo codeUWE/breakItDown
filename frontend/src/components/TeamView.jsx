@@ -38,20 +38,22 @@ function TeamView() {
         console.error('Error fetching roles:', error);
       });
 
-    // Fetch users
-    getAllUsers()
-      .then(users => {
-        console.log('Users:', users); // Log the roles data
-        setUsers(users);
+   // Fetch users
+getAllUsers()
+.then(users => {
+  console.log('Users:', users); // Log the roles data
+  setUsers(users);
 
-        if(users.length >0) {
-          setLoggedInUser(users[0]);
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching users:', error);
-      });
-
+  if (users.length > 0) {
+    // Generate a random index within the range of users array
+    const randomIndex = Math.floor(Math.random() * users.length);
+    // Set the logged-in user to the user at the random index
+    setLoggedInUser(users[randomIndex]);
+  }
+})
+.catch(error => {
+  console.error('Error fetching users:', error);
+});
 // // Simulate logged-in user (replace with actual logic to get logged-in user)
 // const users = JSON.parse(localStorage.getItem('users'));
 // if (users) {
