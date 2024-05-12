@@ -28,6 +28,7 @@ function App() {
 						</Route>
 						<Route path="/dashboard" element={<Dashboard />} />
 						<Route path="/tasks" element={<Task />} />
+						<Route path="/Team" element={<TeamView/>} />
 						<Route path="/tasks/:id" element={<SingleTaskBoard />} />
 						<Route path="/tasks/progress" element={<ProjectProgress />} />
 						<Route path="/notes" element={<Notes />} />
