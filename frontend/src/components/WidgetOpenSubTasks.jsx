@@ -8,7 +8,9 @@ function WidgetOpenSubTasks() {
 
   useEffect(() => {
     getUnassignedTasks()
+    console.log(setUnassignedTasks)
       .then(data => setUnassignedTasks(data))
+     
       .catch(error => console.log(error));
   }, []);
 
