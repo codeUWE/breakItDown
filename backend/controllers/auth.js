@@ -53,7 +53,12 @@ const login = async (req, res) => {
 		if (!match) throw new Error('Incorrect Password');
 		//put profile pic here (inside the cookie)
 		// add multiple roles and
-		const payload = { id: user._id, email: user.email, role: user.role };
+		const payload = {
+			id: user._id,
+			email: user.email,
+			role: user.role,
+			_id: user._id,
+		};
 		const token = jwt.sign(payload, process.env.JWT_SECRET, {
 			expiresIn: '480m',
 		});

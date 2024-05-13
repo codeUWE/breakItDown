@@ -49,11 +49,14 @@ function TaskBoard() {
 
 	return (
 		<>
-			<div className="w-full flex justify-end">
+			<div className="w-full flex justify-between mt-10">
+				<h2 className="font-outfit font-[800] text-[45px] text-start px-14 mb-2">
+					Team <span className="text-[#681FDE]">Board</span>
+				</h2>
 				<select
 					value={view}
 					onChange={handleViewChange}
-					className="mx-20 mt-4 mb-4 px-4 py-2 bg-[#6A7EA3] rounded-[30px] font-inter font-[800] text-[28px] text-white  "
+					className="mx-20 mt-4 mb-4 px-4 py-2 bg-[#EFF9FF] rounded-[30px] font-inter font-[800] text-[24px] text-[#000]  "
 				>
 					<option className="font-inter font-[800] " value="My Tasks">
 						My Tasks
@@ -63,10 +66,8 @@ function TaskBoard() {
 					</option>
 				</select>
 			</div>
-			<h2 className="font-outfit font-[800] text-[45px] text-start px-20 mb-2">
-				Team <span className="text-[#681FDE]">Board</span>
-			</h2>
-			<div className="w-[1400px] h-[550px] mx-auto rounded-[30px] border-[5px] border-[#363636] flex flex-col justify-center items-center bg-[#d0e7e8]">
+
+			<div className="w-[1400px] h-[550px] mx-auto rounded-[30px] flex flex-col justify-center items-center bg-[#EFF9FF]">
 				<div className="w-full px-8 flex justify-between items-center">
 					<h2 className="font-outfit font-[600] text-[32px]">All Tasks</h2>
 					{hasPermission(user.role.permissions, ['addTicket']) ||

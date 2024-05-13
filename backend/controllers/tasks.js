@@ -5,7 +5,14 @@ const getTasks = async (req, res) => {
 	try {
 		const tasks = await Task.find({})
 			.sort('deadline')
-			.populate('owner leader', 'name email profilePicture')
+			.populate({
+				path: 'owner',
+				select: 'name email profilePicture',
+			})
+			.populate({
+				path: 'leader',
+				select: 'name email profilePicture',
+			})
 			.populate({
 				path: 'collaborators',
 				select: 'name email profilePicture',
@@ -17,7 +24,7 @@ const getTasks = async (req, res) => {
 				options: { sort: { deadline: 1 } },
 				populate: {
 					path: 'assignee',
-					select: 'name email',
+					select: 'name email profilePicture',
 				},
 			});
 
@@ -50,7 +57,14 @@ const getTask = async (req, res) => {
 	try {
 		const { id } = req.params;
 		const task = await Task.findById(id)
-			.populate('owner leader', 'name email')
+			.populate({
+				path: 'owner',
+				select: 'name email profilePicture',
+			})
+			.populate({
+				path: 'leader',
+				select: 'name email profilePicture',
+			})
 			.populate({
 				path: 'collaborators',
 				select: 'name email profilePicture',
@@ -61,7 +75,7 @@ const getTask = async (req, res) => {
 					'title description detailedInformation status priority deadline isClosed assignee',
 				populate: {
 					path: 'assignee',
-					select: 'name email',
+					select: 'name email profilePicture',
 				},
 			});
 
@@ -195,10 +209,17 @@ const updateTask = async (req, res) => {
 		}
 
 		const updatedTask = await Task.findByIdAndUpdate(id, body, { new: true })
-			.populate('owner leader', 'name email')
+			.populate({
+				path: 'owner',
+				select: 'name email profilePicture',
+			})
+			.populate({
+				path: 'leader',
+				select: 'name email profilePicture',
+			})
 			.populate({
 				path: 'collaborators',
-				select: 'name email',
+				select: 'name email profilePicture',
 			})
 			.populate({
 				path: 'comments',

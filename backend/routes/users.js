@@ -1,4 +1,5 @@
 const express = require('express');
+const upload = require('../middlewares/uploadImage');
 
 const {
 	getUsers,
@@ -13,7 +14,7 @@ const usersRouter = express.Router();
 usersRouter.get('/', getUsers);
 usersRouter.get('/:id', getUser);
 usersRouter.post('/', createUser);
-usersRouter.put('/:id', updateUser);
+usersRouter.put('/:id', upload.single('profilePicture'), updateUser);
 usersRouter.delete('/:id', deleteUser);
 
 module.exports = usersRouter;

@@ -74,7 +74,7 @@ export default function ProjectProgress() {
 			},
 		},
 		backgroundColor: {
-			fill: '#fff',
+			fill: '#EFF9FF',
 		},
 		hAxis: {
 			// Enable scrolling for horizontal axis
@@ -97,11 +97,14 @@ export default function ProjectProgress() {
 
 	return (
 		<>
-			<div className="w-full flex justify-end">
+			<div className="w-full flex justify-between mt-10">
+				<h2 className="font-outfit font-[800] text-[45px] text-start px-20 mb-2">
+					Project <span className="text-[#681FDE]">Progress</span>
+				</h2>
 				<select
 					value={view}
 					onChange={handleViewChange}
-					className="mx-20 mt-4 mb-4 px-4 py-2 bg-[#6A7EA3] rounded-[30px] font-inter font-[800] text-[28px] text-white  "
+					className="mx-20 mt-4 mb-4 px-4 py-2 bg-[#EFF9FF] rounded-[30px] font-inter font-[800] text-[28px] text-black  "
 				>
 					<option className="font-inter font-[800] " value="My Tasks">
 						My Tasks
@@ -111,19 +114,7 @@ export default function ProjectProgress() {
 					</option>
 				</select>
 			</div>
-			<h2 className="font-outfit font-[800] text-[45px] text-start px-20 mb-2">
-				Project <span className="text-[#681FDE]">Progress</span>
-			</h2>
-			<div
-				className="overflow-auto border border-gray-300 shadow-md rounded-lg"
-				style={{
-					width: '1200px',
-					minHeight: '240px',
-					maxHeight: '550px',
-					margin: '0 auto',
-					background: '#fff',
-				}}
-			>
+			<div className="overflow-auto w-[1400px] mx-auto flex justify-center bg-[#EFF9FF] rounded-[30px] ">
 				<div className="p-4">
 					<Chart
 						chartType="Gantt"

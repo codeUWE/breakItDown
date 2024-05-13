@@ -204,44 +204,30 @@ function SingleTaskBoard() {
 		hasPermission(user.role.permissions, ['addSubtask']) ||
 		(isLeader && hasPermission(user.role.permissions, ['leaderAddSubtask']));
 
-	console.log('User ID:', user._id);
-	console.log('Task Leader ID:', task?.leader);
-	console.log('Is Leader:', isLeader);
-	console.log('Can Edit:', canEditTicket);
-	console.log('Can Delete:', canDeleteTicket);
-	console.log('Can Add Subtask:', canAddSubtask);
-
 	return (
-		<div className="p-10 w-full h-full flex justify-center items-center">
-			<div className="w-[1400px] h-[550px] rounded-[30px] border-[5px] border-[#363636] bg-[#daf0fd] shadow-2xl p-1 relative">
+		<div className="w-full h-full flex-col justify-center items-center mt-10">
+			<h2 className="font-outfit font-[800] text-[45px] text-start px-14 mb-2">
+				Task <span className="text-[#681FDE]">View</span>
+			</h2>
+			<div className="w-[1400px] h-[550px] mx-auto rounded-[30px] bg-[#eff9ff]  p-1 relative">
 				{/* Delete, Edit and Back Buttons and Dialogs */}
 				<button onClick={() => navigate(-1)} className="absolute top-4 right-6">
 					<img src={back} alt="edit icon" width={22} />
 				</button>
-				{/* {hasPermission(user.role.permissions, ['editTicket']) ? (
-					<button
-						onClick={() => task && handleEditOpen()}
-						className="absolute top-12 left-[455px]"
-					>
-						<img src={edit} alt="edit icon" width={20} />
-					</button>
-				) : (
-					''
-				)} */}
 				{canEditTicket ? (
 					<button
 						onClick={() => task && handleEditOpen()}
-						className="absolute top-12 left-[455px]"
+						className="absolute top-6 left-[535px]"
 					>
-						<img src={edit} alt="edit icon" width={20} />
+						<img src={edit} alt="edit icon" width={23} />
 					</button>
 				) : null}
 				{canDeleteTicket ? (
 					<button
 						onClick={() => task && handleDeleteOpen()}
-						className="absolute top-20 left-[455px]"
+						className="absolute top-14 left-[535px]"
 					>
-						<img src={deleteIcon} alt="delete icon" width={20} />
+						<img src={deleteIcon} alt="delete icon" width={23} />
 					</button>
 				) : null}
 
@@ -266,11 +252,20 @@ function SingleTaskBoard() {
 						<div className="taskInformation w-full flex flex-wrap justify-center items-center">
 							<div className="w-1/2 h-[40px] flex items-center justify-start gap-3">
 								<img src={userIcon} alt="lead icon" width={23} />
-								<Avatar
-									src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWgel"
-									alt="avatar"
-									className="w-[33px] h-[33px]"
-								/>
+								{task && task.leader && (
+									<div>
+										<div className="flex items-center gap-2">
+											<Avatar
+												src={
+													task.leader.profilePicture ||
+													'https://cdn-icons-png.flaticon.com/128/552/552848.png'
+												}
+												alt={`${task.leader.name}'s Avatar`}
+												className="w-[35px] h-[35px]"
+											/>
+										</div>
+									</div>
+								)}
 							</div>
 							<div className="w-1/2 h-[40px] flex items-center justify-between">
 								<div className="flex items-center justify-start gap-3">
@@ -298,25 +293,24 @@ function SingleTaskBoard() {
 								<div className="w-full flex">
 									<div className="w-1/2 h-[40px] flex items-center justify-start gap-3">
 										<img src={collaborators} alt="lead icon" width={23} />
-										<div className="w-[60px] w-max-[67px] h-[30px] h-max-[30px] flex justify-end relative">
-											<Avatar
-												src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWgel"
-												alt="avatar"
-												className="w-[29px] h-[29px] absolute top-0 left-0 z-10"
-											/>
-											<Avatar
-												src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWgel"
-												alt="avatar"
-												className="w-[29px] h-[29px] absolute  top-0 left-[15px] z-20"
-											/>
-											<Avatar
-												src="https://images.unsplash.com/photo-1521119989659-a83eee488004?q=80&w=1923&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWgel"
-												alt="avatar"
-												className="w-[29px] h-[29px] absolute z-30 top-0 left-[30px]"
-											/>
+										<div className="flex justify-end relative">
+											{task &&
+												task.collaborators.map((collaborator) => {
+													const avatarUrl =
+														collaborator.profilePicture ||
+														'https://cdn-icons-png.flaticon.com/128/552/552848.png';
+													return (
+														<Avatar
+															key={collaborator._id}
+															src={avatarUrl}
+															alt={`${collaborator.name}'s Avatar`}
+															className={`w-[35px] h-[35px]`}
+														/>
+													);
+												})}
 										</div>
 									</div>
-									<div className="w-1/2 h-[40px] flex items-center justify-between gap-3 pe-5">
+									<div className="w-1/2 h-[40px] flex items-center justify-between gap-3 pe-6">
 										<div className="flex items-center gap-2">
 											<img
 												src={startDate}
@@ -350,7 +344,7 @@ function SingleTaskBoard() {
 								</h2>
 							</div>
 						</div>
-						<div className="w-full mt-2 border-[.5px] border-black "></div>
+						<div className="w-full mt-2 border-[.5px] border-[#0000003a] "></div>
 						{/* Comments */}
 						<div className="w-full flex justify-start items-center gap-2">
 							<h2 className="font-outfit font-[700] text-[24px] text-[#363636] tracking-tighter">
@@ -363,7 +357,7 @@ function SingleTaskBoard() {
 								height={25}
 							/>
 						</div>
-						<div className="w-full h-full overflow-auto no-scrollbar border rounded-[20px] border-[#363636]">
+						<div className="w-full h-full overflow-auto no-scrollbar  rounded-[20px] ">
 							<Comments />
 						</div>
 					</div>
@@ -390,7 +384,7 @@ function SingleTaskBoard() {
 						<div className="w-full h-full flex flex-col">
 							{activeTab === 'subtasks' && task?.subtasks ? (
 								<>
-									<div className="w-full ps-6 mb-4 flex justify-between items-center bg-[#daf0fd]">
+									<div className="w-full ps-6 mb-4 flex justify-between items-center bg-transparent">
 										<div className="flex gap-3">
 											<p className="font-outfit font-[600] text-[18px] text-[#438CDB]">
 												sort by

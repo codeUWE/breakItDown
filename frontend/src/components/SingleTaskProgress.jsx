@@ -24,13 +24,24 @@ function SingleTaskProgress() {
 	const doneSubtasks = task.subtasks.filter(
 		(subtask) => subtask.status === 'done'
 	);
+	const getStatus = (status) => {
+		if (status === 'backlog') {
+			return <span className="text-gray-800">To Do</span>;
+		}
+		if (status === 'inProgress') {
+			return <span className="text-yellow-800">In Progress</span>;
+		}
+		if (status === 'done') {
+			return <span className="text-green-800">Done</span>;
+		}
+	};
 
 	return (
 		<>
-			<div className="w-full h-full mx-auto rounded-[30px] border-[2px] border-[#363636] flex flex-col justify-center items-center gap-2 p-2">
+			<div className="w-[90%] h-full mx-auto rounded-[30px] flex flex-col justify-center items-center gap-2 p-2">
 				<div className="w-full px-2 flex justify-between items-center">
 					<h2 className="font-outfit font-[600] text-[20px] text-[#363636]">
-						Task Progress: {task.title}
+						Task Progress: {getStatus(task.status)}
 					</h2>
 					<div className="flex gap-3 items-center">
 						<h2 className="font-outfit font-[400] text-[16px] pt-[6px] mx-auto">
@@ -41,7 +52,7 @@ function SingleTaskProgress() {
 						</h4>
 					</div>
 				</div>
-				<div className="h-full flex justify-center items-center gap-3">
+				<div className="h-full w-full flex justify-between items-center gap-3">
 					<SingleTaskColumn title={'To Do'} tasks={todoSubtasks} />
 					<SingleTaskColumn title={'In Progress'} tasks={inProgressSubtasks} />
 					<SingleTaskColumn title={'Done'} tasks={doneSubtasks} />

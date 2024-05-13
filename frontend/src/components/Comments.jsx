@@ -20,7 +20,6 @@ function Comment({ comment, onDelete, onUpdate }) {
 	const [menuOpen, setMenuOpen] = useState(false);
 
 	const isOwner = user && comment.user && user._id === comment.user._id;
-
 	const handleEdit = () => {
 		setIsEditing(true);
 		setMenuOpen(false);
@@ -77,18 +76,17 @@ function Comment({ comment, onDelete, onUpdate }) {
 				<Avatar
 					src={comment.user?.profilePicture || 'default-avatar-url.jpg'} // Setzen eines Fallback-Bildes
 					alt="avatar"
-					className={`w-[40px] h-[40px] ${
+					className={`w-[35px] h-[35px] ${
 						comment.isOwner ? 'absolute right-0' : 'absolute left-0'
 					}`}
 				/>
 			)}
 			<div
-				className={`comment max-w-[300px] min-w-[100px] font-outfit font-[500] ${
+				className={`comment max-w-[350px] min-w-[80px] font-outfit font-[500] ${
 					comment.isOwner
-						? 'text-white bg-blue-800 me-8 ps-3 py-1'
-						: 'text-white bg-green-500 ms-8 ps-6 pe-3 py-1'
+						? 'text-[#000000a1] bg-blue-300 me-8 ps-3 py-1'
+						: 'text-[#363636] bg-green-300 ms-8 ps-3 pe-2 py-1'
 				} rounded-2xl break-words overflow-hidden`}
-				style={{ wordWrap: 'break-word', minHeight: '40px' }}
 			>
 				{isEditing ? (
 					<div className="w-48 pe-3">
@@ -116,7 +114,7 @@ function Comment({ comment, onDelete, onUpdate }) {
 				) : (
 					<>
 						<div className="flex flex-col">
-							<p className="w-[95%]">{parseText(comment.body)}</p>
+							<p className="w-full">{parseText(comment.body)}</p>
 							{comment.isOwner && (
 								<>
 									<button
@@ -151,7 +149,7 @@ function Comment({ comment, onDelete, onUpdate }) {
 				<Avatar
 					src={comment.user?.profilePicture || 'default-avatar-url.jpg'} // Setzen eines Fallback-Bildes
 					alt="avatar"
-					className={`w-[40px] h-[40px] ${
+					className={`w-[35px] h-[35px] ${
 						comment.isOwner ? 'absolute right-0' : 'absolute left-0'
 					}`}
 				/>
@@ -242,7 +240,7 @@ export default function Comments() {
 	};
 
 	return (
-		<div className="h-full w-full comments-container overflow-scroll flex flex-col justify-center relative no-scrollbar py-3">
+		<div className="h-full w-full comments-container overflow-scroll flex flex-col justify-center relative no-scrollbar px-3 py-3 bg-[#C1E1F5]">
 			<div className="h-full w-full overflow-scroll no-scrollbar">
 				{comments.map((comment) => (
 					<Comment
@@ -260,7 +258,7 @@ export default function Comments() {
 					placeholder="Add a comment..."
 					value={newCommentBody}
 					onChange={(e) => setNewCommentBody(e.target.value)}
-					className="w-full ps-4 pe-9 py-1 border-[1px] border-[#363636] rounded-xl bg-transparent placeholder:text-black placeholder:font-outfit font-outfit"
+					className="w-full ps-4 pe-9 py-1 bg-[#e2f1fa] rounded-xl bg-transparent placeholder:text-black placeholder:font-outfit font-outfit"
 				/>
 				<button onClick={handleAddComment}>
 					<img
