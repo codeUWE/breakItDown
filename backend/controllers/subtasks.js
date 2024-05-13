@@ -34,7 +34,7 @@ const getSubtasks = async (req, res) => {
 	try {
 		const subtasks = await Subtask.find({})
 			.populate('task', 'title description status')
-			.populate('assignee', 'name email')
+			.populate('assignee', 'name email profilePicture')
 			.sort('deadline');
 
 		res.json(subtasks);
@@ -49,7 +49,7 @@ const getSubtask = async (req, res) => {
 		const { id } = req.params;
 		const subtask = await Subtask.findById(id)
 			.populate('task', 'title description status')
-			.populate('assignee', 'name email');
+			.populate('assignee', 'name email profilePicture');
 		if (!subtask) {
 			return res.status(404).send('Subtask not found');
 		}
@@ -112,7 +112,7 @@ const updateSubtask = async (req, res) => {
 			new: true,
 		})
 			.populate('task', 'title description status')
-			.populate('assignee', 'name email')
+			.populate('assignee', 'name email profilePicture')
 			.sort('deadline');
 
 		// Update Task Status if the subtask is updated
@@ -137,7 +137,10 @@ const assignSubtask = async (req, res) => {
 			{
 				new: true,
 			}
-		);
+		).populate({
+			path: 'assignee',
+			select: 'name email profilePicture',
+		});
 
 		// Update Task Status if the subtask is updated
 		if (assignedSubtask) {

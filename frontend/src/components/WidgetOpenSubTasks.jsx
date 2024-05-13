@@ -30,16 +30,17 @@ function WidgetOpenSubTasks() {
         console.log(error);
       });
   }, []);
+			.catch((error) => console.log(error));
+	}, []);
 
-  const nextTasks = () => {
-    setStartIndex(prevIndex => prevIndex + 1);
-  };
+	const nextTasks = () => {
+		setStartIndex((prevIndex) => prevIndex + 1);
+	};
 
-  const previousTasks = () => {
-    setStartIndex(prevIndex => Math.max(0, prevIndex - 1));
-  };
+	const previousTasks = () => {
+		setStartIndex((prevIndex) => Math.max(0, prevIndex - 1));
+	};
 
-  const currentTasks = unassignedTasks.slice(startIndex, startIndex + 1);
 
   return (
     <div className='flex justify-end items-end p-12 mr-8'>

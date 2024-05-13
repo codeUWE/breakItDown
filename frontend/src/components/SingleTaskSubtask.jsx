@@ -8,7 +8,6 @@ import {
 import DeleteSubtaskDialog from './DeleteSubtaskDialog';
 
 //assets
-import speechBubble from '../assets/speechBubble.png';
 import backlog from '../assets/backlog.png';
 import assign from '../assets/assign.png';
 import start from '../assets/start.png';
@@ -28,6 +27,12 @@ import { AuthContext } from '../context/AuthProvider';
 import { hasPermission } from '../services/utils';
 
 function SingleTaskSubtask({ subtask, taskLeaderId, onUpdate, onDelete }) {
+	const [deleteOpen, setDeleteOpen] = useState(false);
+	const [showDetails, setShowDetails] = useState(false);
+	const [editOpen, setEditOpen] = useState(false);
+	const detailsRef = useRef(null);
+
+	//extracting subtasks details
 	const {
 		_id,
 		title,
@@ -39,27 +44,25 @@ function SingleTaskSubtask({ subtask, taskLeaderId, onUpdate, onDelete }) {
 		deadline,
 	} = subtask;
 
+	//permissions
 	const { isLoading, user } = useContext(AuthContext);
 	const isAssignee = assignee ? assignee._id === user._id : false;
-	const [deleteOpen, setDeleteOpen] = useState(false);
-
 	function canEditSubtask() {
 		const isLeader =
 			user.role.name === 'Team Leader' && taskLeaderId === user._id;
 		const canEdit =
 			hasPermission(user.role.permissions, ['editSubtask']) ||
 			(isLeader && hasPermission(user.role.permissions, ['leaderEditSubtask']));
-		console.log(
-			'Can Edit Subtask:',
-			canEdit,
-			'Is Leader:',
-			isLeader,
-			'User Permissions:',
-			user.role.permissions
-		);
+		// console.log(
+		// 	'Can Edit Subtask:',
+		// 	canEdit,
+		// 	'Is Leader:',
+		// 	isLeader,
+		// 	'User Permissions:',
+		// 	user.role.permissions
+		// );
 		return canEdit;
 	}
-
 	function canDeleteSubtask() {
 		const isLeader =
 			user.role.name === 'Team Leader' && taskLeaderId === user._id;
@@ -67,36 +70,22 @@ function SingleTaskSubtask({ subtask, taskLeaderId, onUpdate, onDelete }) {
 			hasPermission(user.role.permissions, ['deleteSubtask']) ||
 			(isLeader &&
 				hasPermission(user.role.permissions, ['leaderDeleteSubtask']));
-		console.log(
-			'Can Delete Subtask:',
-			canDelete,
-			'Is Leader:',
-			isLeader,
-			'User Permissions:',
-			user.role.permissions
-		);
+		// console.log(
+		// 	'Can Delete Subtask:',
+		// 	canDelete,
+		// 	'Is Leader:',
+		// 	isLeader,
+		// 	'User Permissions:',
+		// 	user.role.permissions
+		// );
 		return canDelete;
 	}
 
-	const [showDetails, setShowDetails] = useState(false);
-	const detailsRef = useRef(null);
-	const [editOpen, setEditOpen] = useState(false);
-
-	const handleEditOpen = () => {
-		setEditOpen(true);
-	};
-
-	const handleEditClose = () => {
-		setEditOpen(false);
-	};
-
-	const handleDeleteOpen = () => {
-		setDeleteOpen(true);
-	};
-
-	const handleDeleteClose = () => {
-		setDeleteOpen(false);
-	};
+	//handler functions
+	const handleDeleteOpen = () => setDeleteOpen(true);
+	const handleDeleteClose = () => setDeleteOpen(false);
+	const handleEditOpen = () => setEditOpen(true);
+	const handleEditClose = () => setEditOpen(false);
 
 	const handleDeleteConfirmed = (subtaskId) => {
 		deleteSubtask(subtaskId).then(() => {
@@ -104,7 +93,20 @@ function SingleTaskSubtask({ subtask, taskLeaderId, onUpdate, onDelete }) {
 			setDeleteOpen(false);
 		});
 	};
+	//handler for detailed information
 
+	const toggleDetails = () => {
+		const details = detailsRef.current;
+		if (!showDetails) {
+			const height = details.scrollHeight;
+			details.style.height = `${height}px`;
+		} else {
+			details.style.height = '0';
+		}
+		setShowDetails(!showDetails);
+	};
+
+	//date formatter
 	function formatDate(dateString) {
 		if (!dateString) return ['No ', ' Date'];
 		try {
@@ -123,17 +125,7 @@ function SingleTaskSubtask({ subtask, taskLeaderId, onUpdate, onDelete }) {
 	}
 	const dateParts = formatDate(deadline); // ["15", "04", "24"]
 
-	const toggleDetails = () => {
-		const details = detailsRef.current;
-		if (!showDetails) {
-			const height = details.scrollHeight;
-			details.style.height = `${height}px`;
-		} else {
-			details.style.height = '0';
-		}
-		setShowDetails(!showDetails);
-	};
-
+	//subtask details updater functions
 	const handleUpdate = async (updates) => {
 		const updatedSubtask = await updateSubtask(subtask._id, updates);
 		if (updatedSubtask) {
@@ -145,20 +137,9 @@ function SingleTaskSubtask({ subtask, taskLeaderId, onUpdate, onDelete }) {
 		handleUpdate({ status: newStatus });
 	};
 
-	const handlePriorityChange = (newPriority) => {
-		handleUpdate({ priority: newPriority });
-	};
-
-	const handleDelete = async () => {
-		const result = await deleteSubtask(_id);
-		if (result) {
-			onDelete(_id);
-		}
-	};
-
 	const handleAssign = async () => {
 		const assignedSubtask = await assignSubtask(subtask._id);
-		console.log(assignedSubtask);
+		// console.log(assignedSubtask);
 		if (assignedSubtask) {
 			onUpdate(assignedSubtask);
 		}
@@ -202,13 +183,14 @@ function SingleTaskSubtask({ subtask, taskLeaderId, onUpdate, onDelete }) {
 						</p>
 					</div>
 					<div className="h-full pt-2 flex flex-col justify-start items-center gap-2 ">
-						{/* <Avatar
-							src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWgel"
-							alt="avatar"
-							className="w-[30px] h-[30px]"
-						/> */}
 						{assignee ? (
-							<span className="font-outfit font-[700]">{assignee.email}</span>
+							<Avatar
+								src={
+									assignee.profilePicture ||
+									'https://cdn-icons-png.flaticon.com/512/149/149071.png'
+								}
+								className="w-8 h-8"
+							/>
 						) : (
 							<span className="font-outfit font-[700]">No Assignee</span>
 						)}
