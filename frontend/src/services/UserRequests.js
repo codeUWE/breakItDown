@@ -1,14 +1,23 @@
-import axiosClient from '../axiosClient';
-import axios from 'axios';
+import axiosClient from "../axiosClient";
+import axios from "axios";
 
 //Get all roles
 export const getRoles = async () => {
-	const { data } = await axiosClient.get('/roles');
+  const { data } = await axiosClient.get("/roles");
+  // console.log(data)
+  return data;
+};
+
+//Get All Users
+export const getAllUsers = async () => {
+	const { data } = await axios.get('http://localhost:3001/users/');
 	return data;
 };
 
-//Get all Users
-export const getAllUsers = async () => {
-	const { data } = await axios.get('http://localhost:3001/users');
+// Get Roles via id
+export const getUsersById = async (id) => {
+	const { data } = await axios.get(`http://localhost:3001/users/${id}`);
 	return data;
 };
+
+
