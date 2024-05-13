@@ -1,26 +1,9 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Typography, CardHeader, Avatar, CardBody } from '@material-tailwind/react';
-import axios from 'axios';
 
-
-export function TestimonialCard({ onDelete, onEdit, post }) {
+export function TestimonialCard({ onDelete, onEdit, post, user }) {
   const [editedMessage, setEditedMessage] = useState(post.message);
   const [isEditing, setIsEditing] = useState(false);
-  const [userData, setUserData] = useState(null);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3001/users/${post.user._id}`);
-        console.log(response.data)
-        setUserData(response.data);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-
-    fetchUserData();
-  }, [post.user._id]);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -35,18 +18,18 @@ export function TestimonialCard({ onDelete, onEdit, post }) {
     <div className="ml-35">
       <Card color="transparent" shadow={false} className="w-[522.85px] ">
         <CardHeader color="transparent" floated={false} shadow={false} className="mx-0 flex items-center pt-0">
-          {userData && (
-            <Avatar size="xs" variant="circular" src={userData.profilePicture} alt={userData.id.name} />
+          {user && (
+            <Avatar size="xs" variant="circular" src={post.user.profilePicture} alt={user.name} />
           )}
           <div className="flex flex-col">
             <div>
               <Typography variant="h5" color="blue-gray" className="text-xs">
-                {userData ? userData.name : 'Unknown User'}
+                {user ? user.name : 'Unknown User'}
               </Typography>
             </div>
-            <Typography color="blue-gray" className="text-xs">
-              {userData ? userData.roles.join(', ') : 'No roles'}
-            </Typography>
+             {/* <Typography color="blue-gray" className="text-xs">
+              {user ? user.roles :'unknown'}
+            </Typography>  */}
           </div>
         </CardHeader>
         <CardBody className="p-2 justify-center overflow-auto">
