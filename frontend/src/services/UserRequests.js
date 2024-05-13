@@ -7,9 +7,6 @@ export const getRoles = async () => {
   // console.log(data)
   return data;
 };
-//
-
-
 
 //Get All Users
 export const getAllUsers = async () => {
@@ -17,10 +14,10 @@ export const getAllUsers = async () => {
 	return data;
 };
 
-
 // Get Roles via id
 export const getUsersById = async (id) => {
 	const { data } = await axios.get(`http://localhost:3001/users/${id}`);
 	return data;
 };
-export default {getAllUsers, getUsersById}
+
+

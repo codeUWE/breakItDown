@@ -110,7 +110,10 @@ const updateSubtask = async (req, res) => {
 		const { body } = req;
 		const updatedSubtask = await Subtask.findByIdAndUpdate(id, body, {
 			new: true,
-		});
+		})
+			.populate('task', 'title description status')
+			.populate('assignee', 'name email')
+			.sort('deadline');
 
 		// Update Task Status if the subtask is updated
 		if (updatedSubtask) {

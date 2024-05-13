@@ -17,7 +17,8 @@ export const updateTask = async (id, updates) => {
 	try {
 		const { data } = await axios.put(
 			`http://localhost:3001/tasks/${id}`,
-			updates
+			updates,
+			{ withCredentials: true }
 		);
 		return data;
 	} catch (error) {
@@ -25,11 +26,20 @@ export const updateTask = async (id, updates) => {
 		throw error;
 	}
 };
+//Post Task
+export const createTask = async (payload) => {
+	const { data } = await axios.post(`http://localhost:3001/tasks/`, payload, {
+		withCredentials: true,
+	});
+	return data;
+};
 
 // Delete Task
 export const deleteTask = async (id) => {
 	try {
-		const { data } = await axios.delete(`http://localhost:3001/tasks/${id}`);
+		const { data } = await axios.delete(`http://localhost:3001/tasks/${id}`, {
+			withCredentials: true,
+		});
 		return data;
 	} catch (error) {
 		console.error(`Error deleting task with id ${id}:`, error);
@@ -64,19 +74,27 @@ export const updateSubtask = async (id, updates) => {
 
 //Post Subtask
 export const createSubtask = async (payload) => {
-	const { data } = await axios.post(`http://localhost:3001/subtasks/`, payload);
+	const { data } = await axios.post(
+		`http://localhost:3001/subtasks/`,
+		payload,
+		{ withCredentials: true }
+	);
 	return data;
 };
 
 //Delete Subtask
 export const deleteSubtask = async (id) => {
-	const { data } = await axios.delete(`http://localhost:3001/subtasks/${id}`);
+	const { data } = await axios.delete(`http://localhost:3001/subtasks/${id}`, {
+		withCredentials: true,
+	});
 	return data;
 };
 
 //Update Subtask
 export const update = async (id) => {
-	const { data } = await axios.put(`http://localhost:3001/subtasks/${id}`);
+	const { data } = await axios.put(`http://localhost:3001/subtasks/${id}`, {
+		withCredentials: true,
+	});
 	return data;
 };
 //Assign Subtask
@@ -91,7 +109,7 @@ export const assignSubtask = async (id) => {
 	return data;
 };
 
-//Get unassigned Task
+//Get unassigned Subtask
 export const getUnassignedTasks = async () => {
 	const { data } = await axios.get('http://localhost:3001/subtasks/unassigned');
 	console.log(data)

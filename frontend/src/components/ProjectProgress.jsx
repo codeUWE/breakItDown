@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Chart } from 'react-google-charts';
 import { getTasksForGantt } from '../services/TasksRequests';
+import { useNavigate } from 'react-router-dom';
 
 // function daysToMilliseconds(days) {
 // 	return days * 24 * 60 * 60 * 1000;
@@ -17,8 +18,10 @@ const columns = [
 ];
 
 export default function ProjectProgress() {
+	const navigate = useNavigate();
 	const [data, setData] = useState([columns]);
 	const [taskCount, setTaskCount] = useState(0);
+	const [view, setView] = useState('Project Progress');
 
 	const fetchTasks = async () => {
 		try {
@@ -35,9 +38,9 @@ export default function ProjectProgress() {
 	}, []);
 
 	// Dynamically calculate chart height and width with min constraints
-	const baseHeight = 100; // Base height
-	const taskHeight = 45; // Height per task
-	const minHeight = 200; // Minimum chart height
+	const baseHeight = 150; // Base height
+	const taskHeight = 50; // Height per task
+	const minHeight = 550; // Minimum chart height
 	const calculatedHeight = baseHeight + taskCount * taskHeight;
 	console.log(calculatedHeight);
 
@@ -73,11 +76,42 @@ export default function ProjectProgress() {
 		backgroundColor: {
 			fill: '#fff',
 		},
+		hAxis: {
+			// Enable scrolling for horizontal axis
+			allowScroll: true,
+		},
+		// Additional option for vertical scrollbar
+		chartArea: {
+			width: '1180px', // Adjust width to accommodate scrollbar
+			height: '480px', // Adjust height as needed
+		},
+	};
+
+	const handleViewChange = (e) => {
+		const selectedView = e.target.value;
+		setView(selectedView);
+		if (selectedView === 'My Tasks') {
+			navigate('/tasks/');
+		}
 	};
 
 	return (
 		<>
-			<h2 className="font-outfit font-[800] text-[45px] text-start px-20 mt-24 mb-4">
+			<div className="w-full flex justify-end">
+				<select
+					value={view}
+					onChange={handleViewChange}
+					className="mx-20 mt-4 mb-4 px-4 py-2 bg-[#6A7EA3] rounded-[30px] font-inter font-[800] text-[28px] text-white  "
+				>
+					<option className="font-inter font-[800] " value="My Tasks">
+						My Tasks
+					</option>
+					<option className="font-inter font-[800] " value="Project Progress">
+						Project Progress
+					</option>
+				</select>
+			</div>
+			<h2 className="font-outfit font-[800] text-[45px] text-start px-20 mb-2">
 				Project <span className="text-[#681FDE]">Progress</span>
 			</h2>
 			<div
@@ -93,10 +127,10 @@ export default function ProjectProgress() {
 				<div className="p-4">
 					<Chart
 						chartType="Gantt"
-						width={`${Math.max(calculatedWidth, minWidth)}px`}
-						height={`${Math.max(calculatedHeight, minHeight)}px`}
 						data={data}
 						options={options}
+						width="1200px"
+						height="500px"
 					/>
 				</div>
 			</div>

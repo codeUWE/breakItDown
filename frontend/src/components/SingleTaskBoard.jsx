@@ -89,6 +89,8 @@ function SingleTaskBoard() {
 	const fetchTask = async () => {
 		try {
 			const data = await getTaskById(id);
+			console.log(data); // Überprüfe die Struktur und Verfügbarkeit von 'leader'
+
 			const sortedSubtasks = sortSubtasks(data.subtasks, sortMode);
 			setTask({ ...data, subtasks: sortedSubtasks });
 		} catch (error) {
@@ -119,10 +121,6 @@ function SingleTaskBoard() {
 		}
 	};
 
-	const handleTabChange = (tab) => {
-		setActiveTab(tab);
-	};
-
 	const handleSubtaskUpdate = (updatedSubtask) => {
 		setTask((prevTask) => {
 			const updatedSubtasks = prevTask.subtasks.map((subtask) =>
@@ -145,14 +143,6 @@ function SingleTaskBoard() {
 		fetchTask();
 	};
 
-	const handleAddOpen = () => {
-		setAddOpen(true);
-	};
-
-	const handleAddClose = () => {
-		setAddOpen(false);
-	};
-
 	const handleSubtaskAdded = (newSubtask) => {
 		setTask((prevTask) => ({
 			...prevTask,
@@ -161,21 +151,14 @@ function SingleTaskBoard() {
 		fetchTask();
 	};
 
-	const handleEditOpen = () => {
-		setEditOpen(true);
-	};
+	const handleTabChange = (tab) => setActiveTab(tab);
 
-	const handleEditClose = () => {
-		setEditOpen(false);
-	};
-
-	const handleDeleteOpen = () => {
-		setDeleteOpen(true);
-	};
-
-	const handleDeleteClose = () => {
-		setDeleteOpen(false);
-	};
+	const handleAddOpen = () => setAddOpen(true);
+	const handleAddClose = () => setAddOpen(false);
+	const handleEditOpen = () => setEditOpen(true);
+	const handleEditClose = () => setEditOpen(false);
+	const handleDeleteOpen = () => setDeleteOpen(true);
+	const handleDeleteClose = () => setDeleteOpen(false);
 
 	const handleDeleteTask = async () => {
 		try {
@@ -208,14 +191,34 @@ function SingleTaskBoard() {
 		setShowMoreDetails(!showMoreDetails);
 	};
 
+	const isLeader =
+		task && user.role.name === 'Team Leader' && task.leader._id === user._id;
+
+	const canEditTicket =
+		hasPermission(user.role.permissions, ['editTicket']) ||
+		(isLeader && hasPermission(user.role.permissions, ['leaderEditTicket']));
+	const canDeleteTicket = hasPermission(user.role.permissions, [
+		'deleteTicket',
+	]);
+	const canAddSubtask =
+		hasPermission(user.role.permissions, ['addSubtask']) ||
+		(isLeader && hasPermission(user.role.permissions, ['leaderAddSubtask']));
+
+	console.log('User ID:', user._id);
+	console.log('Task Leader ID:', task?.leader);
+	console.log('Is Leader:', isLeader);
+	console.log('Can Edit:', canEditTicket);
+	console.log('Can Delete:', canDeleteTicket);
+	console.log('Can Add Subtask:', canAddSubtask);
+
 	return (
 		<div className="p-10 w-full h-full flex justify-center items-center">
-			<div className="w-[1200px] h-[550px] rounded-[30px] border-[5px] border-[#363636] bg-[#daf0fd] shadow-2xl p-1 relative">
+			<div className="w-[1400px] h-[550px] rounded-[30px] border-[5px] border-[#363636] bg-[#daf0fd] shadow-2xl p-1 relative">
 				{/* Delete, Edit and Back Buttons and Dialogs */}
 				<button onClick={() => navigate(-1)} className="absolute top-4 right-6">
 					<img src={back} alt="edit icon" width={22} />
 				</button>
-				{hasPermission(user.role.permissions, ['editTicket']) ? (
+				{/* {hasPermission(user.role.permissions, ['editTicket']) ? (
 					<button
 						onClick={() => task && handleEditOpen()}
 						className="absolute top-12 left-[455px]"
@@ -224,17 +227,23 @@ function SingleTaskBoard() {
 					</button>
 				) : (
 					''
-				)}
-				{hasPermission(user.role.permissions, ['deleteTicket']) ? (
+				)} */}
+				{canEditTicket ? (
+					<button
+						onClick={() => task && handleEditOpen()}
+						className="absolute top-12 left-[455px]"
+					>
+						<img src={edit} alt="edit icon" width={20} />
+					</button>
+				) : null}
+				{canDeleteTicket ? (
 					<button
 						onClick={() => task && handleDeleteOpen()}
 						className="absolute top-20 left-[455px]"
 					>
-						<img src={deleteIcon} alt="edit icon" width={20} />
+						<img src={deleteIcon} alt="delete icon" width={20} />
 					</button>
-				) : (
-					''
-				)}
+				) : null}
 
 				<EditTaskDialog
 					task={task}
@@ -354,7 +363,7 @@ function SingleTaskBoard() {
 								height={25}
 							/>
 						</div>
-						<div className="w-full h-full overflow-auto no-scrollbar">
+						<div className="w-full h-full overflow-auto no-scrollbar border rounded-[20px] border-[#363636]">
 							<Comments />
 						</div>
 					</div>
@@ -375,7 +384,7 @@ function SingleTaskBoard() {
 								}`}
 								onClick={() => handleTabChange('progress')}
 							>
-								Progress
+								Task Board
 							</button>
 						</div>
 						<div className="w-full h-full flex flex-col">
@@ -396,19 +405,17 @@ function SingleTaskBoard() {
 												<option value="status">Status</option>
 											</select>
 										</div>
-										{hasPermission(user.role.permissions, ['addSubtask']) ? (
+										{canAddSubtask ? (
 											<button
 												onClick={handleAddOpen}
 												className="py-1 px-4 bg-[#363636] text-white rounded-2xl flex items-center gap-2"
 											>
 												<img src={plus} alt="Add Subtask" width={12} />
-												<h5 className="font-outfit font-[300] text-[12px] ">
+												<h5 className="font-outfit font-[300] text-[12px]">
 													Add Subtask
 												</h5>
 											</button>
-										) : (
-											''
-										)}
+										) : null}
 
 										<AddSubtaskDialog
 											open={addOpen}
@@ -422,6 +429,7 @@ function SingleTaskBoard() {
 											<SingleTaskSubtask
 												key={subtask._id}
 												subtask={subtask}
+												taskLeaderId={task?.leader._id}
 												onUpdate={handleSubtaskUpdate}
 												onDelete={handleSubtaskDelete}
 											/>
