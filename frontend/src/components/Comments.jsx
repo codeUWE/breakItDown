@@ -1,5 +1,4 @@
-import { Avatar } from '@material-tailwind/react';
-import { useState, useEffect } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import {
 	getCommentsByTask,
@@ -7,15 +6,20 @@ import {
 	deleteComment,
 	updateComment,
 } from '../services/CommentsRequests';
+import { Avatar } from '@material-tailwind/react';
+import { AuthContext } from '../context/AuthProvider';
 
-//assets
+// Importiere die Assets wie benötigt
 import sent from '../assets/sent.png';
 import moreWhite from '../assets/moreWhite.png';
 
 function Comment({ comment, onDelete, onUpdate }) {
+	const { user } = useContext(AuthContext); // Angenommen, dass dies der aktuelle Benutzer aus Ihrem AuthContext ist
 	const [isEditing, setIsEditing] = useState(false);
 	const [editedBody, setEditedBody] = useState(comment.body);
 	const [menuOpen, setMenuOpen] = useState(false);
+
+	const isOwner = user && comment.user && user._id === comment.user._id;
 
 	const handleEdit = () => {
 		setIsEditing(true);
@@ -41,21 +45,58 @@ function Comment({ comment, onDelete, onUpdate }) {
 		setMenuOpen(!menuOpen);
 	};
 
+	function parseText(text) {
+		const urlRegex =
+			/(\bhttps?:\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])(?=\s|$)/gi;
+		return text.split(urlRegex).map((part, index) => {
+			if (part.match(urlRegex)) {
+				return (
+					<a
+						href={part}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="underline text-yellow-600 break-words"
+						key={index}
+					>
+						{part}
+					</a>
+				);
+			} else {
+				return part;
+			}
+		});
+	}
+
 	return (
-		<div className="w-full flex-col justify-center">
-			<div className="comment max-w-[370px] mx-auto mb-4 ps-3 pe-8 pt-2 pb-2 font-outfit font-[500] text-white text-[14px] bg-blue-800 rounded-2xl relative">
+		<div
+			className={`w-full flex ${
+				comment.isOwner ? 'justify-end' : 'justify-start'
+			} mb-4 relative`}
+		>
+			{!comment.isOwner && (
+				<Avatar
+					src={comment.user?.profilePicture || 'default-avatar-url.jpg'} // Setzen eines Fallback-Bildes
+					alt="avatar"
+					className={`w-[40px] h-[40px] ${
+						comment.isOwner ? 'absolute right-0' : 'absolute left-0'
+					}`}
+				/>
+			)}
+			<div
+				className={`comment max-w-[300px] min-w-[100px] font-outfit font-[500] ${
+					comment.isOwner
+						? 'text-white bg-blue-800 me-8 ps-3 py-1'
+						: 'text-white bg-green-500 ms-8 ps-6 pe-3 py-1'
+				} rounded-2xl break-words overflow-hidden`}
+				style={{ wordWrap: 'break-word', minHeight: '40px' }}
+			>
 				{isEditing ? (
-					<div>
-						<Avatar
-							src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWgel"
-							alt="avatar"
-							className="w-[40px] h-[40px] absolute top-0 left-[360px] z-10"
-						/>
+					<div className="w-48 pe-3">
 						<input
 							type="text"
 							value={editedBody}
 							onChange={(e) => setEditedBody(e.target.value)}
-							className="w-full p-2 border border-gray-300 rounded-lg mb-2"
+							className="w-full text-black p-2 border border-gray-300 rounded-lg mb-2 mx-auto"
 						/>
 						<div className="flex gap-2">
 							<button
@@ -73,60 +114,114 @@ function Comment({ comment, onDelete, onUpdate }) {
 						</div>
 					</div>
 				) : (
-					<div>
-						<Avatar
-							src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWgel"
-							alt="avatar"
-							className="w-[40px] h-[40px] absolute top-0 left-[360px] z-10"
-						/>
-						<p className="">{comment.body}</p>
-						<button onClick={toggleMenu} className="absolute bottom-1 right-4">
-							<img src={moreWhite} alt="more button" width={20} />
-						</button>
-						{menuOpen && (
-							<div className="absolute top-[55px] right-0 bg-white shadow-lg rounded-md p-2 border border-gray-300 z-10">
-								<button
-									className="text-blue-500 hover:underline mr-2 block"
-									onClick={handleEdit}
-								>
-									Edit
-								</button>
-								<button
-									className="text-red-500 hover:underline block"
-									onClick={handleDelete}
-								>
-									Delete
-								</button>
-							</div>
-						)}
-					</div>
+					<>
+						<div className="flex flex-col">
+							<p className="w-[95%]">{parseText(comment.body)}</p>
+							{comment.isOwner && (
+								<>
+									<button
+										onClick={toggleMenu}
+										className="self-end h-3 pe-2 mb-1 mx-0"
+									>
+										<img src={moreWhite} alt="more button" width={20} />
+									</button>
+									{menuOpen && (
+										<div className="absolute bottom-[-35px] right-0 bg-[#363636] shadow-lg rounded-md p-2 z-10 flex gap-3">
+											<button
+												className="text-blue-500 hover:underline mr-2 block"
+												onClick={handleEdit}
+											>
+												Edit
+											</button>
+											<button
+												className="text-red-500 hover:underline block"
+												onClick={handleDelete}
+											>
+												Delete
+											</button>
+										</div>
+									)}
+								</>
+							)}
+						</div>
+					</>
 				)}
 			</div>
+			{comment.isOwner && (
+				<Avatar
+					src={comment.user?.profilePicture || 'default-avatar-url.jpg'} // Setzen eines Fallback-Bildes
+					alt="avatar"
+					className={`w-[40px] h-[40px] ${
+						comment.isOwner ? 'absolute right-0' : 'absolute left-0'
+					}`}
+				/>
+			)}
 		</div>
 	);
 }
 
 export default function Comments() {
-	const { id } = useParams();
+	const { id: taskId } = useParams();
 	const [comments, setComments] = useState([]);
 	const [newCommentBody, setNewCommentBody] = useState('');
+	const { user } = useContext(AuthContext);
+
+	const messagesEndRef = useRef(null); // Referenz für das automatische Scrollen
+
+	const scrollToBottom = () => {
+		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+	};
 
 	useEffect(() => {
 		async function fetchComments() {
-			const taskComments = await getCommentsByTask(id);
-			setComments(taskComments);
+			if (!user) {
+				console.log('User data is not loaded yet.');
+				return;
+			}
+
+			try {
+				const taskComments = await getCommentsByTask(taskId);
+				if (taskComments) {
+					const enrichedComments = taskComments.map((comment) => ({
+						...comment,
+						isOwner: user && comment.user && user._id === comment.user._id,
+					}));
+					setComments(enrichedComments);
+				}
+			} catch (error) {
+				console.error('Error fetching comments:', error);
+				// Optional: Handle the error in a user-friendly way, e.g., show a message
+			}
 		}
-		fetchComments();
-	}, [id]);
+
+		if (taskId) {
+			fetchComments();
+		}
+	}, [taskId, user]);
+
+	useEffect(() => {
+		scrollToBottom(); // Scrollt nach unten, wenn neue Kommentare hinzugefügt werden
+	}, [comments]);
 
 	const handleAddComment = async () => {
 		if (newCommentBody.trim() === '') return;
 
 		const newComment = await createComment({
 			body: newCommentBody,
-			task: id,
+			task: taskId,
+			user: user._id,
 		});
-		setComments([...comments, newComment]);
+
+		const newCommentWithOwner = {
+			...newComment,
+			user: {
+				_id: user._id,
+				profilePicture: user.profilePicture,
+			},
+			isOwner: true,
+		};
+
+		setComments([...comments, newCommentWithOwner]);
 		setNewCommentBody('');
 	};
 
@@ -148,7 +243,7 @@ export default function Comments() {
 
 	return (
 		<div className="h-full w-full comments-container overflow-scroll flex flex-col justify-center relative no-scrollbar py-3">
-			<div className="h-full w-full  overflow-scroll no-scrollbar">
+			<div className="h-full w-full overflow-scroll no-scrollbar">
 				{comments.map((comment) => (
 					<Comment
 						key={comment._id}
@@ -157,8 +252,9 @@ export default function Comments() {
 						onUpdate={handleUpdateComment}
 					/>
 				))}
+				<div ref={messagesEndRef} />
 			</div>
-			<div className="new-comment mt-3 flex items-center relative px-3 ">
+			<div className="new-comment mt-3 flex items-center relative px-3">
 				<input
 					type="text"
 					placeholder="Add a comment..."
@@ -169,7 +265,7 @@ export default function Comments() {
 				<button onClick={handleAddComment}>
 					<img
 						src={sent}
-						alt="sent button"
+						alt="send button"
 						width={30}
 						className="absolute right-4 top-[2px]"
 					/>

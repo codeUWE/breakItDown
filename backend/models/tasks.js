@@ -7,7 +7,7 @@ const taskSchema = new Schema(
 		startDate: { type: Date },
 		deadline: { type: Date },
 		owner: { type: Schema.Types.ObjectId, ref: 'User' },
-		lead: { type: Schema.Types.ObjectId, ref: 'User' },
+		leader: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 		collaborators: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 		status: {
 			type: String,

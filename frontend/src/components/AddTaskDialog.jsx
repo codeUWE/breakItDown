@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
 import {
 	Dialog,
@@ -7,86 +8,68 @@ import {
 	Button,
 	Input,
 } from '@material-tailwind/react';
-import { updateTask } from '../services/TasksRequests';
+import { createTask } from '../services/TasksRequests';
 import { getAllUsers } from '../services/UserRequests';
 
-function EditTaskDialog({ task, open, onClose, onUpdate }) {
+function AddTaskDialog({ open, onClose, onUpdate }) {
 	const [formData, setFormData] = useState({
 		title: '',
 		description: '',
 		startDate: '',
 		deadline: '',
+		status: 'backlog',
+		priority: 'low',
 		leader: '',
 		collaborators: [],
 	});
+
 	const [users, setUsers] = useState([]);
 
 	useEffect(() => {
 		if (open) {
 			getAllUsers()
-				.then(setUsers)
+				.then((data) => {
+					setUsers(data);
+				})
 				.catch((error) => console.error('Failed to fetch users:', error));
 		}
 	}, [open]);
 
-	useEffect(() => {
-		if (task && open) {
-			setFormData({
-				title: task.title || '',
-				description: task.description || '',
-				startDate: task.startDate ? task.startDate.substring(0, 10) : '',
-				deadline: task.deadline ? task.deadline.substring(0, 10) : '',
-				leader: task.leader || '',
-				collaborators: task.collaborators.map((collab) => collab._id) || [], // Stellen Sie sicher, dass hier die IDs extrahiert werden
-			});
-		}
-	}, [task, open]);
-
 	const handleChange = (e) => {
 		const { name, value } = e.target;
-		setFormData({ ...formData, [name]: value });
+		setFormData((prev) => ({ ...prev, [name]: value }));
 	};
 
 	const handleLeaderChange = (e) => {
-		const leaderId = e.target.value; // Stellen Sie sicher, dass dies die korrekte ID ist
-		setFormData((prev) => ({
-			...prev,
-			leader: leaderId,
-		}));
+		setFormData((prev) => ({ ...prev, leader: e.target.value }));
 	};
 
 	const handleCollaboratorsChange = (e) => {
 		const value = e.target.value;
 		const checked = e.target.checked;
-
-		setFormData((prev) => {
-			// Filter, um sicherzustellen, dass nur valide IDs im Array sind und keine Objekte
-			const cleanedCollaborators = prev.collaborators.filter(
-				(collab) => typeof collab === 'string'
-			);
-
-			const newCollaborators = checked
-				? [...cleanedCollaborators, value] // Hinzufügen der ID
-				: cleanedCollaborators.filter((id) => id !== value); // Entfernen der ID
-
-			return { ...prev, collaborators: newCollaborators };
-		});
+		setFormData((prev) => ({
+			...prev,
+			collaborators: checked
+				? [...prev.collaborators, value]
+				: prev.collaborators.filter((c) => c !== value),
+		}));
 	};
 
 	const handleSave = async () => {
-		console.log('Final form data:', formData);
 		try {
-			const updatedTask = await updateTask(task._id, formData);
-			onUpdate(updatedTask);
+			const newTask = await createTask(formData);
+			if (newTask) {
+				onUpdate(newTask);
+			}
+			onClose();
 		} catch (error) {
-			console.error('Failed to update task:', error);
+			console.error('Failed to create task:', error);
 		}
-		onClose();
 	};
 
 	return (
 		<Dialog open={open} handler={onClose}>
-			<DialogHeader>Edit Task</DialogHeader>
+			<DialogHeader>Add Task</DialogHeader>
 			<DialogBody className="flex flex-col gap-5">
 				<Input
 					type="text"
@@ -116,6 +99,7 @@ function EditTaskDialog({ task, open, onClose, onUpdate }) {
 					onChange={handleChange}
 					label="Deadline"
 				/>
+
 				<div>
 					<label>Leader:</label>
 					{users
@@ -140,6 +124,7 @@ function EditTaskDialog({ task, open, onClose, onUpdate }) {
 							</div>
 						))}
 				</div>
+
 				<div>
 					<label>Collaborators:</label>
 					{users.map((user) => (
@@ -173,4 +158,4 @@ function EditTaskDialog({ task, open, onClose, onUpdate }) {
 	);
 }
 
-export default EditTaskDialog;
+export default AddTaskDialog;

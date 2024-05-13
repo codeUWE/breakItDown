@@ -5,6 +5,7 @@ import {
 	deleteSubtask,
 	updateSubtask,
 } from '../services/TasksRequests';
+import DeleteSubtaskDialog from './DeleteSubtaskDialog';
 
 //assets
 import speechBubble from '../assets/speechBubble.png';
@@ -26,7 +27,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../context/AuthProvider';
 import { hasPermission } from '../services/utils';
 
-function SingleTaskSubtask({ subtask, onUpdate, onDelete }) {
+function SingleTaskSubtask({ subtask, taskLeaderId, onUpdate, onDelete }) {
 	const {
 		_id,
 		title,
@@ -39,6 +40,43 @@ function SingleTaskSubtask({ subtask, onUpdate, onDelete }) {
 	} = subtask;
 
 	const { isLoading, user } = useContext(AuthContext);
+	const isAssignee = assignee ? assignee._id === user._id : false;
+	const [deleteOpen, setDeleteOpen] = useState(false);
+
+	function canEditSubtask() {
+		const isLeader =
+			user.role.name === 'Team Leader' && taskLeaderId === user._id;
+		const canEdit =
+			hasPermission(user.role.permissions, ['editSubtask']) ||
+			(isLeader && hasPermission(user.role.permissions, ['leaderEditSubtask']));
+		console.log(
+			'Can Edit Subtask:',
+			canEdit,
+			'Is Leader:',
+			isLeader,
+			'User Permissions:',
+			user.role.permissions
+		);
+		return canEdit;
+	}
+
+	function canDeleteSubtask() {
+		const isLeader =
+			user.role.name === 'Team Leader' && taskLeaderId === user._id;
+		const canDelete =
+			hasPermission(user.role.permissions, ['deleteSubtask']) ||
+			(isLeader &&
+				hasPermission(user.role.permissions, ['leaderDeleteSubtask']));
+		console.log(
+			'Can Delete Subtask:',
+			canDelete,
+			'Is Leader:',
+			isLeader,
+			'User Permissions:',
+			user.role.permissions
+		);
+		return canDelete;
+	}
 
 	const [showDetails, setShowDetails] = useState(false);
 	const detailsRef = useRef(null);
@@ -50,6 +88,21 @@ function SingleTaskSubtask({ subtask, onUpdate, onDelete }) {
 
 	const handleEditClose = () => {
 		setEditOpen(false);
+	};
+
+	const handleDeleteOpen = () => {
+		setDeleteOpen(true);
+	};
+
+	const handleDeleteClose = () => {
+		setDeleteOpen(false);
+	};
+
+	const handleDeleteConfirmed = (subtaskId) => {
+		deleteSubtask(subtaskId).then(() => {
+			onDelete(subtaskId);
+			setDeleteOpen(false);
+		});
 	};
 
 	function formatDate(dateString) {
@@ -110,7 +163,6 @@ function SingleTaskSubtask({ subtask, onUpdate, onDelete }) {
 			onUpdate(assignedSubtask);
 		}
 	};
-	const isAssignee = assignee && assignee._id === user._id;
 
 	const getPriorityLabel = (priority) => {
 		switch (priority) {
@@ -149,25 +201,25 @@ function SingleTaskSubtask({ subtask, onUpdate, onDelete }) {
 							{description}
 						</p>
 					</div>
-					<div className="flex flex-col justify-center items-center gap-2 ">
+					<div className="h-full pt-2 flex flex-col justify-start items-center gap-2 ">
 						{/* <Avatar
 							src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWgel"
 							alt="avatar"
 							className="w-[30px] h-[30px]"
 						/> */}
 						{assignee ? (
-							assignee.email
+							<span className="font-outfit font-[700]">{assignee.email}</span>
 						) : (
 							<span className="font-outfit font-[700]">No Assignee</span>
 						)}
-						<button>
+						{/* <button>
 							<img
 								src={speechBubble}
 								alt="comments icon"
 								width={30}
 								height={30}
 							/>
-						</button>
+						</button> */}
 					</div>
 				</div>
 				<div className="w-full flex justify-between items-center">
@@ -285,30 +337,26 @@ function SingleTaskSubtask({ subtask, onUpdate, onDelete }) {
 						) : (
 							''
 						)}
-						{hasPermission(user.role.permissions, ['deleteTicket']) ? (
-							<Tooltip
-								content="Delete Subtask"
-								className="bg-[#363636] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
-							>
-								<button onClick={handleDelete}>
-									<img src={deleteIcon} alt="" width={27} height={27} />
-								</button>
-							</Tooltip>
-						) : (
-							''
-						)}
-						{hasPermission(user.role.permissions, ['editTicket']) ? (
-							<Tooltip
-								content="Edit Subtask"
-								className="bg-[#363636] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
-							>
+						{canEditSubtask() ? (
+							<Tooltip content="Edit Subtask" className="tooltip-class">
 								<button onClick={handleEditOpen}>
-									<img src={edit} alt="" width={27} height={27} />
+									<img src={edit} alt="Edit Subtask" width={27} />
 								</button>
 							</Tooltip>
-						) : (
-							''
-						)}
+						) : null}
+						{canDeleteSubtask() ? (
+							<Tooltip content="Delete Subtask" className="tooltip-class">
+								<button onClick={handleDeleteOpen}>
+									<img src={deleteIcon} alt="Delete Subtask" width={27} />
+								</button>
+							</Tooltip>
+						) : null}
+						<DeleteSubtaskDialog
+							open={deleteOpen}
+							onClose={handleDeleteClose}
+							onDelete={handleDeleteConfirmed}
+							subtask={subtask}
+						/>
 
 						<EditSubtaskDialog
 							subtask={subtask}

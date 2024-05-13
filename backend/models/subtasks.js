@@ -18,7 +18,7 @@ const subtaskSchema = new Schema(
 		},
 		isClosed: { type: Boolean, default: false },
 		task: { type: Schema.Types.ObjectId, ref: 'Task', required: true },
-		assignee: { type: Schema.Types.ObjectId, ref: 'User' },
+		assignee: { type: Schema.Types.ObjectId, ref: 'User', default: null },
 		comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
 	},
 	{

@@ -6,10 +6,9 @@ import {
 	DialogFooter,
 	Button,
 	Input,
-	Select,
-	Option,
 } from '@material-tailwind/react';
 import { createSubtask } from '../services/TasksRequests';
+import { getAllUsers } from '../services/UserRequests';
 
 function AddSubtaskDialog({ taskId, open, onClose, onUpdate }) {
 	const [formData, setFormData] = useState({
@@ -19,29 +18,30 @@ function AddSubtaskDialog({ taskId, open, onClose, onUpdate }) {
 		deadline: '',
 		status: 'backlog',
 		priority: 'low',
-		task: '',
+		assignee: '',
+		task: taskId,
 	});
 
+	const [users, setUsers] = useState([]);
+
 	useEffect(() => {
-		setFormData((prev) => ({ ...prev, task: taskId }));
-	}, [taskId]);
+		const fetchUsers = async () => {
+			const allUsers = await getAllUsers();
+			setUsers(allUsers);
+		};
+		fetchUsers();
+	}, []);
 
 	const handleChange = (e) => {
-		const name = e.target ? e.target.name : e.name;
-		const value = e.target ? e.target.value : e.value;
+		const { name, value } = e.target;
 
-		console.log(`Updating ${name} to ${value}`);
-
-		setFormData((prev) => ({
-			...prev,
-			[name]: value,
-		}));
+		const newValue = name === 'assignee' && value === 'none' ? null : value;
+		setFormData((prev) => ({ ...prev, [name]: newValue }));
 	};
 
 	const handleSave = async () => {
-		console.log('Saving data:', formData);
 		try {
-			const newSubtask = await createSubtask(formData);
+			const newSubtask = await createSubtask({ ...formData, task: taskId });
 			if (newSubtask) {
 				onUpdate(newSubtask);
 			}
@@ -52,9 +52,9 @@ function AddSubtaskDialog({ taskId, open, onClose, onUpdate }) {
 	};
 
 	return (
-		<Dialog open={open} handler={onClose}>
+		<Dialog open={open} onClose={onClose}>
 			<DialogHeader>Add Subtask</DialogHeader>
-			<DialogBody className="flex flex-col gap-5">
+			<DialogBody className="flex flex-col gap-3">
 				<Input
 					type="text"
 					name="title"
@@ -83,36 +83,36 @@ function AddSubtaskDialog({ taskId, open, onClose, onUpdate }) {
 					onChange={handleChange}
 					label="Deadline"
 				/>
-				<Select
-					name="priority"
-					value={formData.priority}
-					onChange={(e) =>
-						handleChange({ target: { name: 'priority', value: e } })
-					}
-					label="Priority"
-				>
-					<Option value="low">Low</Option>
-					<Option value="medium">Medium</Option>
-					<Option value="high">High</Option>
-				</Select>
-				<Select
-					name="status"
-					value={formData.status}
-					onChange={(e) =>
-						handleChange({ target: { name: 'status', value: e } })
-					}
-					label="Status"
-				>
-					<Option value="backlog">To Do</Option>
-					<Option value="inProgress">In Progress</Option>
-					<Option value="done">Done</Option>
-				</Select>
+				<div className="flex flex-col justify-start gap-2">
+					<label>
+						<input
+							type="radio"
+							name="assignee"
+							value="none"
+							checked={formData.assignee === 'none'}
+							onChange={handleChange}
+						/>
+						<span className="ms-3">No Assignee</span>
+					</label>
+					{users.map((user) => (
+						<label key={user._id}>
+							<input
+								type="radio"
+								name="assignee"
+								value={user._id}
+								checked={formData.assignee === user._id}
+								onChange={handleChange}
+							/>
+							<span className="ms-3">{user.name}</span>
+						</label>
+					))}
+				</div>
 			</DialogBody>
 			<DialogFooter>
-				<Button variant="text" color="red" onClick={onClose}>
+				<Button onClick={onClose} color="red" className="mr-1">
 					Cancel
 				</Button>
-				<Button variant="gradient" color="green" onClick={handleSave}>
+				<Button onClick={handleSave} color="green">
 					Save
 				</Button>
 			</DialogFooter>
