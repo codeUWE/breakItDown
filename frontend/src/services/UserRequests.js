@@ -10,13 +10,13 @@ export const getRoles = async () => {
 
 //Get All Users
 export const getAllUsers = async () => {
-	const { data } = await axios.get('http://localhost:3001/users/');
+	const { data } = await axios.get('http://localhost:3001/users/', {withCredentials: true});
 	return data;
 };
 
 // Get Roles via id
 export const getUsersById = async (id) => {
-	const { data } = await axios.get(`http://localhost:3001/users/${id}`);
+	const { data } = await axios.get(`http://localhost:3001/users/${id}`, {withCredentials: true});
 	return data;
 };
 

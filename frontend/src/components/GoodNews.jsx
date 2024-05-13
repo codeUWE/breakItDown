@@ -12,16 +12,16 @@ function GoodNews() {
     const fetchUsers = async () => {
       try {
         const usersData = await getAllUsers();
-        // setUsers(usersData);
-        console.log(usersData)
+        setUsers(usersData); // Setting the usersData received from the server
+        console.log(usersData);
       } catch (error) {
         console.error('Error fetching users:', error);
       }
     };
-
+  
     fetchUsers();
   }, []);
-
+  
   const handleSend = async () => {
     if (inputValue.trim() !== '') {
       try {
@@ -54,7 +54,7 @@ function GoodNews() {
   return (
     <div>
       <div className='flex justify-end mt-6'>
-        <div className='mr-20 ml-14 rounded-[20px] border border-gray-900 outline-none placeholder-underline w-[522.85px] relative h-[200px] overflow-auto'>
+        <div className='mr-20 ml-14 rounded-[20px] border-[2px] border-gray-900 outline-none placeholder-underline w-[522.85px] relative h-[200px] overflow-auto'>
           <div className='ml-2 font-semibold flex justify-between items-center'>
             <h2 className="text-blue-600 mr-auto">Good News</h2>
             <div className="flex justify-end items-center">
@@ -65,6 +65,7 @@ function GoodNews() {
             <TestimonialCard
               key={post.id}
               post={post}
+              user={post.user}
               onDelete={onDelete}
               onEdit={onEdit}
             />
@@ -75,12 +76,12 @@ function GoodNews() {
               placeholder="Share some good news"
               value={inputValue}
               onChange={e => setInputValue(e.target.value)}
-              className="rounded-[15px] ml-2 w-[506.63px] h-[36.87px] border border-gray-900 outline-none placeholder-underline"
+              className="rounded-[15px] ml-2 w-[506.63px] h-[36.87px] border-[2px] absolute left-[-5px] border-gray-900 outline-none placeholder-underline"
             />
             <img
               src='./src/assets/sent.png'
               alt='send'
-              className='w-[25px] h-[25px] cursor-pointer'
+              className='w-[25px] h-[25px] cursor-pointer absolute right-[12px]'
               onClick={handleSend}
             />
           </div>
