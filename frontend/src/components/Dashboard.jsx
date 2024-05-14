@@ -18,9 +18,9 @@ function Dashboard() {
 </div>
   
   
-    <div>
+     <div>
  <WidgetOpenSubTasks />
-   </div>   
+   </div>    
 
 
 </>
