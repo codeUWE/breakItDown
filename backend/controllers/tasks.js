@@ -306,6 +306,35 @@ const toggleTaskClosed = async (req, res) => {
 	}
 };
 
+const getWidgetInfo = async (req, res) => {
+	try {
+		const openTasksCount = await Task.countDocuments({ isClosed: false });
+
+		const nextTask = await Task.findOne({
+			deadline: { $gte: new Date() },
+			isClosed: false,
+		})
+			.sort({ deadline: 1 })
+			.select('deadline');
+
+		let daysUntilNextDeadline = null;
+		if (nextTask && nextTask.deadline) {
+			const today = new Date();
+			const deadline = new Date(nextTask.deadline);
+			const timeDiff = deadline - today;
+			daysUntilNextDeadline = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)); // Millisekunden in Tage umrechnen
+		}
+
+		res.json({
+			openTasksCount,
+			daysUntilNextDeadline,
+		});
+	} catch (error) {
+		console.error('Error fetching widget info:', error);
+		res.status(500).send('Something went wrong!');
+	}
+};
+
 module.exports = {
 	getTasks,
 	getTask,
@@ -314,4 +343,5 @@ module.exports = {
 	updateTask,
 	deleteTask,
 	toggleTaskClosed,
+	getWidgetInfo,
 };
