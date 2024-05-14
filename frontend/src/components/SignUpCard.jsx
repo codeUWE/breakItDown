@@ -62,6 +62,9 @@ export default function SignUpCard() {
             {...register("email", { required: "Email is required" })}
             size="lg"
           />
+          {errors.email?.type === "required" && (
+            <span>{errors.email.message}</span>
+          )}
 
           <Input
             type="password"
@@ -75,6 +78,12 @@ export default function SignUpCard() {
             })}
             size="lg"
           />
+          {errors.password?.type === "required" && (
+            <span>{errors.password.message}</span>
+          )}
+          {errors.password?.type === "minLength" && (
+            <span>{errors.password.message}</span>
+          )}
         </CardBody>
         <CardFooter className="pt-0 flex flex-col items-center font-inter">
           <input
@@ -130,14 +139,6 @@ export default function SignUpCard() {
       </Card>
 
       {/* errors will return when field validation fails  */}
-
-      {errors.email?.type === "required" && <span>{errors.email.message}</span>}
-      {errors.password?.type === "required" && (
-        <span>{errors.password.message}</span>
-      )}
-      {errors.password?.type === "minLength" && (
-        <span>{errors.password.message}</span>
-      )}
     </form>
   );
 }

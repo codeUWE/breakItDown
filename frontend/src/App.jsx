@@ -8,6 +8,9 @@ import SingleTaskBoard from "./components/SingleTaskBoard";
 import SignUpCard from "./components/SignUpCard";
 import LoginCard from "./components/LoginCard";
 import AdminDashboard from "./components/AdminDashboard";
+import ManageProjects from "./components/ManageProjects";
+import ManageRoles from "./components/ManageRoles";
+import ManageUsers from "./components/ManageUsers";
 import Dashboard from "./components/Dashboard";
 import Layout from "./components/Layout";
 import Team from "./components/Team";
@@ -25,9 +28,12 @@ function App() {
 
           <Route path="/" element={<Layout />}>
             <Route path="/admin" element={<Authorize role={"Admin"} />}>
-              <Route path="dashboard" element={<AdminDashboard />} />
+              {/* <Route path="dashboard" element={<AdminDashboard />} /> */}
+              <Route path="dashboard/projects" element={<ManageProjects />} />
+              <Route path="dashboard/roles" element={<ManageRoles />} />
+              <Route path="dashboard/users" element={<ManageUsers />} />
             </Route>
-            {/* <Route path="/admindashboard" element={<AdminDashboard />} /> */}
+
             <Route path="/dashboard" element={<Dashboard />} />
 
             <Route path="/tasks" element={<Task />} />

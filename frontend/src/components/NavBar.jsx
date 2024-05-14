@@ -26,7 +26,7 @@ function NavBar() {
             {/* need to decide 1st Page of App */}
             {/* <NavLink to="/">Login</NavLink> */}
             {user.role.name === "Admin" ? (
-              <NavLink to="/admin/dashboard">Admin Dashboard</NavLink>
+              <NavLink to="/admin/dashboard/projects">Admin-Dashboard</NavLink>
             ) : (
               ""
             )}

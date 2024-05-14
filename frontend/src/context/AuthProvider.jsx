@@ -32,7 +32,7 @@ export default function AuthProvider({ children }) {
         setUser(response.data);
         // console.log(response.data);
         if (response.data.role.name === "Admin") {
-          navigate("/admin/dashboard");
+          navigate("/admin/dashboard/projects");
         } else {
           navigate("/dashboard");
         }
