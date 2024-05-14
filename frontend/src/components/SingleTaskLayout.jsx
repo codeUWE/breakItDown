@@ -1,11 +1,10 @@
 import { Avatar } from '@material-tailwind/react';
-import { Tooltip } from '@material-tailwind/react';
-//userIntegration
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthProvider';
 
 function SingleTaskLayout({ task }) {
 	const { isLoading, user } = useContext(AuthContext);
+
 	function formatDate(dateString) {
 		if (!dateString) return ['No ', ' Date'];
 		try {
@@ -22,27 +21,33 @@ function SingleTaskLayout({ task }) {
 			return ['Faulty', 'Date'];
 		}
 	}
-	const dateParts = formatDate(task.deadline); // ["15", "04", "24"]
+	const dateParts = formatDate(task.deadline);
 
 	return (
 		<>
-			<div className="w-[190px]  rounded-[15px] bg-[#DAF0FD] flex flex-col">
-				<div className=" ps-2 pe-2 pt-[4px] ">
+			<div className="w-[200px] rounded-[15px] bg-[#DAF0FD] flex flex-col">
+				<div className="ps-2 pe-2 pt-[4px]">
 					<h2 className="px-1 font-outfit font-[500] text-[15px] row-start-1 col-start-1 col-span-5">
 						{task.title}
 					</h2>
 
 					<div className="w-[95%] my-1 mx-auto flex justify-end">
-						<div>
+						{task.assignee ? (
 							<Avatar
-								src={user.profilePicture}
-								alt="avatar"
-								className="w-[29px] h-[29px] "
+								src={
+									task.assignee
+										? task.assignee.profilePicture
+										: 'https://cdn-icons-png.flaticon.com/128/552/552848.png'
+								}
+								alt="Assignee's Avatar"
+								className="w-[35px] h-[35px]"
 							/>
-						</div>
+						) : (
+							<span className="font-outfit text-[14px]">Not assigned</span>
+						)}
 					</div>
 				</div>
-				<div className="flex  justify-center items-center border-t-[1px] border-[#00000067] px-1 ">
+				<div className="flex justify-center items-center border-t-[1px] border-[#00000067] px-1 ">
 					{dateParts.map((part, index) => (
 						<span
 							key={index}

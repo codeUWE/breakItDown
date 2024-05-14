@@ -55,7 +55,7 @@ function TaskLayout({ task }) {
 
 	return (
 		<>
-			<div className="w-[410px] h-[140px] rounded-[20px]   flex bg-white">
+			<div className="w-[390px] h-[140px] rounded-[20px]    flex bg-white">
 				<div className="flex flex-col w-[60px] justify-center items-center   bg-red-600 text-white rounded-s-[18px]  ">
 					<h2 className="m-0 font-outfit font-[700] text-[16px]">
 						{formatDate(task.deadline).split(' ')[0]}
@@ -64,7 +64,7 @@ function TaskLayout({ task }) {
 						{formatDate(task.deadline).split(' ')[1]}
 					</h2>
 				</div>
-				<div className="w-full grid grid-rows-4 grid-col-6 ps-3 pe-1 pt-[4px] pb-[10px] bg-[#EFF9FF] ">
+				<div className="w-full grid grid-rows-4 grid-col-6 ps-3 pe-1 pt-[4px] pb-[10px] bg-[#EFF9FF] rounded-e-[20px]">
 					<Tooltip
 						content={task.title}
 						className="bg-[#363636] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
@@ -94,7 +94,7 @@ function TaskLayout({ task }) {
 										alt="avatar"
 										className={` w-[35px] h-[35px] absolute top-0 left-[${
 											15 * index
-										}px] z-${10 + index * 10}`}
+										}px] z-${0 + index * 10}`}
 									/>
 								);
 							})}
