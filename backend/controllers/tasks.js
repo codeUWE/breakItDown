@@ -261,6 +261,51 @@ const deleteTask = async (req, res) => {
 	}
 };
 
+const toggleTaskClosed = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const task = await Task.findById(id)
+			.populate({
+				path: 'owner',
+				select: 'name email profilePicture',
+			})
+			.populate({
+				path: 'leader',
+				select: 'name email profilePicture',
+			})
+			.populate({
+				path: 'collaborators',
+				select: 'name email profilePicture',
+			})
+			.populate({
+				path: 'comments',
+				match: { isDeleted: false },
+				select: 'body user createdAt',
+				options: { sort: { createdAt: 1 } }, // sort by creation date
+				populate: { path: 'user', select: 'name' },
+			})
+			.populate({
+				path: 'subtasks',
+				select:
+					'title description detailedInformation status priority deadline isClosed',
+				options: { sort: { deadline: 1 } },
+				populate: {
+					path: 'assignee',
+					select: 'name email profilePicture',
+				},
+			});
+		if (!task) {
+			return res.status(404).send('Task not found');
+		}
+		task.isClosed = !task.isClosed;
+		await task.save();
+		res.json(task);
+	} catch (error) {
+		console.error('Error toggling task closed state:', error);
+		res.status(500).send('Something went wrong!');
+	}
+};
+
 module.exports = {
 	getTasks,
 	getTask,
@@ -268,4 +313,5 @@ module.exports = {
 	createTask,
 	updateTask,
 	deleteTask,
+	toggleTaskClosed,
 };

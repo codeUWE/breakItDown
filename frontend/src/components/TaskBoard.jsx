@@ -49,32 +49,38 @@ function TaskBoard() {
 
 	return (
 		<>
-			<div className="w-full flex justify-between mt-10">
-				<h2 className="font-outfit font-[800] text-[45px] text-start px-14 mb-2">
+			<div className="w-full flex justify-between mt-10 px-16">
+				<h2 className="font-outfit font-[600] text-[45px] text-start mb-2">
 					Team <span className="text-[#681FDE]">Board</span>
 				</h2>
 				<select
 					value={view}
 					onChange={handleViewChange}
-					className="mx-20 mt-4 mb-4 px-4 py-2 bg-[#EFF9FF] rounded-[30px] font-inter font-[800] text-[24px] text-[#000]  "
+					className=" mt-4 mb-4 px-4 py-2 bg-[#5D737E] rounded-[30px] font-outfit font-[500] text-[24px] text-[#fff] shadow-md "
 				>
-					<option className="font-inter font-[800] " value="My Tasks">
+					<option
+						className="font-outfit font-[500] text-[20px]"
+						value="My Tasks"
+					>
 						My Tasks
 					</option>
-					<option className="font-inter font-[800] " value="Project Progress">
+					<option
+						className="font-outfit font-[500] text-[20px]"
+						value="Project Progress"
+					>
 						Project Progress
 					</option>
 				</select>
 			</div>
 
-			<div className="w-[1400px] h-[550px] mx-auto rounded-[30px] flex flex-col justify-center items-center bg-[#EFF9FF]">
-				<div className="w-full px-8 flex justify-between items-center">
-					<h2 className="font-outfit font-[600] text-[32px]">All Tasks</h2>
+			<div className="w-[1400px] h-[670px] mx-auto rounded-[30px] flex flex-col justify-center items-center bg-[#EFF9FF] shadow-md">
+				<div className="w-full px-8 flex justify-between items-center mb-4">
+					<h2 className="font-outfit font-[600]  text-[32px]">All Tasks</h2>
 					{hasPermission(user.role.permissions, ['addTicket']) ||
 					hasPermission(user.role.permissions, ['leaderAddTicket']) ? (
 						<button
 							onClick={handleAddOpen}
-							className="py-1 px-4 bg-[#363636] text-white rounded-2xl flex items-center gap-2"
+							className="py-1 px-4 bg-[#575761] text-white rounded-2xl flex items-center gap-2 shadow-md"
 						>
 							<img src={plus} alt="Add Subtask" width={12} />
 							Add Task

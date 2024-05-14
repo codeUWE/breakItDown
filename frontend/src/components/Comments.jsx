@@ -54,7 +54,7 @@ function Comment({ comment, onDelete, onUpdate }) {
 						href={part}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="underline text-yellow-600 break-words"
+						className="underline text-[#050047] break-words"
 						key={index}
 					>
 						{part}
@@ -74,9 +74,12 @@ function Comment({ comment, onDelete, onUpdate }) {
 		>
 			{!comment.isOwner && (
 				<Avatar
-					src={comment.user?.profilePicture || 'default-avatar-url.jpg'} // Setzen eines Fallback-Bildes
+					src={
+						comment.user?.profilePicture ||
+						'https://cdn-icons-png.flaticon.com/512/149/149071.png'
+					}
 					alt="avatar"
-					className={`w-[35px] h-[35px] ${
+					className={`w-[40px] h-[40px] ${
 						comment.isOwner ? 'absolute right-0' : 'absolute left-0'
 					}`}
 				/>
@@ -84,8 +87,8 @@ function Comment({ comment, onDelete, onUpdate }) {
 			<div
 				className={`comment max-w-[350px] min-w-[80px] font-outfit font-[500] ${
 					comment.isOwner
-						? 'text-[#000000a1] bg-blue-300 me-8 ps-3 py-1'
-						: 'text-[#363636] bg-green-300 ms-8 ps-3 pe-2 py-1'
+						? 'text-[#131313] text-[18px] bg-blue-300 me-9 ps-3 pe-2 py-1'
+						: 'text-[#131313] text-[18px] bg-green-300 ms-9 ps-3 pe-2 py-1'
 				} rounded-2xl break-words overflow-hidden`}
 			>
 				{isEditing ? (
@@ -98,7 +101,7 @@ function Comment({ comment, onDelete, onUpdate }) {
 						/>
 						<div className="flex gap-2">
 							<button
-								className="text-green-500 hover:underline mr-2"
+								className="text-[#08A045] hover:underline mr-2"
 								onClick={handleUpdate}
 							>
 								Save
@@ -114,7 +117,7 @@ function Comment({ comment, onDelete, onUpdate }) {
 				) : (
 					<>
 						<div className="flex flex-col">
-							<p className="w-full">{parseText(comment.body)}</p>
+							<p className="w-full ">{parseText(comment.body)}</p>
 							{comment.isOwner && (
 								<>
 									<button
@@ -124,7 +127,7 @@ function Comment({ comment, onDelete, onUpdate }) {
 										<img src={moreWhite} alt="more button" width={20} />
 									</button>
 									{menuOpen && (
-										<div className="absolute bottom-[-35px] right-0 bg-[#363636] shadow-lg rounded-md p-2 z-10 flex gap-3">
+										<div className="absolute bottom-[-40px] right-0 bg-[#363636] shadow-lg rounded-md p-2 z-10 flex gap-3">
 											<button
 												className="text-blue-500 hover:underline mr-2 block"
 												onClick={handleEdit}
@@ -149,7 +152,7 @@ function Comment({ comment, onDelete, onUpdate }) {
 				<Avatar
 					src={comment.user?.profilePicture || 'default-avatar-url.jpg'} // Setzen eines Fallback-Bildes
 					alt="avatar"
-					className={`w-[35px] h-[35px] ${
+					className={`w-[40px] h-[40px] ${
 						comment.isOwner ? 'absolute right-0' : 'absolute left-0'
 					}`}
 				/>
@@ -258,7 +261,7 @@ export default function Comments() {
 					placeholder="Add a comment..."
 					value={newCommentBody}
 					onChange={(e) => setNewCommentBody(e.target.value)}
-					className="w-full ps-4 pe-9 py-1 bg-[#e2f1fa] rounded-xl bg-transparent placeholder:text-black placeholder:font-outfit font-outfit"
+					className="w-full ps-4 pe-9 py-1 bg-[##EFF9FF] rounded-xl placeholder:text-[#575761] placeholder:font-outfit font-outfit"
 				/>
 				<button onClick={handleAddComment}>
 					<img
