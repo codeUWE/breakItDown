@@ -29,17 +29,15 @@ const getNews = async (req, res) => {
 };
 
 const updateNews = async (req, res) => {
-    try {
-        const { params: { id }, body } = req;
-        const updatedNews = await News.findByIdAndUpdate(id, body, {
-            new: true, // Return the updated document
-        });
-        res.json(updatedNews); // Respond with the updated news item
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).send("Something went wrong!");
-    }
+  try {
+    const { id } = req.params; // Ensure id is extracted correctly
+    const { body } = req.body; // Extract the body from the request body
+    const updatedNews = await News.findByIdAndUpdate(id, { body }, { new: true });
+    res.json(updatedNews);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Something went wrong!");
+  }
 };
 
 
