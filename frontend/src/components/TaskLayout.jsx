@@ -40,7 +40,7 @@ function TaskLayout({ task }) {
 
 	return (
 		<>
-			<div className="w-[350px] h-[155px] rounded-[20px] border-[2px] border-black  flex bg-white">
+			<div className="w-[350px] h-[140px] rounded-[20px] border-[2px] border-black  flex bg-white">
 				<div className="flex flex-col w-[60px] justify-center items-center border-e-2 border-black  bg-red-600 text-white rounded-s-[18px]">
 					<h2 className="m-0 font-outfit font-[700] text-[16px]">
 						{formatDate(task.deadline).split(' ')[0]}
@@ -59,7 +59,7 @@ function TaskLayout({ task }) {
 						</h2>
 					</Tooltip>
 
-					<h3 className="font-outfit font-[300] text-[13px] row-start-2 row-end-2 col-start-1 col-span-4 tracking-tight mt-1  ">
+					<h3 className="font-outfit font-[300] text-[13px] row-start-2 row-end-2 col-start-1 col-span-4 tracking-tight leading-tight mt-1  ">
 						{task.description}
 					</h3>
 					<img
@@ -94,10 +94,10 @@ function TaskLayout({ task }) {
 						alt="icon step into"
 						width={24}
 						height={24}
-						className="row-start-2 row-end-4 col-start-6 ms-4 mt-5"
+						className="row-start-2 row-end-4 col-start-6 ms-1 mt-5"
 						onClick={() => navigate(`/tasks/${task._id}`)}
 					/>
-					<h4 className="font-outfit font-[400] text-[12px] pt-[6px] row-start-1 col-start-6 mx-auto">
+					<h4 className="font-outfit font-[400] text-[13px] pt-[6px] row-start-1 col-start-6 mx-auto">
 						{task.progress}
 					</h4>
 				</div>

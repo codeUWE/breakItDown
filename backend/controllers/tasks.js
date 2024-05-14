@@ -95,13 +95,76 @@ const getTask = async (req, res) => {
 	}
 };
 
+const getTasksForGantt = async (req, res) => {
+	try {
+		const tasks = await Task.find({})
+			.select('title startDate deadline subtasks')
+			.populate('subtasks', 'status')
+			.lean();
+
+		const tasksWithGanttData = tasks.map((task) => {
+			// Start- und Enddatum zu Date-Objekten umwandeln
+			const startDate = task.startDate ? new Date(task.startDate) : null;
+			const endDate = task.deadline ? new Date(task.deadline) : null;
+
+			// Dauer berechnen, falls keine Daten vorhanden sind
+			const duration = startDate && endDate ? null : daysToMilliseconds(3);
+
+			// Berechnung des Fortschritts in Prozent
+			const totalSubtasks = task.subtasks.length;
+			const completedSubtasks = task.subtasks.filter(
+				(subtask) => subtask.status === 'done'
+			).length;
+			const percentComplete =
+				totalSubtasks > 0
+					? Math.round((completedSubtasks / totalSubtasks) * 100)
+					: 0;
+
+			return [
+				task._id.toString(), // Task ID
+				task.title, // Task Name
+				{
+					v: `Date(${startDate.getFullYear()}, ${startDate.getMonth()}, ${startDate.getDate()})`,
+				}, // Start Date
+				{
+					v: `Date(${endDate.getFullYear()}, ${endDate.getMonth()}, ${endDate.getDate()})`,
+				}, // End Date
+				duration, // Duration
+				percentComplete, // Percent Complete
+				null, // Dependencies
+			];
+		});
+
+		res.json([columns, ...tasksWithGanttData]);
+	} catch (error) {
+		console.error('Error fetching tasks for Gantt:', error);
+		res.status(500).send('Something went wrong!');
+	}
+};
+
+function daysToMilliseconds(days) {
+	return days * 24 * 60 * 60 * 1000;
+}
+
+const columns = [
+	{ type: 'string', label: 'Task ID' },
+	{ type: 'string', label: 'Task Name' },
+	{ type: 'date', label: 'Start Date' },
+	{ type: 'date', label: 'End Date' },
+	{ type: 'number', label: 'Duration' },
+	{ type: 'number', label: 'Percent Complete' },
+	{ type: 'string', label: 'Dependencies' },
+];
+
 const createTask = async (req, res) => {
 	try {
-		const { title, description, status } = req.body;
+		const { title, description, status, startDate, deadline } = req.body;
 		const createdTask = await Task.create({
 			title,
 			description,
 			status,
+			startDate,
+			deadline,
 		});
 		res.json(createdTask);
 	} catch (error) {
@@ -117,18 +180,20 @@ const updateTask = async (req, res) => {
 			params: { id },
 		} = req;
 
-		// Überprüfen, ob die Task-ID vorhanden ist
 		if (!id) {
 			return res.status(400).send('Task ID is required');
 		}
 
-		// Task aktualisieren
 		const updatedTask = await Task.findByIdAndUpdate(id, body, { new: true })
 			.populate('owner lead', 'name email')
 			.populate({
 				path: 'collaborators',
 				select: 'name email',
 			})
+			// .populate({
+			// 	path: 'comments',
+			// 	match: { isDeleted: false },
+			// 	select: 'body user',;
 			.populate({
 				path: 'subtasks',
 				select:
@@ -144,7 +209,6 @@ const updateTask = async (req, res) => {
 			return res.status(404).send('Task not found');
 		}
 
-		// Rückgabe des aktualisierten Tasks
 		res.json(updatedTask);
 	} catch (error) {
 		console.error('Error updating task:', error);
@@ -163,4 +227,11 @@ const deleteTask = async (req, res) => {
 	}
 };
 
-module.exports = { getTasks, getTask, createTask, updateTask, deleteTask };
+module.exports = {
+	getTasks,
+	getTask,
+	getTasksForGantt,
+	createTask,
+	updateTask,
+	deleteTask,
+};

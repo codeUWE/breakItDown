@@ -1,7 +1,8 @@
 import React from "react";
-import GoodNews from "../components/GoodNews";
+// import GoodNews from "../components/GoodNews";
 import WidgetOpenSubTasks from "../components/WidgetOpenSubTasks";
-import Schedule from "./Schedule";
+// import Schedule from "./Schedule";
+import TeamView from "./TeamView";
 // import RecentCollaborations from "./RecentCollaborations";
 
 function Dashboard() {
@@ -10,14 +11,11 @@ function Dashboard() {
     {/* <div>
    <RecentCollaborations/>
     </div> */}
-
-<div>
-   <GoodNews />
-    </div> 
-
+<TeamView/>
+{/* 
     <div>
    <Schedule />
-    </div> 
+    </div>  */}
 
      <div>
  <WidgetOpenSubTasks />

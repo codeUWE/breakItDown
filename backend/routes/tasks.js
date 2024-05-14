@@ -1,6 +1,7 @@
 const express = require('express');
 
 const {
+	getTasksForGantt,
 	getTasks,
 	getTask,
 	createTask,
@@ -10,6 +11,7 @@ const {
 
 const tasksRouter = express.Router();
 
+tasksRouter.route('/gantt').get(getTasksForGantt);
 tasksRouter.route('/').get(getTasks).post(createTask);
 tasksRouter.route('/:id').get(getTask).put(updateTask).delete(deleteTask);
 

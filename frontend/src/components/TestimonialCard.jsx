@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardHeader, CardBody, Typography, Avatar } from '@material-tailwind/react';
+import React, { useState,useEffect } from 'react';
+import { Card, Typography, CardHeader, Avatar, CardBody } from '@material-tailwind/react';
 import axios from 'axios';
+
 
 export function TestimonialCard({ onDelete, onEdit, post }) {
   const [editedMessage, setEditedMessage] = useState(post.message);
@@ -10,17 +11,16 @@ export function TestimonialCard({ onDelete, onEdit, post }) {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/users/${post.userId}`);
+        const response = await axios.get(`http://localhost:3001/users/${post.user._id}`);
         setUserData(response.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
     };
-  
-    fetchUserData();
-  }, [post.userId]);
 
- 
+    fetchUserData();
+  }, [post.user._id]);
+
   const handleEdit = () => {
     setIsEditing(true);
   };

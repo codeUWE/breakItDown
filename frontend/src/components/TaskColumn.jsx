@@ -9,7 +9,7 @@ function TaskColumn({ title, tasks, className }) {
 				<h3 className="mx-auto p-2 font-outfit font-[700] text-[24px]">
 					{title}
 				</h3>
-				<div className="h-full w-full mx-auto flex flex-col gap-2 justify-start items-center overflow-auto pb-[14px] no-scrollbar">
+				<div className="h-full w-full mx-auto flex flex-col gap-3 justify-start items-center overflow-auto pb-[14px] no-scrollbar">
 					{tasks.map((task) => (
 						<TaskLayout key={task._id} task={task} />
 					))}

@@ -1,4 +1,5 @@
 const News = require('../models/news');
+
 const createNews = async (req, res) => {
     try {
         const { name, body, profilePicture } = req.body;

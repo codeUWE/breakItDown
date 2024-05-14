@@ -12,7 +12,8 @@ function GoodNews() {
     const fetchUsers = async () => {
       try {
         const usersData = await getAllUsers();
-        setUsers(usersData);
+        // setUsers(usersData);
+        console.log(usersData)
       } catch (error) {
         console.error('Error fetching users:', error);
       }
@@ -21,14 +22,21 @@ function GoodNews() {
     fetchUsers();
   }, []);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (inputValue.trim() !== '') {
-      const currentTime = new Date().toLocaleString();
-      const newPost = { id: Date.now(), message: inputValue, timestamp: currentTime };
-      setPosts(prevPosts => [...prevPosts, newPost]);
-      setInputValue('');
+      try {
+        const usersData = await getAllUsers();
+        const user = usersData[0]; // Assuming the first user is the current user
+        const currentTime = new Date().toLocaleString();
+        const newPost = { id: Date.now(), message: inputValue, user, timestamp: currentTime };
+        setPosts(prevPosts => [newPost, ...prevPosts]); // Insert the new post at the beginning of the array
+        setInputValue('');
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
     }
   };
+  
 
   const onDelete = (postId) => {
     setPosts(prevPosts => prevPosts.filter(post => post.id !== postId));
@@ -53,13 +61,12 @@ function GoodNews() {
               <img src="./src/assets/yellowdot.png" alt="" className="mr-8 m-4 w-[18px] h-[18px]" />
             </div>
           </div>
-          {posts.reverse().map(post => (
+          {posts.map(post => (
             <TestimonialCard
-            key={post.id}
-            post={post}
-            user={users.find(user => user._id === post.userId)} // Find the user based on the userId in the post
-            onDelete={onDelete}
-            onEdit={onEdit}
+              key={post.id}
+              post={post}
+              onDelete={onDelete}
+              onEdit={onEdit}
             />
           ))}
           <div className='input-field flex justify-center items-center border-gray-300 rounded'>
@@ -72,7 +79,7 @@ function GoodNews() {
             />
             <img
               src='./src/assets/sent.png'
-              alt='play'
+              alt='send'
               className='w-[25px] h-[25px] cursor-pointer'
               onClick={handleSend}
             />
