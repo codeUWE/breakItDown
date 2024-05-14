@@ -34,4 +34,4 @@ export const updateUsersById = async (id, payload) => {
 	return data;
 };
 
-export default {getAllUsers, getUsersById}
+export default { getAllUsers, getUsersById };
