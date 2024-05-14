@@ -24,24 +24,35 @@ function SingleTaskProgress() {
 	const doneSubtasks = task.subtasks.filter(
 		(subtask) => subtask.status === 'done'
 	);
+	const getStatus = (status) => {
+		if (status === 'backlog') {
+			return <span className="text-[#575761]">To Do</span>;
+		}
+		if (status === 'inProgress') {
+			return <span className="text-[#C07A19]">In Progress</span>;
+		}
+		if (status === 'done') {
+			return <span className="text-[#08A045]">Done</span>;
+		}
+	};
 
 	return (
 		<>
-			<div className="w-full h-full mx-auto rounded-[30px] border-[2px] border-[#363636] flex flex-col justify-center items-center gap-2 p-2">
-				<div className="w-full px-2 flex justify-between items-center">
-					<h2 className="font-outfit font-[600] text-[20px] text-[#363636]">
-						Task Progress: {task.title}
+			<div className="w-[95%]  h-full mx-auto rounded-[30px] flex flex-col justify-center items-center gap-2 p-2">
+				<div className="w-full px-1 flex justify-between items-center">
+					<h2 className="font-outfit font-[600] text-[24px] text-[#363636]">
+						Task Progress: {getStatus(task.status)}
 					</h2>
 					<div className="flex gap-3 items-center">
 						<h2 className="font-outfit font-[400] text-[16px] pt-[6px] mx-auto">
-							Subtasks <span className="font-[500] text-[#218348]">done</span>:{' '}
+							Subtasks done:
 						</h2>
 						<h4 className="font-outfit font-[400] text-[16px] pt-[6px] mx-auto">
 							{task.progress}
 						</h4>
 					</div>
 				</div>
-				<div className="h-full flex justify-center items-center gap-3">
+				<div className="h-full w-full flex justify-between items-center gap-3">
 					<SingleTaskColumn title={'To Do'} tasks={todoSubtasks} />
 					<SingleTaskColumn title={'In Progress'} tasks={inProgressSubtasks} />
 					<SingleTaskColumn title={'Done'} tasks={doneSubtasks} />

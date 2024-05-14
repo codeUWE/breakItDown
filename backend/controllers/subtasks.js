@@ -34,7 +34,7 @@ const getSubtasks = async (req, res) => {
 	try {
 		const subtasks = await Subtask.find({})
 			.populate('task', 'title description status')
-			.populate('assignee', 'name email')
+			.populate('assignee', 'name email profilePicture')
 			.sort('deadline');
 
 		res.json(subtasks);
@@ -49,7 +49,7 @@ const getSubtask = async (req, res) => {
 		const { id } = req.params;
 		const subtask = await Subtask.findById(id)
 			.populate('task', 'title description status')
-			.populate('assignee', 'name email');
+			.populate('assignee', 'name email profilePicture');
 		if (!subtask) {
 			return res.status(404).send('Subtask not found');
 		}
@@ -110,7 +110,10 @@ const updateSubtask = async (req, res) => {
 		const { body } = req;
 		const updatedSubtask = await Subtask.findByIdAndUpdate(id, body, {
 			new: true,
-		});
+		})
+			.populate('task', 'title description status')
+			.populate('assignee', 'name email profilePicture')
+			.sort('deadline');
 
 		// Update Task Status if the subtask is updated
 		if (updatedSubtask) {
@@ -118,6 +121,33 @@ const updateSubtask = async (req, res) => {
 		}
 
 		res.json(updatedSubtask);
+	} catch (error) {
+		console.error('Error updating subtask:', error);
+		res.status(500).send('Something went wrong!');
+	}
+};
+
+const assignSubtask = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const { user } = req;
+		const assignedSubtask = await Subtask.findByIdAndUpdate(
+			id,
+			{ assignee: user.id },
+			{
+				new: true,
+			}
+		).populate({
+			path: 'assignee',
+			select: 'name email profilePicture',
+		});
+
+		// Update Task Status if the subtask is updated
+		if (assignedSubtask) {
+			await updateTaskStatusBasedOnSubtasks(assignedSubtask.task);
+		}
+
+		res.json(assignedSubtask);
 	} catch (error) {
 		console.error('Error updating subtask:', error);
 		res.status(500).send('Something went wrong!');
@@ -168,4 +198,5 @@ module.exports = {
 	updateSubtask,
 	deleteSubtask,
 	findUnassignedSubtasks,
+	assignSubtask,
 };

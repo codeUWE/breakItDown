@@ -1,49 +1,72 @@
-import React from "react";
-import { Avatar } from "@material-tailwind/react";
-import { NavLink } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthProvider";
+import React from 'react';
+import { Avatar } from '@material-tailwind/react';
+import { NavLink } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthProvider';
 
 function NavBar() {
-  const { isLoading, user, logout } = useContext(AuthContext);
-  return (
-    <nav className="w-[1024px] h-[105px] rounded-[20px] border-[2px] border-black flex items-center justify-self-auto font-Inter font-[600] text-[32px] ">
-      {/* Avatar */}
-      <span className="flex items-center">
-        <Avatar
-          src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="avatar"
-          size="xl"
-          withBorder={true}
-          // className="w-[29px] h-[29px] absolute top- left-0 z-50"
-          className="m-3"
-        />
-      </span>
-      {/* Navigation Links		 */}
-      {!isLoading && (
-        <div className="flex justify-end content- m-6  pl-3.5">
-          <ul className="flex space-x-4 ">
-            {/* need to decide 1st Page of App */}
-            {/* <NavLink to="/">Login</NavLink> */}
-            {user.role.name === "Admin" ? (
-              <NavLink to="/admin/dashboard/projects">Admin-Dashboard</NavLink>
-            ) : (
-              ""
-            )}
-            <NavLink to="/dashboard">Dashboard</NavLink>
-            <NavLink to="/tasks">Tasks</NavLink>
-            <NavLink to="/team">Team</NavLink>
-            <NavLink to="/notes">Notes</NavLink>
-          </ul>
-        </div>
-      )}
 
-      {/* Logout Button */}
-      <button className="flex justify-end pl-3" onClick={logout}>
-        Logout
-      </button>
-    </nav>
-  );
+	const { isLoading, user, logout } = useContext(AuthContext);
+	return (
+		<nav className="w-[1400px] h-[125px] mx-auto rounded-[30px] bg-[#6A66A3] flex items-center justify-self-auto font-Inter font-[500] text-[25px] mt-5 shadow-xl relative">
+			<div className="absolute right-[34px] h-full flex ">
+				<div className="border-[8px] border-[#FE4A49] h-full "></div>
+				<div className="border-[8px] border-[#FED766] h-full "></div>
+				<div className="border-[8px] border-[#08A045] h-full "></div>
+				<div className="border-[8px] border-[#FFD5FF] h-full "></div>
+				<div className="border-[8px] border-[#438CDB] h-full "></div>
+			</div>
+
+
+			{!isLoading && (
+				<div className="flex w-full px-7 mx-auto justify-between items-center">
+					<ul className="flex  text-white font-outfit text-[40px] font-[600] gap-10 ">
+						{/* need to decide 1st Page of App */}
+						{/* <NavLink to="/">Login</NavLink> */}
+						{user.role.name === 'Admin' ? (
+							<NavLink to="/admin/dashboard" className={`hover:text-[#F15025]`}>
+								Admin
+							</NavLink>
+						) : (
+							''
+						)}
+						<NavLink to="/dashboard" className={`hover:text-[#080708]`}>
+							Dashboard
+						</NavLink>
+						<NavLink to="/tasks" className={`hover:text-[#080708]`}>
+							Tasks
+						</NavLink>
+						<NavLink to="/team" className={`hover:text-[#080708]`}>
+							Team
+						</NavLink>
+						<NavLink to="/notes" className={`hover:text-[#080708]`}>
+							Notes
+						</NavLink>
+					</ul>
+					<div className="flex items-center gap-5  ">
+						<div className="flex flex-col justify-center items-center gap-2">
+							<span className="text-[16px] text-[#CFCFCD] font-outfit font-[600]">
+								Welcome, {user.name}
+							</span>
+							<button
+								className="flex justify-end px-7 rounded-full text-[#F55D3E] font-outfit text-[30px] font-[600] bg-[#080708] shadow-lg"
+								onClick={logout}
+							>
+								Logout
+							</button>
+						</div>
+						<Avatar
+							src={user.profilePicture}
+							alt="avatar"
+							className="w-[90px] h-[90px] "
+						/>
+					</div>
+				</div>
+			)}
+
+			{/* Logout Button */}
+		</nav>
+	);
 }
 
 export default NavBar;

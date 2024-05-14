@@ -1,10 +1,13 @@
 /* eslint-disable react/prop-types */
 import { useState, useRef } from 'react';
-import { deleteSubtask } from '../services/TasksRequests';
-import { updateSubtask } from '../services/TasksRequests';
+import {
+	assignSubtask,
+	deleteSubtask,
+	updateSubtask,
+} from '../services/TasksRequests';
+import DeleteSubtaskDialog from './DeleteSubtaskDialog';
 
 //assets
-import speechBubble from '../assets/speechBubble.png';
 import backlog from '../assets/backlog.png';
 import assign from '../assets/assign.png';
 import start from '../assets/start.png';
@@ -18,10 +21,22 @@ import { Avatar } from '@material-tailwind/react';
 import { Tooltip } from '@material-tailwind/react';
 import EditSubtaskDialog from './EditSubtaskDialog';
 
-function SingleTaskSubtask({ subtask, onUpdate, onDelete, currentUser }) {
+//userIntegration
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthProvider';
+import { hasPermission } from '../services/utils';
+
+function SingleTaskSubtask({ subtask, taskLeaderId, onUpdate, onDelete }) {
+	const [deleteOpen, setDeleteOpen] = useState(false);
+	const [showDetails, setShowDetails] = useState(false);
+	const [editOpen, setEditOpen] = useState(false);
+	const detailsRef = useRef(null);
+
+	//extracting subtasks details
 	const {
 		_id,
 		title,
+		assignee,
 		description,
 		status,
 		priority,
@@ -29,18 +44,69 @@ function SingleTaskSubtask({ subtask, onUpdate, onDelete, currentUser }) {
 		deadline,
 	} = subtask;
 
-	const [showDetails, setShowDetails] = useState(false);
-	const detailsRef = useRef(null);
-	const [editOpen, setEditOpen] = useState(false);
+	//permissions
+	const { isLoading, user } = useContext(AuthContext);
+	const isAssignee = assignee ? assignee._id === user._id : false;
+	function canEditSubtask() {
+		const isLeader =
+			user.role.name === 'Team Leader' && taskLeaderId === user._id;
+		const canEdit =
+			hasPermission(user.role.permissions, ['editSubtask']) ||
+			(isLeader && hasPermission(user.role.permissions, ['leaderEditSubtask']));
+		// console.log(
+		// 	'Can Edit Subtask:',
+		// 	canEdit,
+		// 	'Is Leader:',
+		// 	isLeader,
+		// 	'User Permissions:',
+		// 	user.role.permissions
+		// );
+		return canEdit;
+	}
+	function canDeleteSubtask() {
+		const isLeader =
+			user.role.name === 'Team Leader' && taskLeaderId === user._id;
+		const canDelete =
+			hasPermission(user.role.permissions, ['deleteSubtask']) ||
+			(isLeader &&
+				hasPermission(user.role.permissions, ['leaderDeleteSubtask']));
+		// console.log(
+		// 	'Can Delete Subtask:',
+		// 	canDelete,
+		// 	'Is Leader:',
+		// 	isLeader,
+		// 	'User Permissions:',
+		// 	user.role.permissions
+		// );
+		return canDelete;
+	}
 
-	const handleEditOpen = () => {
-		setEditOpen(true);
+	//handler functions
+	const handleDeleteOpen = () => setDeleteOpen(true);
+	const handleDeleteClose = () => setDeleteOpen(false);
+	const handleEditOpen = () => setEditOpen(true);
+	const handleEditClose = () => setEditOpen(false);
+
+	const handleDeleteConfirmed = (subtaskId) => {
+		deleteSubtask(subtaskId).then(() => {
+			onDelete(subtaskId);
+			setDeleteOpen(false);
+		});
+	};
+	//handler for detailed information
+
+	const toggleDetails = () => {
+		const details = detailsRef.current;
+		if (!showDetails) {
+			const height = details.scrollHeight;
+			details.style.height = `${height}px`;
+		} else {
+			details.style.height = '0';
+		}
+		setShowDetails(!showDetails);
 	};
 
-	const handleEditClose = () => {
-		setEditOpen(false);
-	};
-
+	//date formatter
 	function formatDate(dateString) {
 		if (!dateString) return ['No ', ' Date'];
 		try {
@@ -59,17 +125,7 @@ function SingleTaskSubtask({ subtask, onUpdate, onDelete, currentUser }) {
 	}
 	const dateParts = formatDate(deadline); // ["15", "04", "24"]
 
-	const toggleDetails = () => {
-		const details = detailsRef.current;
-		if (!showDetails) {
-			const height = details.scrollHeight;
-			details.style.height = `${height}px`;
-		} else {
-			details.style.height = '0';
-		}
-		setShowDetails(!showDetails);
-	};
-
+	//subtask details updater functions
 	const handleUpdate = async (updates) => {
 		const updatedSubtask = await updateSubtask(subtask._id, updates);
 		if (updatedSubtask) {
@@ -81,23 +137,11 @@ function SingleTaskSubtask({ subtask, onUpdate, onDelete, currentUser }) {
 		handleUpdate({ status: newStatus });
 	};
 
-	const handlePriorityChange = (newPriority) => {
-		handleUpdate({ priority: newPriority });
-	};
-
-	const handleDelete = async () => {
-		const result = await deleteSubtask(_id);
-		if (result) {
-			onDelete(_id);
-		}
-	};
-
 	const handleAssign = async () => {
-		const updatedSubtask = await updateSubtask(subtask._id, {
-			assignee: currentUser._id,
-		});
-		if (updatedSubtask) {
-			onUpdate(updatedSubtask);
+		const assignedSubtask = await assignSubtask(subtask._id);
+		// console.log(assignedSubtask);
+		if (assignedSubtask) {
+			onUpdate(assignedSubtask);
 		}
 	};
 
@@ -128,7 +172,7 @@ function SingleTaskSubtask({ subtask, onUpdate, onDelete, currentUser }) {
 
 	return (
 		<>
-			<div className="w-full flex flex-col px-6 gap-2">
+			<div className="w-full flex flex-col px-6 gap-3">
 				<div className="w-full flex justify-between items-center">
 					<div className="w-[500px] h-max-[40px] ">
 						<h2 className="font-outfit text-[24px] font-[500] text-[#2c2c2c] ">
@@ -138,32 +182,38 @@ function SingleTaskSubtask({ subtask, onUpdate, onDelete, currentUser }) {
 							{description}
 						</p>
 					</div>
-					<div className="flex flex-col justify-center items-center gap-2 ">
-						<Avatar
-							src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWgel"
-							alt="avatar"
-							className="w-[30px] h-[30px]"
-						/>
-						<button>
+					<div className="h-full pt-2 flex flex-col justify-start items-center gap-2 ">
+						{assignee ? (
+							<Avatar
+								src={
+									assignee.profilePicture ||
+									'https://cdn-icons-png.flaticon.com/512/149/149071.png'
+								}
+								className="w-8 h-8"
+							/>
+						) : (
+							<span className="font-outfit font-[700]">No Assignee</span>
+						)}
+						{/* <button>
 							<img
 								src={speechBubble}
 								alt="comments icon"
 								width={30}
 								height={30}
 							/>
-						</button>
+						</button> */}
 					</div>
 				</div>
 				<div className="w-full flex justify-between items-center">
 					<div className="flex justify-center items-center gap-3">
-						<h3 className="font-outfit text-[16px] font-[500] text-[#5a5a5a]">
+						<h3 className="font-outfit text-[16px] font-[500] text-[#575761]">
 							Deadline:
 						</h3>
 						<p>
 							{dateParts.map((part, index) => (
 								<span
 									key={index}
-									className="font-outfit text-[16px] font-[400] text-[#5a5a5a]"
+									className="font-outfit text-[16px] font-[400] text-[#575761]"
 								>
 									{part}
 									{index !== dateParts.length - 1 && (
@@ -182,7 +232,7 @@ function SingleTaskSubtask({ subtask, onUpdate, onDelete, currentUser }) {
 							<h4>{getPriorityLabel(priority).label}</h4>
 						</span>
 						{status === 'backlog' && (
-							<span className="font-outfit font-[200] text-[13px] text-white w-[90px] h-[21px] bg-[#5a5a5a] rounded-[20px] flex justify-center items-center gap-1 ">
+							<span className="font-outfit font-[200] text-[13px] text-white w-[90px] h-[21px] bg-[#575761] rounded-[20px] flex justify-center items-center gap-1 ">
 								<div className="w-[4px] h-[4px] rounded-full bg-white "></div>
 								<h4>To Do</h4>
 							</span>
@@ -201,82 +251,95 @@ function SingleTaskSubtask({ subtask, onUpdate, onDelete, currentUser }) {
 						)}
 					</div>
 					<div className="flex justify-center items-center gap-2">
-						{status === 'backlog' && (
+						{isAssignee && (
 							<>
-								<Tooltip
-									content="Start Subtask"
-									className="bg-[#363636] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
-								>
-									<button onClick={() => handleStatusChange('inProgress')}>
-										<img src={start} alt="" width={27} height={27} />
-									</button>
-								</Tooltip>
+								{status === 'backlog' && (
+									<>
+										<Tooltip
+											content="Start Subtask"
+											className="bg-[#575761] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
+										>
+											<button onClick={() => handleStatusChange('inProgress')}>
+												<img src={start} alt="" width={27} height={27} />
+											</button>
+										</Tooltip>
+									</>
+								)}
+								{status === 'inProgress' && (
+									<>
+										<Tooltip
+											content="Move back to Backlog"
+											className="bg-[#575761] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
+										>
+											<button onClick={() => handleStatusChange('backlog')}>
+												<img src={backlog} alt="" width={27} height={27} />
+											</button>
+										</Tooltip>
+										<Tooltip
+											content="Subtask finished"
+											className="bg-[#575761] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
+										>
+											<button onClick={() => handleStatusChange('done')}>
+												<img src={done} alt="" width={27} height={27} />
+											</button>
+										</Tooltip>
+									</>
+								)}
+								{status === 'done' && (
+									<>
+										<Tooltip
+											content="Subtask back in Progress"
+											className="bg-[#575761] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
+										>
+											<button onClick={() => handleStatusChange('inProgress')}>
+												<img src={inProgress} alt="" width={27} height={27} />
+											</button>
+										</Tooltip>
+										<Tooltip
+											content="Let Subtask verify"
+											className="bg-[#575761] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
+										>
+											<button>
+												<img src={letVerify} alt="" width={27} height={27} />
+											</button>
+										</Tooltip>
+									</>
+								)}
 							</>
 						)}
-						{status === 'inProgress' && (
-							<>
-								<Tooltip
-									content="Move back to Backlog"
-									className="bg-[#363636] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
-								>
-									<button onClick={() => handleStatusChange('backlog')}>
-										<img src={backlog} alt="" width={27} height={27} />
-									</button>
-								</Tooltip>
-								<Tooltip
-									content="Subtask finished"
-									className="bg-[#363636] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
-								>
-									<button onClick={() => handleStatusChange('done')}>
-										<img src={done} alt="" width={27} height={27} />
-									</button>
-								</Tooltip>
-							</>
+						{!assignee ? (
+							<Tooltip
+								content="Assign to Subtask"
+								className="bg-[#575761] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
+							>
+								<button onClick={handleAssign}>
+									<img src={assign} alt="" width={27} height={27} />
+								</button>
+							</Tooltip>
+						) : (
+							''
 						)}
-						{status === 'done' && (
-							<>
-								<Tooltip
-									content="Subtask back in Progress"
-									className="bg-[#363636] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
-								>
-									<button onClick={() => handleStatusChange('inProgress')}>
-										<img src={inProgress} alt="" width={27} height={27} />
-									</button>
-								</Tooltip>
-								<Tooltip
-									content="Let Subtask verify"
-									className="bg-[#363636] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
-								>
-									<button>
-										<img src={letVerify} alt="" width={27} height={27} />
-									</button>
-								</Tooltip>
-							</>
-						)}
-						<Tooltip
-							content="Assign to Subtask"
-							className="bg-[#363636] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
-						>
-							<button onClick={handleAssign}>
-								<img src={assign} alt="" width={27} height={27} />
-							</button>
-						</Tooltip>
-						<Tooltip
-							content="Delete Subtask"
-							className="bg-[#363636] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
-						>
-							<button onClick={handleDelete}>
-								<img src={deleteIcon} alt="" width={27} height={27} />
-							</button>
-						</Tooltip>
-						<Tooltip
-							content="Edit Subtask"
-							className="bg-[#363636] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
-						>
-							<button onClick={handleEditOpen}>
-								<img src={edit} alt="" width={27} height={27} />
-							</button>
-						</Tooltip>
+						{canEditSubtask() ? (
+							<Tooltip content="Edit Subtask" className="tooltip-class">
+								<button onClick={handleEditOpen}>
+									<img src={edit} alt="Edit Subtask" width={27} />
+								</button>
+							</Tooltip>
+						) : null}
+						{canDeleteSubtask() ? (
+							<Tooltip content="Delete Subtask" className="tooltip-class">
+								<button onClick={handleDeleteOpen}>
+									<img src={deleteIcon} alt="Delete Subtask" width={27} />
+								</button>
+							</Tooltip>
+						) : null}
+						<DeleteSubtaskDialog
+							open={deleteOpen}
+							onClose={handleDeleteClose}
+							onDelete={handleDeleteConfirmed}
+							subtask={subtask}
+						/>
+
 						<EditSubtaskDialog
 							subtask={subtask}
 							open={editOpen}
@@ -285,9 +348,9 @@ function SingleTaskSubtask({ subtask, onUpdate, onDelete, currentUser }) {
 						/>
 						<button
 							onClick={toggleDetails}
-							className="font-outfit font-[300] text-[13px] text-[#5a5a5a] w-[76px] h-[19px] bg-[#fffaed] rounded-[20px] "
+							className="font-outfit font-[400] text-[16px] px-3 py-1 text-[#3c3c3c]   bg-[#C1E1F5] rounded-[20px] "
 						>
-							<h4>see more</h4>
+							see more
 						</button>
 					</div>
 				</div>
@@ -306,7 +369,7 @@ function SingleTaskSubtask({ subtask, onUpdate, onDelete, currentUser }) {
 					</div>
 				</div>
 
-				<div className="w-full border-[.5px] border-[#363636]"></div>
+				<div className="w-full border-[.5px] border-[#575761]"></div>
 			</div>
 		</>
 	);

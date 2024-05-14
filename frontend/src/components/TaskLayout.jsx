@@ -1,11 +1,23 @@
 /* eslint-disable react/prop-types */
-import SpeechBubble from '../assets/speechBubble.png';
 import stepInto from '../assets/stepInto.png';
-import { Avatar, Tooltip } from '@material-tailwind/react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Avatar, Tooltip } from '@material-tailwind/react';
+import { getAllUsers } from '../services/UserRequests';
 
 function TaskLayout({ task }) {
+	const [users, setUsers] = useState([]);
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		const fetchUsers = async () => {
+			const allUsers = await getAllUsers();
+			setUsers(allUsers);
+			console.log(allUsers); // Überprüfen der User-Daten
+		};
+
+		fetchUsers();
+	}, []);
 
 	const formatDate = (dateString) => {
 		if (!dateString) return 'Invalid Date';
@@ -25,10 +37,8 @@ function TaskLayout({ task }) {
 				'Nov',
 				'Dec',
 			];
-			let day = date.getDate().toString();
-			day = day.padStart(2, '0');
+			let day = date.getDate().toString().padStart(2, '0');
 			const month = monthShortNames[date.getMonth()];
-
 			return `${month} ${day}`;
 		} catch (error) {
 			console.error('Error while formatting the date:', error);
@@ -36,12 +46,17 @@ function TaskLayout({ task }) {
 		}
 	};
 
-	console.log('Received date:', task.deadline);
+	const getUserAvatarUrl = (userId) => {
+		const user = users.find((user) => user._id === userId);
+		return user
+			? user.profilePicture
+			: 'https://cdn-icons-png.flaticon.com/128/552/552848.png';
+	};
 
 	return (
 		<>
-			<div className="w-[350px] h-[140px] rounded-[20px] border-[2px] border-black  flex bg-white">
-				<div className="flex flex-col w-[60px] justify-center items-center border-e-2 border-black  bg-red-600 text-white rounded-s-[18px]">
+			<div className="w-[390px] h-[140px] rounded-[20px]    flex bg-white">
+				<div className="flex flex-col w-[60px] justify-center items-center   bg-red-600 text-white rounded-s-[18px]  ">
 					<h2 className="m-0 font-outfit font-[700] text-[16px]">
 						{formatDate(task.deadline).split(' ')[0]}
 					</h2>
@@ -49,7 +64,7 @@ function TaskLayout({ task }) {
 						{formatDate(task.deadline).split(' ')[1]}
 					</h2>
 				</div>
-				<div className="w-full grid grid-rows-4 grid-col-6 ps-3 pe-1 pt-[4px] pb-[10px]">
+				<div className="w-full grid grid-rows-4 grid-col-6 ps-3 pe-1 pt-[4px] pb-[10px] bg-[#EFF9FF] rounded-e-[20px]">
 					<Tooltip
 						content={task.title}
 						className="bg-[#363636] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
@@ -59,42 +74,39 @@ function TaskLayout({ task }) {
 						</h2>
 					</Tooltip>
 
-					<h3 className="font-outfit font-[300] text-[13px] row-start-2 row-end-2 col-start-1 col-span-4 tracking-tight leading-tight mt-1  ">
+					<h3 className="font-outfit font-[300] text-[14px] row-start-2 row-end-2 col-start-1 col-span-4 tracking-tight leading-tight mt-1  ">
 						{task.description}
 					</h3>
-					<img
-						src={SpeechBubble}
-						alt="Icon of a speech bubble"
-						width={29}
-						height={29}
-						className="row-start-4 col-start-1"
-					/>
-					<div className="w-[60px] row-start-4 col-start-4 col-span-2 mx-auto">
-						<div className="w-[60px] w-max-[67px] h-[30px] h-max-[30px] flex justify-end relative ">
-							<Avatar
-								src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-								alt="avatar"
-								className="w-[29px] h-[29px] absolute top-0 left-0 z-50"
-							/>
-							<Avatar
-								src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-								alt="avatar"
-								className="w-[29px] h-[29px] absolute  top-0 left-[15px] z-40"
-							/>
-							<Avatar
-								src="https://images.unsplash.com/photo-1521119989659-a83eee488004?q=80&w=1923&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-								alt="avatar"
-								className="w-[29px] h-[29px] absolute  top-0 left-[30px]"
-							/>
+					<h3 className="row-start-4 col-start-1 col-span-2 font-outfit text-[16px]">
+						<span className="font-outfit font-[600] text-[#E53935] ">
+							{task.unassignedSubtasksCount}
+						</span>{' '}
+						unassigned Subtasks
+					</h3>
+					<div className=" row-start-4 col-start-3 col-span-2">
+						<div className=" flex justify-start relative">
+							{task.collaborators.map((collaborator, index) => {
+								console.log('Key:', collaborator._id); // Überprüfung der Key-Werte
+								return (
+									<Avatar
+										key={collaborator._id}
+										src={getUserAvatarUrl(collaborator._id)}
+										alt="avatar"
+										className={` w-[35px] h-[35px] absolute top-0 left-[${
+											15 * index
+										}px] z-${0 + index * 10}`}
+									/>
+								);
+							})}
 						</div>
 					</div>
 
 					<img
 						src={stepInto}
 						alt="icon step into"
-						width={24}
-						height={24}
-						className="row-start-2 row-end-4 col-start-6 ms-1 mt-5"
+						width={35}
+						height={35}
+						className="row-start-2 row-end-4 col-start-6 ms-1 mt-5 p-1 hover:bg-yellow-500 hover:rounded-full"
 						onClick={() => navigate(`/tasks/${task._id}`)}
 					/>
 					<h4 className="font-outfit font-[400] text-[13px] pt-[6px] row-start-1 col-start-6 mx-auto">

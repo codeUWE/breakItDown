@@ -1,40 +1,52 @@
 const Task = require('../models/tasks');
+const Subtask = require('../models/subtasks');
 
 const getTasks = async (req, res) => {
 	try {
 		const tasks = await Task.find({})
 			.sort('deadline')
-			.populate('owner lead', 'name email')
+			.populate({
+				path: 'owner',
+				select: 'name email profilePicture',
+			})
+			.populate({
+				path: 'leader',
+				select: 'name email profilePicture',
+			})
 			.populate({
 				path: 'collaborators',
-				select: 'name email',
+				select: 'name email profilePicture',
 			})
 			.populate({
 				path: 'subtasks',
 				select:
-					'title description detailedInformation status priority deadline isClosed',
+					'title description detailedInformation status priority deadline isClosed assignee',
 				options: { sort: { deadline: 1 } },
 				populate: {
 					path: 'assignee',
-					select: 'name email',
+					select: 'name email profilePicture',
 				},
 			});
 
-		const tasksWithProgress = tasks.map((task) => {
+		const tasksWithDetails = tasks.map((task) => {
 			const totalSubtasks = task.subtasks.length;
 			const completedSubtasks = task.subtasks.filter(
 				(subtask) => subtask.status === 'done'
+			).length;
+			const unassignedSubtasksCount = task.subtasks.filter(
+				(subtask) => !subtask.assignee
 			).length;
 
 			return {
 				...task.toObject(),
 				totalSubtasks,
 				completedSubtasks,
+				unassignedSubtasksCount,
 				progress: `${completedSubtasks}/${totalSubtasks}`,
 			};
 		});
 
-		res.json(tasksWithProgress);
+		res.json(tasksWithDetails);
 	} catch (error) {
 		console.error('Error fetching tasks:', error);
 		res.status(500).send('Something went wrong!');
@@ -45,31 +57,26 @@ const getTask = async (req, res) => {
 	try {
 		const { id } = req.params;
 		const task = await Task.findById(id)
-			.populate('owner lead', 'name email')
+			.populate({
+				path: 'owner',
+				select: 'name email profilePicture',
+			})
+			.populate({
+				path: 'leader',
+				select: 'name email profilePicture',
+			})
 			.populate({
 				path: 'collaborators',
-				select: 'name email',
+				select: 'name email profilePicture',
 			})
 			.populate({
 				path: 'subtasks',
 				select:
-					'title description detailedInformation status priority deadline isClosed',
-				options: { sort: { deadline: 1 } }, // Hier fügen wir die Sortierung hinzu
+					'title description detailedInformation status priority deadline isClosed assignee',
 				populate: {
 					path: 'assignee',
-					select: 'name email',
+					select: 'name email profilePicture',
 				},
-				// .populate({
-				// 	path: 'comments',
-				// 	match: { isDeleted: false },
-				// 	select: 'body user',
-				// 	populate: { path: 'user', select: 'name' },
-				// })
-				// .populate({
-				// 	path: 'notes',
-				// 	match: { isDeleted: false, isShared: true },
-				// 	select: 'title body tags',
-				// });
 			});
 
 		if (!task) {
@@ -80,15 +87,22 @@ const getTask = async (req, res) => {
 		const completedSubtasks = task.subtasks.filter(
 			(subtask) => subtask.status === 'done'
 		).length;
+		const unassignedSubtasksCount = await Subtask.countDocuments({
+			task: id,
+			assignee: null, // Nur Subtasks zählen, die keinen Assignee haben
+			status: 'backlog',
+			isClosed: false,
+		});
 
-		const taskWithProgress = {
+		const taskWithDetails = {
 			...task.toObject(),
 			totalSubtasks,
 			completedSubtasks,
 			progress: `${completedSubtasks}/${totalSubtasks}`,
+			unassignedSubtasksCount,
 		};
 
-		res.json(taskWithProgress);
+		res.json(taskWithDetails);
 	} catch (error) {
 		console.error('Error fetching task:', error);
 		res.status(500).send('Something went wrong!');
@@ -158,13 +172,23 @@ const columns = [
 
 const createTask = async (req, res) => {
 	try {
-		const { title, description, status, startDate, deadline } = req.body;
+		const {
+			title,
+			description,
+			status,
+			startDate,
+			deadline,
+			leader,
+			collaborators,
+		} = req.body;
 		const createdTask = await Task.create({
 			title,
 			description,
 			status,
 			startDate,
 			deadline,
+			leader,
+			collaborators,
 		});
 		res.json(createdTask);
 	} catch (error) {
@@ -185,15 +209,25 @@ const updateTask = async (req, res) => {
 		}
 
 		const updatedTask = await Task.findByIdAndUpdate(id, body, { new: true })
-			.populate('owner lead', 'name email')
+			.populate({
+				path: 'owner',
+				select: 'name email profilePicture',
+			})
+			.populate({
+				path: 'leader',
+				select: 'name email profilePicture',
+			})
 			.populate({
 				path: 'collaborators',
-				select: 'name email',
+				select: 'name email profilePicture',
 			})
-			// .populate({
-			// 	path: 'comments',
-			// 	match: { isDeleted: false },
-			// 	select: 'body user',;
+			.populate({
+				path: 'comments',
+				match: { isDeleted: false },
+				select: 'body user createdAt',
+				options: { sort: { createdAt: 1 } }, // sort by creation date
+				populate: { path: 'user', select: 'name' },
+			})
 			.populate({
 				path: 'subtasks',
 				select:

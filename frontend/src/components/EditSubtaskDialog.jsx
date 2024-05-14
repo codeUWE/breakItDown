@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
+	Input,
 	Button,
 	Dialog,
 	DialogHeader,
@@ -7,9 +8,9 @@ import {
 	DialogFooter,
 	Select,
 	Option,
-	Input,
 } from '@material-tailwind/react';
 import { updateSubtask } from '../services/TasksRequests';
+import { getAllUsers } from '../services/UserRequests';
 
 export default function EditSubtaskDialog({
 	subtask,
@@ -17,30 +18,44 @@ export default function EditSubtaskDialog({
 	onClose,
 	onUpdate,
 }) {
-	const {
-		_id,
-		title,
-		description,
-		status,
-		priority,
-		detailedInformation,
-		deadline,
-	} = subtask;
-
 	const [formData, setFormData] = useState({
-		title,
-		description,
-		detailedInformation,
-		deadline: deadline ? deadline.substring(0, 10) : '',
-		status,
-		priority,
+		title: subtask.title,
+		description: subtask.description,
+		detailedInformation: subtask.detailedInformation,
+		deadline: subtask.deadline ? subtask.deadline.substring(0, 10) : '',
+		status: subtask.status,
+		priority: subtask.priority,
+		assignee: subtask.assignee ? subtask.assignee._id : '',
 	});
 
-	const handleChange = (e) => {
-		const name = e.target ? e.target.name : e.name;
-		const value = e.target ? e.target.value : e.value;
+	const [users, setUsers] = useState([]);
 
-		console.log(`Updating ${name} to ${value}`);
+	useEffect(() => {
+		const fetchUsers = async () => {
+			const allUsers = await getAllUsers();
+			setUsers(allUsers);
+		};
+		fetchUsers();
+	}, []);
+
+	const handleChange = (eventOrValue) => {
+		let name, value;
+
+		// Überprüfen, ob das Argument ein Ereignisobjekt oder direkt ein Wert ist
+		if (eventOrValue.target) {
+			// Standard-HTML-Element (z.B. Input)
+			name = eventOrValue.target.name;
+			value = eventOrValue.target.value;
+		} else {
+			// Direkt übergebener Wert von der Select-Komponente
+			name = eventOrValue.name;
+			value = eventOrValue.value;
+		}
+
+		// Besondere Behandlung für 'assignee', wenn 'none' ausgewählt wird
+		if (name === 'assignee' && value === 'none') {
+			value = null; // Setze null, wenn keine Zuweisung gewünscht ist
+		}
 
 		setFormData((prev) => ({
 			...prev,
@@ -49,8 +64,7 @@ export default function EditSubtaskDialog({
 	};
 
 	const handleSave = async () => {
-		console.log('Saving data:', formData);
-		const updatedData = await updateSubtask(_id, formData);
+		const updatedData = await updateSubtask(subtask._id, formData);
 		if (updatedData) {
 			onUpdate(updatedData);
 		}
@@ -58,9 +72,9 @@ export default function EditSubtaskDialog({
 	};
 
 	return (
-		<Dialog open={open} handler={onClose}>
+		<Dialog open={open} onClose={onClose}>
 			<DialogHeader>Edit Subtask</DialogHeader>
-			<DialogBody className="flex flex-col gap-5">
+			<DialogBody className="flex flex-col gap-3">
 				<Input
 					type="text"
 					name="title"
@@ -109,12 +123,36 @@ export default function EditSubtaskDialog({
 					<Option value="inProgress">In Progress</Option>
 					<Option value="done">Done</Option>
 				</Select>
+				<div className="flex flex-col justify-start gap-2">
+					<label>
+						<input
+							type="radio"
+							name="assignee"
+							value="none"
+							checked={formData.assignee === 'none'}
+							onChange={handleChange}
+						/>
+						<span className="ms-3">No Assignee</span>
+					</label>
+					{users.map((user) => (
+						<label key={user._id}>
+							<input
+								type="radio"
+								name="assignee"
+								value={user._id}
+								checked={formData.assignee === user._id}
+								onChange={handleChange}
+							/>
+							<span className="ms-3">{user.name}</span>
+						</label>
+					))}
+				</div>
 			</DialogBody>
 			<DialogFooter>
-				<Button variant="text" color="red" onClick={onClose} className="mr-1">
+				<Button onClick={onClose} color="red" className="mr-1">
 					Cancel
 				</Button>
-				<Button variant="gradient" color="green" onClick={handleSave}>
+				<Button onClick={handleSave} color="green">
 					Save
 				</Button>
 			</DialogFooter>

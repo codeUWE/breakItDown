@@ -1,6 +1,7 @@
-const Project = require("../models/projects");
+const Project = require('../models/projects');
 
 const createProject = async (req, res, next) => {
+
   try {
     console.log(1111111111111);
     const { title, users = [], roles = [] } = req.body;
@@ -22,27 +23,30 @@ const createProject = async (req, res, next) => {
     console.log(error);
     res.status(500).send("Something went wrong!");
   }
+
 };
 
 const getProjects = async (req, res) => {
-  try {
-    const projects = await Project.find({});
-    res.json(projects);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Something went wrong!");
-  }
+	try {
+		const projects = await Project.find({});
+		res.json(projects);
+	} catch (error) {
+		console.log(error);
+		res.status(500).send('Something went wrong!');
+	}
 };
 
 const deleteProject = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const deletedProject = await Project.findByIdAndDelete(id);
-    res.send(deletedProject);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Something went wrong!");
-  }
+
+	try {
+		const { id } = req.params;
+		const deletedProject = await Task.findByIdAndDelete(id);
+		res.send(deletedProject);
+	} catch (error) {
+		console.log(error);
+		res.status(500).send('Something went wrong!');
+	}
+
 };
 
 const getProjectByUser = async (req, res) => {
@@ -97,6 +101,7 @@ const getProjectByUser = async (req, res) => {
 //   }
 
 module.exports = {
+
   getProjects,
   createProject,
   deleteProject,
@@ -104,4 +109,5 @@ module.exports = {
   // getProjectRole,
   // updateProjectRole,
   // deleteProjectRole
+
 };

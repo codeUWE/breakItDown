@@ -7,13 +7,17 @@ import AddSubtaskDialog from './AddSubtaskDialog';
 import EditTaskDialog from './EditTaskDialog';
 import DeleteTaskDialog from './DeleteTaskDialog';
 
-import Sent from '../assets/sent.png';
+//userIntegration
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthProvider';
+import { hasPermission } from '../services/utils';
+
 import SpeechBubble from '../assets/speechBubble.png';
 import plus from '../assets/plus.png';
 import edit from '../assets/edit.png';
 import deleteIcon from '../assets/deleteIcon.png';
 import back from '../assets/back.png';
-import user from '../assets/user.png';
+import userIcon from '../assets/user.png';
 import collaborators from '../assets/collaborators.png';
 import deadline from '../assets/deadline.png';
 import startDate from '../assets/startDate.png';
@@ -21,11 +25,14 @@ import status from '../assets/status.png';
 import more from '../assets/more.png';
 
 import { Avatar } from '@material-tailwind/react';
+import Comments from './Comments';
 
 function SingleTaskBoard() {
+	//user
+	const { isLoading, user } = useContext(AuthContext);
+
 	const { id } = useParams();
 	const navigate = useNavigate();
-	const currentUser = { _id: 'currentUserId' };
 
 	const [task, setTask] = useState(null);
 	const [activeTab, setActiveTab] = useState('subtasks');
@@ -59,7 +66,7 @@ function SingleTaskBoard() {
 			case 'backlog':
 				return {
 					label: 'To Do',
-					className: 'bg-[#5a5a5a] text-white',
+					className: 'bg-[#575761] text-white',
 				};
 			case 'inProgress':
 				return {
@@ -82,6 +89,8 @@ function SingleTaskBoard() {
 	const fetchTask = async () => {
 		try {
 			const data = await getTaskById(id);
+			console.log(data); // Überprüfe die Struktur und Verfügbarkeit von 'leader'
+
 			const sortedSubtasks = sortSubtasks(data.subtasks, sortMode);
 			setTask({ ...data, subtasks: sortedSubtasks });
 		} catch (error) {
@@ -112,10 +121,6 @@ function SingleTaskBoard() {
 		}
 	};
 
-	const handleTabChange = (tab) => {
-		setActiveTab(tab);
-	};
-
 	const handleSubtaskUpdate = (updatedSubtask) => {
 		setTask((prevTask) => {
 			const updatedSubtasks = prevTask.subtasks.map((subtask) =>
@@ -138,14 +143,6 @@ function SingleTaskBoard() {
 		fetchTask();
 	};
 
-	const handleAddOpen = () => {
-		setAddOpen(true);
-	};
-
-	const handleAddClose = () => {
-		setAddOpen(false);
-	};
-
 	const handleSubtaskAdded = (newSubtask) => {
 		setTask((prevTask) => ({
 			...prevTask,
@@ -154,21 +151,14 @@ function SingleTaskBoard() {
 		fetchTask();
 	};
 
-	const handleEditOpen = () => {
-		setEditOpen(true);
-	};
+	const handleTabChange = (tab) => setActiveTab(tab);
 
-	const handleEditClose = () => {
-		setEditOpen(false);
-	};
-
-	const handleDeleteOpen = () => {
-		setDeleteOpen(true);
-	};
-
-	const handleDeleteClose = () => {
-		setDeleteOpen(false);
-	};
+	const handleAddOpen = () => setAddOpen(true);
+	const handleAddClose = () => setAddOpen(false);
+	const handleEditOpen = () => setEditOpen(true);
+	const handleEditClose = () => setEditOpen(false);
+	const handleDeleteOpen = () => setDeleteOpen(true);
+	const handleDeleteClose = () => setDeleteOpen(false);
 
 	const handleDeleteTask = async () => {
 		try {
@@ -201,24 +191,45 @@ function SingleTaskBoard() {
 		setShowMoreDetails(!showMoreDetails);
 	};
 
+	const isLeader =
+		task && user.role.name === 'Team Leader' && task.leader._id === user._id;
+
+	const canEditTicket =
+		hasPermission(user.role.permissions, ['editTicket']) ||
+		(isLeader && hasPermission(user.role.permissions, ['leaderEditTicket']));
+	const canDeleteTicket = hasPermission(user.role.permissions, [
+		'deleteTicket',
+	]);
+	const canAddSubtask =
+		hasPermission(user.role.permissions, ['addSubtask']) ||
+		(isLeader && hasPermission(user.role.permissions, ['leaderAddSubtask']));
+
 	return (
-		<div className="p-10 w-full h-full flex justify-center items-center">
-			<div className="w-[1200px] h-[550px] rounded-[30px] border-[5px] border-[#363636] bg-[#daf0fd] shadow-2xl p-1 relative">
-				<button
-					onClick={() => task && handleEditOpen()}
-					className="absolute top-10 left-[455px]"
-				>
-					<img src={edit} alt="edit icon" width={20} />
-				</button>
-				<button
-					onClick={() => task && handleDeleteOpen()}
-					className="absolute top-20 left-[455px]"
-				>
-					<img src={deleteIcon} alt="edit icon" width={20} />
-				</button>
+		<div className="w-full h-full flex-col justify-center items-center mt-10">
+			<h2 className="font-outfit font-[800] text-[45px] text-start px-14 mb-2">
+				Task <span className="text-[#681FDE]">View</span>
+			</h2>
+			<div className="w-[1400px] h-[670px] mx-auto rounded-[30px] bg-[#eff9ff]  p-5 relative">
+				{/* Delete, Edit and Back Buttons and Dialogs */}
 				<button onClick={() => navigate(-1)} className="absolute top-4 right-6">
 					<img src={back} alt="edit icon" width={22} />
 				</button>
+				{canEditTicket ? (
+					<button
+						onClick={() => task && handleEditOpen()}
+						className="absolute top-6 left-[535px]"
+					>
+						<img src={edit} alt="edit icon" width={23} />
+					</button>
+				) : null}
+				{canDeleteTicket ? (
+					<button
+						onClick={() => task && handleDeleteOpen()}
+						className="absolute top-14 left-[535px]"
+					>
+						<img src={deleteIcon} alt="delete icon" width={23} />
+					</button>
+				) : null}
 
 				<EditTaskDialog
 					task={task}
@@ -232,6 +243,7 @@ function SingleTaskBoard() {
 					onDelete={handleDeleteTask}
 					task={task}
 				/>
+				{/* Task Information left side */}
 				<div className="p-3 flex justify-center items-center w-full h-full rounded-3xl">
 					<div className="w-[38%] h-full flex flex-col justify-start items-center">
 						<h2 className="self-start font-outfit font-[700] text-[40px] text-[#363636] tracking-tight leading-tight mb-2">
@@ -239,12 +251,21 @@ function SingleTaskBoard() {
 						</h2>
 						<div className="taskInformation w-full flex flex-wrap justify-center items-center">
 							<div className="w-1/2 h-[40px] flex items-center justify-start gap-3">
-								<img src={user} alt="lead icon" width={23} />
-								<Avatar
-									src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWgel"
-									alt="avatar"
-									className="w-[33px] h-[33px]"
-								/>
+								<img src={userIcon} alt="lead icon" width={23} />
+								{task && task.leader && (
+									<div>
+										<div className="flex items-center gap-2">
+											<Avatar
+												src={
+													task.leader.profilePicture ||
+													'https://cdn-icons-png.flaticon.com/128/552/552848.png'
+												}
+												alt={`${task.leader.name}'s Avatar`}
+												className="w-[35px] h-[35px]"
+											/>
+										</div>
+									</div>
+								)}
 							</div>
 							<div className="w-1/2 h-[40px] flex items-center justify-between">
 								<div className="flex items-center justify-start gap-3">
@@ -272,25 +293,24 @@ function SingleTaskBoard() {
 								<div className="w-full flex">
 									<div className="w-1/2 h-[40px] flex items-center justify-start gap-3">
 										<img src={collaborators} alt="lead icon" width={23} />
-										<div className="w-[60px] w-max-[67px] h-[30px] h-max-[30px] flex justify-end relative">
-											<Avatar
-												src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWgel"
-												alt="avatar"
-												className="w-[29px] h-[29px] absolute top-0 left-0 z-10"
-											/>
-											<Avatar
-												src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWgel"
-												alt="avatar"
-												className="w-[29px] h-[29px] absolute  top-0 left-[15px] z-20"
-											/>
-											<Avatar
-												src="https://images.unsplash.com/photo-1521119989659-a83eee488004?q=80&w=1923&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWgel"
-												alt="avatar"
-												className="w-[29px] h-[29px] absolute z-30 top-0 left-[30px]"
-											/>
+										<div className="flex justify-end relative">
+											{task &&
+												task.collaborators.map((collaborator) => {
+													const avatarUrl =
+														collaborator.profilePicture ||
+														'https://cdn-icons-png.flaticon.com/128/552/552848.png';
+													return (
+														<Avatar
+															key={collaborator._id}
+															src={avatarUrl}
+															alt={`${collaborator.name}'s Avatar`}
+															className={`w-[35px] h-[35px]`}
+														/>
+													);
+												})}
 										</div>
 									</div>
-									<div className="w-1/2 h-[40px] flex items-center justify-between gap-3 pe-5">
+									<div className="w-1/2 h-[40px] flex items-center justify-between gap-3 pe-6">
 										<div className="flex items-center gap-2">
 											<img
 												src={startDate}
@@ -324,10 +344,10 @@ function SingleTaskBoard() {
 								</h2>
 							</div>
 						</div>
-						<div className="w-full mt-2 border-[.5px] border-black "></div>
-						{/* later on place here a component <Comment/> */}
+						<div className="w-full mt-2 border-[.5px] border-[#0000003a] "></div>
+						{/* Comments */}
 						<div className="w-full flex justify-start items-center gap-2">
-							<h2 className="font-outfit font-[700] text-[24px] text-[#363636] tracking-tighter">
+							<h2 className="font-outfit font-[700] text-[28px] text-[#363636] tracking-tight">
 								Comments
 							</h2>
 							<img
@@ -337,28 +357,16 @@ function SingleTaskBoard() {
 								height={25}
 							/>
 						</div>
-						<div className="w-full h-full rounded-[20px] border-black border-[1px] flex flex-col justify-end items-center p-2 relative">
-							<div className="w-[90%] flex justify-between items-center relative">
-								<input
-									type="text"
-									className="bg-transparent border-[#363636] border-[2px] rounded-[20px] w-full "
-								/>
-								<img
-									src={Sent}
-									alt="Sent icon für Nachricht"
-									width={18}
-									height={18}
-									className="absolute right-2"
-								/>
-							</div>
-							<div className="w-[20px] h-[20px] bg-orange-800 rounded-full border-black border-[4px] self-start absolute top-5 left-[92%] "></div>
+						<div className="w-full h-full overflow-auto no-scrollbar  rounded-[20px] ">
+							<Comments />
 						</div>
 					</div>
+					{/* Right side of the div - Subtasks and Progress */}
 					<div className="w-[62%] h-full flex flex-col justify-start items-center ps-6 pt-1">
 						<div className="w-full flex justify-around items-center font-outfit text-[48px] font-[700] text-[#363636] tracking-tight mb-4">
 							<button
 								className={`h2 ${
-									activeTab === 'subtasks' ? 'text-[#681FDE]' : 'text-[#363636]'
+									activeTab === 'subtasks' ? 'text-[#681FDE]' : 'text-[#575761]'
 								}`}
 								onClick={() => handleTabChange('subtasks')}
 							>
@@ -366,17 +374,17 @@ function SingleTaskBoard() {
 							</button>
 							<button
 								className={`h2 ${
-									activeTab === 'progress' ? 'text-[#681FDE]' : 'text-[#363636]'
+									activeTab === 'progress' ? 'text-[#681FDE]' : 'text-[#575761]'
 								}`}
 								onClick={() => handleTabChange('progress')}
 							>
-								Progress
+								Task Board
 							</button>
 						</div>
 						<div className="w-full h-full flex flex-col">
 							{activeTab === 'subtasks' && task?.subtasks ? (
 								<>
-									<div className="w-full ps-6 mb-4 flex justify-between items-center bg-[#daf0fd]">
+									<div className="w-full ps-6 mb-4 flex justify-between items-center bg-transparent">
 										<div className="flex gap-3">
 											<p className="font-outfit font-[600] text-[18px] text-[#438CDB]">
 												sort by
@@ -391,33 +399,36 @@ function SingleTaskBoard() {
 												<option value="status">Status</option>
 											</select>
 										</div>
-										<button
-											onClick={handleAddOpen}
-											className="py-1 px-4 bg-[#363636] text-white rounded-2xl flex items-center gap-2"
-										>
-											<img src={plus} alt="Add Subtask" width={12} />
-											<h5 className="font-outfit font-[300] text-[12px] ">
-												Add Subtask
-											</h5>
-										</button>
-										<AddSubtaskDialog
-											open={addOpen}
-											onClose={handleAddClose}
-											onUpdate={handleSubtaskAdded}
-											taskId={task._id}
-										/>
 									</div>
-									<div className="h-[380px] w-full overflow-scroll flex flex-col gap-2">
+									<div className="h-[420px] w-full overflow-scroll flex flex-col gap-2">
 										{task?.subtasks.map((subtask) => (
 											<SingleTaskSubtask
 												key={subtask._id}
 												subtask={subtask}
+												taskLeaderId={task?.leader._id}
 												onUpdate={handleSubtaskUpdate}
 												onDelete={handleSubtaskDelete}
-												currentUser={currentUser}
 											/>
 										))}
 									</div>
+									{canAddSubtask ? (
+										<button
+											onClick={handleAddOpen}
+											className="py-1 self-end px-4 bg-[#575761] w-40 text-white rounded-2xl flex justify-center items-center gap-2 mt-4 me-8"
+										>
+											<img src={plus} alt="Add Subtask" width={12} />
+											<h5 className="font-outfit font-[300] text-[14px]">
+												Add Subtask
+											</h5>
+										</button>
+									) : null}
+
+									<AddSubtaskDialog
+										open={addOpen}
+										onClose={handleAddClose}
+										onUpdate={handleSubtaskAdded}
+										taskId={task._id}
+									/>
 								</>
 							) : (
 								<div className="px-4 h-full w-full">
