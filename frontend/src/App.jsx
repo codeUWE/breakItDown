@@ -8,19 +8,19 @@ import SingleTaskBoard from './components/SingleTaskBoard';
 // import SignUp from './components/SignUp';
 import SignUpCard from "./components/SignUpCard";
 import LoginCard from "./components/LoginCard";
-import AdminDashboard from "./components/AdminDashboard";
+// import AdminDashboard from "./components/AdminDashboard";
 import ManageProjects from "./components/ManageProjects";
-import ManageRoles from "./components/ManageRoles";
+// import ManageRoles from "./components/ManageRoles";
 import ManageUsers from "./components/ManageUsers";
 import Dashboard from "./components/Dashboard";
 import Layout from "./components/Layout";
-import Team from "./components/Team";
+// import Team from "./components/Team";
 import Notes from "./components/Notes";
 
-import Schedule from "./components/Schedule";
+// import Schedule from "./components/Schedule";
 import Authorize from "./components/Authorize";
 
-import ProjectProgress from './components/ProjectProgress';
+// import ProjectProgress from './components/ProjectProgress';
 import TeamView from './components/TeamView';
 import TeamTable from './components/TeamTable';
 
@@ -37,7 +37,7 @@ function App() {
             <Route path="/admin" element={<Authorize role={"Admin"} />}>
               {/* <Route path="dashboard" element={<AdminDashboard />} /> */}
               <Route path="dashboard/projects" element={<ManageProjects />} />
-              <Route path="dashboard/roles" element={<ManageRoles />} />
+              {/* <Route path="dashboard/roles" element={<ManageRoles />} /> */}
               <Route path="dashboard/users" element={<ManageUsers />} />
             </Route>
 
@@ -46,7 +46,7 @@ function App() {
 						<Route path="/team" element={<TeamView />} />
 						<Route path="/teamtable" element={<TeamTable />} />
 						<Route path="/tasks/:id" element={<SingleTaskBoard />} />
-						<Route path="/tasks/progress" element={<ProjectProgress />} />
+						{/* <Route path="/tasks/progress" element={<ProjectProgress />} /> */}
 						<Route path="/notes" element={<Notes />} />
           </Route>
         </Routes>

@@ -27,3 +27,12 @@
 .red-slash {
   color: red;
 }
+
+.sticky-header {
+  position: fixed;
+  center: 0;
+  right: 390px;
+  z-index: 999;
+  background-color: red; /* Optional: Add a background color if needed */
+  width: 10%; /* Optional: Set the width to 100% to span the entire viewport */
+}

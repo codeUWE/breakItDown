@@ -9,6 +9,7 @@ export function TestimonialCard({ onDelete, onEdit }) {
   const [news, setNews] = useState([]);
   const [users, setUsers] = useState([]);
   const [deletedNews, setDeletedNews] = useState([]);
+  const [id, setId] = useState("");
 
   useEffect(() => {
     // Fetch news when the component mounts
@@ -31,8 +32,7 @@ export function TestimonialCard({ onDelete, onEdit }) {
         console.error('Error fetching users:', error);
       });
 
-    // Delete news
-    deleteNews()
+      deleteNews(id)
       .then(data => {
         console.log('Deleted News:', data);
         setDeletedNews(data);
@@ -59,75 +59,275 @@ export function TestimonialCard({ onDelete, onEdit }) {
   // Get the user's own posts
   const myPosts = news.filter(item => item.name === user.name);
 
+  // Function to handle post submission
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    // Get the current date and time
+    const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleDateString('en-GB', {
+      year: '2-digit',
+      month: '2-digit',
+      day: '2-digit',
+    });
+    const formattedTime = currentDate.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    });
+
+    // Combine date and time into the desired format
+    const dateTime = `${formattedDate} ${formattedTime}`;
+
+    // Here, you should have a function to post the news with the timestamp
+    // For example:
+    // await postNews({ name: user.name, body: newPost, timestamp: dateTime });
+
+    // Clear the input field after successful submission
+    setNewPost("");
+
+    // Fetch news again to update the list with the new post
+    const updatedNews = await getNews();
+    setNews(updatedNews);
+  } catch (error) {
+    console.error('Error posting news:', error);
+  }
+};
+
   return (
-    <div className="ml-35 w-700">
+    <div>
       {/* Render the user's own posts */}
       {myPosts.map((item, index) => (
-        <Card key={index} color="transparent" shadow={false} className="w-[950.85px] mb-4">
-          <CardHeader color="transparent" floated={false} shadow={false} className="flex items-center pt-12 ml-12">
+        <Card className='' key={index}>
+         <div>
+                    
+         </div>
             {item && (
-              <Avatar size="xl" variant="circular" src={getUserProfilePicture(item.name)} alt={item.name} />
+              <Avatar size="l" variant="circular" src={getUserProfilePicture(item.name)} alt={item.name} />
             )}
-            <div className="flex flex-col">
+            <div className="m-1">
               <div>
-                <Typography variant="h5" color="blue-gray" className="text-l">
+              <Typography variant="paragraph" type color="orange" className="text-xs ml-12  absolute bottom-[35px]">
                   {item ? item.name : 'Unknown User'}
                 </Typography>
               </div>
             </div>
-          </CardHeader>
-          <CardBody className="justify-center overflow-auto ml-10 pb-2">
-            <div>
-              <Typography className="text-l">{item.body}</Typography>
-              <div className="mr-12 w-[483] border-t border-gray-600 flex-grow">
-                <div className="text-xs flex justify-start">
-                  <p>Sent: {item.timestamp}</p>
+     
+        
+            {/* <div > */}
+            <div className='absolute top-[12px]'>
+
+            <Typography variant='caption' className="text-xs flex justify-start items-start absolute bottom-[40px] ml-[65px]">{item.body}</Typography>
+                <div className='flex flex-col justify-end items-end absolute top-[-4px] right-[70px]'>
+                  <p className='text-xs'> {item.time}</p> 
+                 <p className=' text-xs'> {item.date}</p>
                 </div>
+                 
+                 <div className='mr-2'>
+                  <div className=" w-[450px] m-10 border-t border-gray-900 flex-grow"> 
+                 </div>
+                   
+                    
+             
+             
               </div>
+            </div>
+        
               {/* Render edit and delete buttons only for the user's own posts */}
               {item.name === user.name && (
-                <div className="flex justify-end mt-3 text-l">
-                  <button onClick={() => onEdit(item.id, item.body)} className="text-gray-400 mr-2">
+                <div>
+                  {/* <button onClick={() => onEdit(item.id, item.body)} className="text-gray-400 mr-2">
                     Edit
                   </button>
                   <button onClick={() => onDelete(item.id)} className="text-gray-400">
                     Delete
-                  </button>
+                  </button> */}
                 </div>
               )}
-            </div>
-          </CardBody>
+            {/* </div> */}
+     
         </Card>
       ))}
       
       {/* Render posts from other users */}
       {otherUserPosts.map((item, index) => (
-        <Card key={index} color="transparent" shadow={false} className="w-[950.85px] mb-4 ">
-          <CardHeader color="transparent" floated={false} shadow={false} className="flex items-center pt-12 ml-12">
+         <Card className='' key={index}>
+         <div>
+                    
+         </div>
             {item && (
-              <Avatar size="xl" variant="circular" src={getUserProfilePicture(item.name)} alt={item.name} />
+              <Avatar size="l" variant="circular" src={getUserProfilePicture(item.name)} alt={item.name} />
             )}
-            <div>
-              <div className='absolute top-[-4px]'>
-                <Typography variant="h5" color="blue-gray" className="text-l">
+            <div className="m-1">
+              <div>
+              <Typography variant="paragraph" type color="orange" className="text-xs ml-12  absolute bottom-[35px]">
                   {item ? item.name : 'Unknown User'}
                 </Typography>
               </div>
             </div>
-          </CardHeader>
-          <CardBody className="justify-center overflow-auto ml-10 pb-2">
-            <div>
-              <Typography className="text-xs">{item.body}</Typography>
-              <div className="mr-12 w-[483] m-2 border-t border-gray-600 flex-grow">
-                <div className="text-l flex justify-start">
-                  <p>Sent: {item.timestamp}</p>
+     
+        
+            {/* <div > */}
+            <div className='absolute top-[12px]'>
+       
+            <Typography variant='caption' className="text-xs flex justify-start items-start absolute bottom-[40px] ml-[65px]">{item.body}</Typography>
+                <div className='flex flex-col justify-end items-end absolute top-[-4px] right-[70px]'>
+                  <p className='text-xs'> {item.time}</p> 
+                 <p className=' text-xs'> {item.date}</p>
                 </div>
-              </div>
+                 
+                   <div className=" w-[480px] m-10 border-t border-gray-900 flex-grow"> 
+                    
+                     {/* <p> {item.time}</p> */}
+                      
+                  </div>
+                
+            
+            
+              {/* </div> */}
             </div>
-          </CardBody>
+       
         </Card>
       ))}
     </div>
   );
   
 }
+
+
+
+
+// import React, { useState, useEffect, useContext } from 'react';
+// import { Card, Typography, Avatar } from '@material-tailwind/react';
+// import { AuthContext } from '../context/AuthProvider';
+// import { getNews, deleteNews } from '../services/NewsRequests';
+// import { getAllUsers } from '../services/UserRequests';
+
+// export function TestimonialCard({ onDelete, onEdit }) {
+//   const { user } = useContext(AuthContext);
+//   const [news, setNews] = useState([]);
+//   const [users, setUsers] = useState([]);
+//   const [deletedNews, setDeletedNews] = useState([]);
+//   const [id, setId] = useState("");
+//   const [newPost, setNewPost] = useState("");
+
+//   useEffect(() => {
+//     // Fetch news when the component mounts
+//     async function fetchData() {
+//       try {
+//         const newsData = await getNews();
+//         setNews(newsData);
+//       } catch (error) {
+//         console.error('Error fetching news:', error);
+//       }
+
+//       try {
+//         const usersData = await getAllUsers();
+//         setUsers(usersData);
+//       } catch (error) {
+//         console.error('Error fetching users:', error);
+//       }
+//     }
+
+//     fetchData();
+
+//     // Cleanup function
+//     return () => {
+//       // Cleanup tasks (if any)
+//     };
+//   }, []);
+
+//   // Function to get the profile picture of a user
+//   const getUserProfilePicture = (userName) => {
+//     const userWithProfile = users.find(user => user.name === userName);
+//     return userWithProfile ? userWithProfile.profilePicture : ''; // Return the profile picture or an empty string if not found
+//   };
+
+//   // Function to handle post submission
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     try {
+//       // Get the current date and time
+//       const currentDate = new Date();
+//       const formattedDate = currentDate.toLocaleDateString('en-GB', {
+//         year: '2-digit',
+//         month: '2-digit',
+//         day: '2-digit',
+//       });
+//       const formattedTime = currentDate.toLocaleTimeString('en-US', {
+//         hour: 'numeric',
+//         minute: 'numeric',
+//         hour12: true,
+//       });
+
+//       // Combine date and time into the desired format
+//       const dateTime = `${formattedDate} ${formattedTime}`;
+
+//       // Here, you should have a function to post the news with the timestamp
+//       // For example:
+//       // await postNews({ name: user.name, body: newPost, timestamp: dateTime });
+
+//       // Clear the input field after successful submission
+//       setNewPost("");
+
+//       // Fetch news again to update the list with the new post
+//       const updatedNews = await getNews();
+//       setNews(updatedNews);
+//     } catch (error) {
+//       console.error('Error posting news:', error);
+//     }
+//   };
+
+  
+
+//   return (
+//     <div>
+//       {/* Input field for sharing good news */}
+//       <form onSubmit={handleSubmit}>
+//         <div className='relative'>
+//           <input
+//             type="text"
+//             placeholder="Share some good news"
+//             value={newPost}
+//             onChange={(e) => setNewPost(e.target.value)}
+//             className="rounded-[15px] w-[506.63px] h-[36.87px] border-[2px] mt-4 border-gray-900 outline-none placeholder-underline pl-4 pr-12"
+//           />
+//           <button type="submit" className="absolute right-2 top-1/2 transform -translate-y-1/2">
+//             Post
+//           </button>
+//         </div>
+//       </form>
+
+//       {/* Render the user's own posts */}
+//       {news.map((item, index) => (
+//         <Card className='' key={index}>
+//           {item && (
+//             <Avatar size="l" variant="circular" src={getUserProfilePicture(item.name)} alt={item.name} />
+//           )}
+//           <div className="m-1">
+//             <Typography variant="paragraph" type color="orange" className="text-xs ml-1">
+//               {item ? item.name : 'Unknown User'}
+//             </Typography>
+//           </div>
+//           <div className='absolute top-[12px]'>
+//             <Typography variant='paragraph' className="text-xs flex justify-start items-start ml-[55px]">{item.body}</Typography>
+//             <div className="w-[480px] m-3 border-t border-gray-900 flex-grow">
+//               <p>Sent: {item.timestamp}</p>
+//             </div>
+//           </div>
+//           {/* Render edit and delete buttons only for the user's own posts */}
+//           {item.name === user.name && (
+//             <div>
+//               {/* <button onClick={() => onEdit(item.id, item.body)} className="text-gray-400 mr-2">
+//                   Edit
+//                 </button>
+//                 <button onClick={() => onDelete(item.id)} className="text-gray-400">
+//                   Delete
+//                 </button> */}
+//             </div>
+//           )}
+//         </Card>
+//       ))}
+//     </div>
+//   );
+// }
