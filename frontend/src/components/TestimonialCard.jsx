@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, Typography, CardHeader, Avatar, CardBody } from '@material-tailwind/react';
 
 export function TestimonialCard({ onDelete, onEdit, post, user }) {
-  const [editedMessage, setEditedMessage] = useState(post.message);
+  const [editedMessage, setEditedMessage] = useState(post.body); // Initialize with post body
   const [isEditing, setIsEditing] = useState(false);
 
   const handleEdit = () => {
+    // Initialize editedMessage with the current message when editing starts
+    setEditedMessage(post.body);
     setIsEditing(true);
   };
 
@@ -14,12 +16,16 @@ export function TestimonialCard({ onDelete, onEdit, post, user }) {
     setIsEditing(false);
   };
 
+  const handleDelete = () => {
+    onDelete(post.id); // Call onDelete with the post id
+  };
+
   return (
     <div className="ml-35">
       <Card color="transparent" shadow={false} className="w-[522.85px] ">
         <CardHeader color="transparent" floated={false} shadow={false} className="mx-0 flex items-center pt-0">
           {user && (
-            <Avatar size="xs" variant="circular" src={post.user.profilePicture} alt={user.name} />
+            <Avatar size="xs" variant="circular" src={user.profilePicture} alt={user.name} />
           )}
           <div className="flex flex-col">
             <div>
@@ -27,9 +33,6 @@ export function TestimonialCard({ onDelete, onEdit, post, user }) {
                 {user ? user.name : 'Unknown User'}
               </Typography>
             </div>
-             {/* <Typography color="blue-gray" className="text-xs">
-              {user ? user.roles :'unknown'}
-            </Typography>  */}
           </div>
         </CardHeader>
         <CardBody className="p-2 justify-center overflow-auto">
@@ -41,7 +44,7 @@ export function TestimonialCard({ onDelete, onEdit, post, user }) {
                 className="border border-gray-300 p-1 mb-2"
               />
             ) : (
-              <Typography className="text-xs">{post.message}</Typography>
+              <Typography className="text-xs">{post.body}</Typography>
             )}
             <div className="mr-12 w-[483] m-2 border-t border-gray-600 flex-grow">
               <div className="text-xs flex justify-end">
@@ -54,7 +57,7 @@ export function TestimonialCard({ onDelete, onEdit, post, user }) {
                   <button onClick={handleEdit} className="text-gray-400 mr-2">
                     Edit
                   </button>
-                  <button onClick={() => onDelete(post.id)} className="text-gray-400">
+                  <button onClick={handleDelete} className="text-gray-400">
                     Delete
                   </button>
                 </>

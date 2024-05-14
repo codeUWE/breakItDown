@@ -21,3 +21,4 @@ export const getUsersById = async (id) => {
 };
 
 
+export default {getAllUsers, getUsersById}

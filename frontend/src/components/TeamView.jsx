@@ -193,13 +193,13 @@ getAllUsers()
                     {/* <p className="text-xs">Skills</p> */}
                     <p className="text-xs"> {productLeaderUserName?.socialConnections}  </p>
                   </div>
-                  <img src="./src/assets/user5.png" alt="user2" className='w-[89px] h-[89px] absolute bottom-[-125px]'/>
-                  <div className='absolute bottom-[-120px] left-[100px]'>
+                  {/* <img src="./src/assets/user5.png" alt="user2" className='w-[89px] h-[89px] absolute bottom-[-125px]'/> */}
+                  {/* <div className='absolute bottom-[-120px] left-[100px]'>
                     <p className="text-xs">Name:</p>
                     <p className="text-xs">Email</p>
-                    <p className="text-xs">Skills</p>
+                    <p className="text-xs">Skillsddd</p>
                     <p className="text-xs">Social Networks:</p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
