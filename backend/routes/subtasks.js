@@ -1,28 +1,25 @@
-const express = require('express');
+const { Router } = require('express');
 const { authenticate } = require('../middlewares/auth');
-const subtasksRouter = express.Router();
-
 const {
 	getSubtasks,
 	getSubtask,
 	createSubtask,
 	updateSubtask,
 	deleteSubtask,
-	findUnassignedSubtasks,
 	assignSubtask,
+	getUnassignedSubtasks,
 } = require('../controllers/subtasks');
-subtasksRouter.use(authenticate);
-// Define routes
+
+const subtasksRouter = Router();
+
 subtasksRouter.route('/').get(getSubtasks).post(createSubtask);
-
-// Define the route for unassigned subtasks without '/subtasks'
-subtasksRouter.route('/unassigned').get(findUnassignedSubtasks);
-
+subtasksRouter.route('/unassigned').get(getUnassignedSubtasks); // Neue Route für unbelegte Subtasks
 subtasksRouter
 	.route('/:id')
-	.patch(assignSubtask)
 	.get(getSubtask)
-	.put(updateSubtask)
+	.put(authenticate, updateSubtask)
 	.delete(deleteSubtask);
+
+subtasksRouter.route('/:id/assign').patch(authenticate, assignSubtask);
 
 module.exports = subtasksRouter;

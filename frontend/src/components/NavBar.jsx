@@ -5,7 +5,6 @@ import { useContext } from 'react';
 import { AuthContext } from '../context/AuthProvider';
 
 function NavBar() {
-
 	const { isLoading, user, logout } = useContext(AuthContext);
 	return (
 		<nav className="w-[1400px] h-[125px] mx-auto rounded-[30px] bg-[#6A66A3] flex items-center justify-self-auto font-Inter font-[500] text-[25px] mt-5 shadow-xl relative">
@@ -17,14 +16,13 @@ function NavBar() {
 				<div className="border-[8px] border-[#438CDB] h-full "></div>
 			</div>
 
-
 			{!isLoading && (
 				<div className="flex w-full px-7 mx-auto justify-between items-center">
 					<ul className="flex  text-white font-outfit text-[40px] font-[600] gap-10 ">
 						{/* need to decide 1st Page of App */}
 						{/* <NavLink to="/">Login</NavLink> */}
 						{user.role.name === 'Admin' ? (
-							<NavLink to="/admin/dashboard" className={`hover:text-[#F15025]`}>
+							<NavLink to="/admin/dashboard" className={`hover:text-[#F55D3E]`}>
 								Admin
 							</NavLink>
 						) : (
@@ -36,11 +34,8 @@ function NavBar() {
 						<NavLink to="/tasks" className={`hover:text-[#080708]`}>
 							Tasks
 						</NavLink>
-						<NavLink to="/team" className={`hover:text-[#080708]`}>
+						<NavLink to="/teamtable" className={`hover:text-[#080708]`}>
 							Team
-						</NavLink>
-						<NavLink to="/notes" className={`hover:text-[#080708]`}>
-							Notes
 						</NavLink>
 					</ul>
 					<div className="flex items-center gap-5  ">
