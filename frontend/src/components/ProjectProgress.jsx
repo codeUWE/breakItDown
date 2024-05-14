@@ -96,6 +96,7 @@ export default function ProjectProgress() {
 	};
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // 	return (
 // 		<>
 // 			<div className="w-full flex justify-between mt-10">
@@ -133,6 +134,8 @@ export default function ProjectProgress() {
 
 // export default ProjectProgress;
 =======
+=======
+>>>>>>> 58e5c301adccc4f95f9f63a366bbf5fdd56a6fb9
 	return (
 		<>
 			<div className="w-full flex justify-between mt-10">
@@ -167,4 +170,8 @@ export default function ProjectProgress() {
 		</>
 	);
 }
+<<<<<<< HEAD
 >>>>>>> 993d994ee4b5424c5e780f704af20004da1551c5
+=======
+export default ProjectProgress;
+>>>>>>> 58e5c301adccc4f95f9f63a366bbf5fdd56a6fb9
