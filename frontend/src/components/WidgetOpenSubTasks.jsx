@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import getUnassignedTasks from '../services/TasksRequests';
-import { getAllUsers } from './GoodNews';
+import { getAllUsers } from '../services/UserRequests';
 import { Avatar, Card } from '@material-tailwind/react';
 
 function WidgetOpenSubTasks() {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllUsers } from './GoodNews';
+import { getAllUsers } from '../services/UserRequests';
 import { Avatar } from '@material-tailwind/react'; // Import the Avatar component
 
 function RecentCollaborations() {
