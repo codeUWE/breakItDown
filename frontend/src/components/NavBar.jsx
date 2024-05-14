@@ -5,6 +5,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../context/AuthProvider';
 
 function NavBar() {
+
 	const { isLoading, user, logout } = useContext(AuthContext);
 	return (
 		<nav className="w-[1400px] h-[125px] mx-auto rounded-[30px] bg-[#6A66A3] flex items-center justify-self-auto font-Inter font-[500] text-[25px] mt-5 shadow-xl relative">
@@ -15,6 +16,7 @@ function NavBar() {
 				<div className="border-[8px] border-[#FFD5FF] h-full "></div>
 				<div className="border-[8px] border-[#438CDB] h-full "></div>
 			</div>
+
 
 			{!isLoading && (
 				<div className="flex w-full px-7 mx-auto justify-between items-center">

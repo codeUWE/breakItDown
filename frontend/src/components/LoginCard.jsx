@@ -60,6 +60,9 @@ export default function LoginCard() {
             {...register("email", { required: "Email is required" })}
             size="lg"
           />
+          {errors.email?.type === "required" && (
+            <span>{errors.email.message}</span>
+          )}
           <Input
             type="password"
             label="Password"
@@ -72,6 +75,12 @@ export default function LoginCard() {
             })}
             size="lg"
           />
+          {errors.password?.type === "required" && (
+            <span>{errors.password.message}</span>
+          )}
+          {errors.password?.type === "minLength" && (
+            <span>{errors.password.message}</span>
+          )}
           <div className="-ml-2.5">
             <Checkbox label="Remember Me" />
           </div>
@@ -122,14 +131,6 @@ export default function LoginCard() {
       </Card>
 
       {/* errors will return when field validation fails  */}
-
-      {errors.email?.type === "required" && <span>{errors.email.message}</span>}
-      {errors.password?.type === "required" && (
-        <span>{errors.password.message}</span>
-      )}
-      {errors.password?.type === "minLength" && (
-        <span>{errors.password.message}</span>
-      )}
     </form>
   );
 }

@@ -1,4 +1,4 @@
-const Permission = require('../models/permissions');
+const Permission = require("../models/permissions");
 
 // Controller function to create a new permission
 const createPermission = async (req, res) => {
@@ -55,6 +55,7 @@ const updatePermission = async (req, res) => {
 
 // Controller function to delete a permission by ID
 const deletePermission = async (req, res) => {
+
 	try {
 		const deletedPermission = await Permission.findByIdAndDelete(req.params.id);
 		if (!deletedPermission) {
@@ -72,3 +73,4 @@ module.exports = {
 	updatePermission,
 	deletePermission,
 };
+
