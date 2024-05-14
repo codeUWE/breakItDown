@@ -22,6 +22,7 @@ import Authorize from "./components/Authorize";
 
 import ProjectProgress from './components/ProjectProgress';
 import TeamView from './components/TeamView';
+import TeamTable from './components/TeamTable';
 
 function App() {
 
@@ -42,7 +43,8 @@ function App() {
 
             <Route path="/dashboard" element={<Dashboard />} />
 						<Route path="/tasks" element={<Task />} />
-						<Route path="/Team" element={<TeamView/>} />
+						<Route path="/team" element={<TeamView />} />
+						<Route path="/teamtable" element={<TeamTable />} />
 						<Route path="/tasks/:id" element={<SingleTaskBoard />} />
 						<Route path="/tasks/progress" element={<ProjectProgress />} />
 						<Route path="/notes" element={<Notes />} />
