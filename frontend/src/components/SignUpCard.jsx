@@ -56,32 +56,42 @@ export default function SignUpCard() {
 				<CardBody className="flex flex-col gap-4 font-inter">
 					{/* include validation with required or other standard HTML validation rules */}
 
-					<Input
-						type="email"
-						label="Email"
-						{...register('email', { required: 'Email is required' })}
-						size="lg"
-					/>
+          <Input
+            type="email"
+            label="Email"
+            {...register("email", { required: "Email is required" })}
+            size="lg"
+          />
+          {errors.email?.type === "required" && (
+            <span>{errors.email.message}</span>
+          )}
 
-					<Input
-						type="password"
-						label="Password"
-						{...register('password', {
-							required: 'Password is required',
-							minLength: {
-								value: 8,
-								message: 'Must be at least 8 Charachters!',
-							},
-						})}
-						size="lg"
-					/>
-				</CardBody>
-				<CardFooter className="pt-0 flex flex-col items-center font-inter">
-					<input
-						type="submit"
-						value="Register"
-						className="rounded-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 transition duration-300 ease-in-out"
-					/>
+          <Input
+            type="password"
+            label="Password"
+            {...register("password", {
+              required: "Password is required",
+              minLength: {
+                value: 8,
+                message: "Must be at least 8 Charachters!",
+              },
+            })}
+            size="lg"
+          />
+          {errors.password?.type === "required" && (
+            <span>{errors.password.message}</span>
+          )}
+          {errors.password?.type === "minLength" && (
+            <span>{errors.password.message}</span>
+          )}
+        </CardBody>
+        <CardFooter className="pt-0 flex flex-col items-center font-inter">
+          <input
+            type="submit"
+            value="Register"
+            className="rounded-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 transition duration-300 ease-in-out"
+          />
+
 
 					{/* <Typography variant="small" className="mt-6 mb-4 flex justify-center">
             Already have an account?
@@ -129,15 +139,9 @@ export default function SignUpCard() {
 				</CardFooter>
 			</Card>
 
-			{/* errors will return when field validation fails  */}
 
-			{errors.email?.type === 'required' && <span>{errors.email.message}</span>}
-			{errors.password?.type === 'required' && (
-				<span>{errors.password.message}</span>
-			)}
-			{errors.password?.type === 'minLength' && (
-				<span>{errors.password.message}</span>
-			)}
-		</form>
-	);
+      {/* errors will return when field validation fails  */}
+    </form>
+  );
+
 }

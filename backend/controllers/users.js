@@ -1,6 +1,8 @@
 const User = require('../models/users');
 const bcrypt = require('bcrypt');
+
 const { request } = require('express');
+
 
 const getUsers = async (req, res) => {
 	try {
@@ -83,12 +85,14 @@ const updateUser = async (req, res) => {
 			body,
 			params: { id },
 		} = req;
+
 		console.log(id, body, req.file);
 		const updatedUser = await User.findByIdAndUpdate(
 			id,
 			{ ...body, profilePicture: req.file.path },
 			{ new: true }
 		);
+
 		res.send(updatedUser);
 	} catch (error) {
 		console.log(error);
@@ -134,4 +138,6 @@ module.exports = { getUsers, getUser, createUser, updateUser, deleteUser };
 //   }
 
 //   // Call the function to update image URLs
+
 //   updateUserImageUrls();
+

@@ -1,5 +1,6 @@
-const Role = require('../models/roles');
+const Role = require("../models/roles");
 const createRole = async (req, res) => {
+
 	try {
 		const { name, permissions } = req.body;
 		const role = new Role({
@@ -80,4 +81,5 @@ module.exports = {
 	createRole,
 	updateRole,
 	deleteRole,
+
 };

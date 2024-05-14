@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const authenticate = async (req, res, next) => {
+
 	try {
 		// console.log("Inside authenticate")
 		const {
@@ -14,6 +15,7 @@ const authenticate = async (req, res, next) => {
 		console.log(error);
 		res.status(403).send('Forbidden');
 	}
+
 };
 const authorize = (role) => {
 	return (req, res, next) => {
