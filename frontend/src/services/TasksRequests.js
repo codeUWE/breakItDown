@@ -111,10 +111,10 @@ export const update = async (id) => {
 	});
 	return data;
 };
-//Assign Subtask
+// Assign Subtask
 export const assignSubtask = async (id) => {
 	const { data } = await axios.patch(
-		`http://localhost:3001/subtasks/${id}`,
+		`http://localhost:3001/subtasks/${id}/assign`,
 		{},
 		{
 			withCredentials: true,
@@ -132,4 +132,13 @@ export const getUnassignedTasks = async () => {
 	return data;
 };
 
-export default getUnassignedTasks;
+// Get widget information
+export const getWidgetInfo = async () => {
+	try {
+		const { data } = await axios.get('http://localhost:3001/widget/info');
+		return data;
+	} catch (error) {
+		console.error('Error fetching widget info:', error);
+		throw error;
+	}
+};
