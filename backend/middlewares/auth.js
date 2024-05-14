@@ -5,7 +5,7 @@ const authenticate = async (req, res, next) => {
     const {
       cookies: { access_token: token },
     } = req;
-    console.log(token);
+    // console.log(token);
     if (!token) throw new Error("Forbidden");
     const payload = jwt.verify(token, process.env.JWT_SECRET);
     req.user = payload;

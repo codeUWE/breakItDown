@@ -4,12 +4,20 @@ const {
   getProjects,
   createProject,
   deleteProject,
+  getProjectByUser,
+  // getProjectRole,
+  // updateProjectRole,
+  // deleteProjectRole,
 } = require("../controllers/projects");
 
+const { authenticate } = require("../middlewares/auth");
 const projectsRouter = express.Router();
-
-projectsRouter.route("/").get(getProjects).post(createProject);
+projectsRouter.use(authenticate);
+projectsRouter.route("/").get(getProjects).post(authenticate, createProject);
 projectsRouter.route("/:id").delete(deleteProject);
-
+projectsRouter.route("/users/:id").get(getProjectByUser);
+// .get(getProjectRole)
+// .delete(deleteProjectRole)
+// .put(updateProjectRole);
 
 module.exports = projectsRouter;

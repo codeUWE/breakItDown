@@ -11,16 +11,16 @@ const register = async (req, res) => {
     } = req;
     const found = await User.findOne({ email });
     if (found) throw new Error("User already Exists");
-  
+
     const hash = await bcrypt.hash(password, 10);
-  
+
     //get admin role
     const role = await Role.findOne({ name: "Admin" });
-    
+    console.log(role);
     const user = await User.create({
       email,
       password: hash,
-      roles: [role._id],
+      role: role._id,
     });
     res.json({ email: user.email, id: user._id });
   } catch (error) {
@@ -36,7 +36,14 @@ const login = async (req, res) => {
     } = req;
     const user = await User.findOne({ email })
       .select("+password")
-      .populate("role");
+      .populate({
+        path: "role",
+        populate: {
+          path: "permissions",
+          model: "Permission",
+          select: "name",
+        },
+      });
 
     if (!user) throw new Error("User doesn't Exists");
     console.log(user);
@@ -73,7 +80,16 @@ const getProfile = async (req, res) => {
     const {
       user: { id },
     } = req;
-    const user = await User.findById(id).populate("role");
+    const user = await User.findById(id)
+      .populate("role")
+      .populate({
+        path: "role",
+        populate: {
+          path: "permissions",
+          model: "Permission",
+          select: "name",
+        },
+      });
     res.json(user);
     // const {body:{name,email,password,roles}}=req;
     // const found = await User.findOne({email})
