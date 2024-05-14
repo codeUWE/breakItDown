@@ -83,9 +83,10 @@ const updateUser = async (req, res) => {
 			body,
 			params: { id },
 		} = req;
+		console.log(id, body, req.file);
 		const updatedUser = await User.findByIdAndUpdate(
 			id,
-			{ ...body, profilePicture: request.file.path },
+			{ ...body, profilePicture: req.file.path },
 			{ new: true }
 		);
 		res.send(updatedUser);

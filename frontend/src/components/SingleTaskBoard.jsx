@@ -66,7 +66,7 @@ function SingleTaskBoard() {
 			case 'backlog':
 				return {
 					label: 'To Do',
-					className: 'bg-[#5a5a5a] text-white',
+					className: 'bg-[#575761] text-white',
 				};
 			case 'inProgress':
 				return {
@@ -209,7 +209,7 @@ function SingleTaskBoard() {
 			<h2 className="font-outfit font-[800] text-[45px] text-start px-14 mb-2">
 				Task <span className="text-[#681FDE]">View</span>
 			</h2>
-			<div className="w-[1400px] h-[550px] mx-auto rounded-[30px] bg-[#eff9ff]  p-1 relative">
+			<div className="w-[1400px] h-[670px] mx-auto rounded-[30px] bg-[#eff9ff]  p-5 relative">
 				{/* Delete, Edit and Back Buttons and Dialogs */}
 				<button onClick={() => navigate(-1)} className="absolute top-4 right-6">
 					<img src={back} alt="edit icon" width={22} />
@@ -347,7 +347,7 @@ function SingleTaskBoard() {
 						<div className="w-full mt-2 border-[.5px] border-[#0000003a] "></div>
 						{/* Comments */}
 						<div className="w-full flex justify-start items-center gap-2">
-							<h2 className="font-outfit font-[700] text-[24px] text-[#363636] tracking-tighter">
+							<h2 className="font-outfit font-[700] text-[28px] text-[#363636] tracking-tight">
 								Comments
 							</h2>
 							<img
@@ -366,7 +366,7 @@ function SingleTaskBoard() {
 						<div className="w-full flex justify-around items-center font-outfit text-[48px] font-[700] text-[#363636] tracking-tight mb-4">
 							<button
 								className={`h2 ${
-									activeTab === 'subtasks' ? 'text-[#681FDE]' : 'text-[#363636]'
+									activeTab === 'subtasks' ? 'text-[#681FDE]' : 'text-[#575761]'
 								}`}
 								onClick={() => handleTabChange('subtasks')}
 							>
@@ -374,7 +374,7 @@ function SingleTaskBoard() {
 							</button>
 							<button
 								className={`h2 ${
-									activeTab === 'progress' ? 'text-[#681FDE]' : 'text-[#363636]'
+									activeTab === 'progress' ? 'text-[#681FDE]' : 'text-[#575761]'
 								}`}
 								onClick={() => handleTabChange('progress')}
 							>
@@ -399,26 +399,8 @@ function SingleTaskBoard() {
 												<option value="status">Status</option>
 											</select>
 										</div>
-										{canAddSubtask ? (
-											<button
-												onClick={handleAddOpen}
-												className="py-1 px-4 bg-[#363636] text-white rounded-2xl flex items-center gap-2"
-											>
-												<img src={plus} alt="Add Subtask" width={12} />
-												<h5 className="font-outfit font-[300] text-[12px]">
-													Add Subtask
-												</h5>
-											</button>
-										) : null}
-
-										<AddSubtaskDialog
-											open={addOpen}
-											onClose={handleAddClose}
-											onUpdate={handleSubtaskAdded}
-											taskId={task._id}
-										/>
 									</div>
-									<div className="h-[380px] w-full overflow-scroll flex flex-col gap-2">
+									<div className="h-[420px] w-full overflow-scroll flex flex-col gap-2">
 										{task?.subtasks.map((subtask) => (
 											<SingleTaskSubtask
 												key={subtask._id}
@@ -429,6 +411,24 @@ function SingleTaskBoard() {
 											/>
 										))}
 									</div>
+									{canAddSubtask ? (
+										<button
+											onClick={handleAddOpen}
+											className="py-1 self-end px-4 bg-[#575761] w-40 text-white rounded-2xl flex justify-center items-center gap-2 mt-4 me-8"
+										>
+											<img src={plus} alt="Add Subtask" width={12} />
+											<h5 className="font-outfit font-[300] text-[14px]">
+												Add Subtask
+											</h5>
+										</button>
+									) : null}
+
+									<AddSubtaskDialog
+										open={addOpen}
+										onClose={handleAddClose}
+										onUpdate={handleSubtaskAdded}
+										taskId={task._id}
+									/>
 								</>
 							) : (
 								<div className="px-4 h-full w-full">
