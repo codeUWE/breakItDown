@@ -32,7 +32,7 @@ const CreateUserForm = ({ setUsers }) => {
 		data = { ...data, role, project: project._id };
 		console.log(data);
 		axiosClient
-			.post('/users', data)
+			.post('/api/users', data)
 			.then((response) => {
 				setUsers((prev) => {
 					return [...prev, response.data];

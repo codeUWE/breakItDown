@@ -12,7 +12,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import google48 from '../assets/google48.png';
 import github48 from '../assets/github48.png';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
+import axiosClient from '../axiosClient';
 
 export default function SignUpCard() {
 	const navigate = useNavigate();

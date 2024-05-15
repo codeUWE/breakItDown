@@ -1,4 +1,3 @@
-
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
 
@@ -18,11 +17,9 @@ import Authorize from './components/Authorize';
 import ProjectProgress from './components/ProjectProgress';
 import TeamTable from './components/TeamTable';
 
-
 function App() {
 	return (
 		<>
-	
 			<main>
 				<Routes>
 					<Route path="/" element={<Landing />} />
@@ -41,15 +38,10 @@ function App() {
 						<Route path="/team" element={<TeamTable />} />
 						<Route path="/tasks/:id" element={<SingleTaskBoard />} />
 						<Route path="/tasks/progress" element={<ProjectProgress />} />
-
-						<Route path="/notes" element={<Notes />} />
-					</Route> 
-
 					</Route>
-
 				</Routes>
 			</main>
-		</> 
+		</>
 	);
 }
 
