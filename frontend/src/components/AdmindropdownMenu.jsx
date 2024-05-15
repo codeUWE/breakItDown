@@ -3,11 +3,9 @@ import dropdown from "../assets/dropdown.png";
 import { NavLink } from "react-router-dom";
 
 const AdmindropdownMenu = () => {
-  // State to manage whether the dropdown is open or closed
+
   const [isOpen, setIsOpen] = useState(false);
 
-  //   const handleAddOpen = () => setAddOpen(true);
-  // 	const handleAddClose = () => setAddOpen(false);
 
   return (
     <div className="relative inline-block">
