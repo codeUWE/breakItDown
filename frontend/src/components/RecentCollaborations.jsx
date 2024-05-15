@@ -22,22 +22,14 @@ function RecentCollaborations() {
   return (
     <div className='flex justify-start'>
       <div className="p-3 relative flex justify-center w-full max-w-[24rem]">
-        {/* Display the avatar of the logged-in user */}
+        {/* Display the avatar of the logged-in user
       {user && user.profilePicture && (
         <div className='relative ml-[-210px]'>
-          <div>
-              <Avatar src={user.profilePicture} alt={user.name}  />
-            {/* <img src="./src/assets/online_green.png" alt="green" className='w-[23px] h-[23px] ' /> */}
-            <div>
-               <p className='font-bold text-green-900 '>ONLINE</p> 
-            </div>
-           
-          </div>
-         
+          
         </div>
       
         
-      )}
+      )} */}
         <div className='flex justify-start item-start'>
           <div className=' flex justify-start mr-11'>
             {/* <span className='w-[117px] h-[48px] font-bold flex justify-start'> */}
@@ -61,13 +53,13 @@ function RecentCollaborations() {
     
           
        
-    <Avatar size="xxl" variant="circular" 
+    <Avatar size="xl" variant="" 
           key={collaborator.id}
           src={collaborator.profilePicture}
           alt={collaborator.name} 
           onMouseEnter={() => setHoveredUser(collaborator)}
           onMouseLeave={() => setHoveredUser(null)}
-    
+          class="relative inline-block h-22 w-22 !rounded-full object-cover object-center"
           />
       ))}
           </div>

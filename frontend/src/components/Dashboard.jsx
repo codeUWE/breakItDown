@@ -1,5 +1,5 @@
 // import React from 'react';
-// import GoodNews from '../components/GoodNews';
+import GoodNews from '../components/GoodNews';
 // import WidgetOpenSubTasks from '../components/WidgetOpenSubTasks';
 // import RecentCollaborations from './RecentCollaborations';
 import OpenSubtasks from './OpenSubtasks';
@@ -12,9 +12,9 @@ function Dashboard() {
 				<RecentCollaborations />
 			</div> */}
 			<div className="">
-				{/* <div>
+				<div>
 					<GoodNews />
-				</div> */}
+				</div>
 				<div>
 					<TimeDashboard />
 				</div>
