@@ -51,6 +51,12 @@ export const updateUser = async (id, updates) => {
   return data;
 };
 
+// Create User
+export const createRole = async (data) => {
+  const { userData } = axiosClient.post("/roles", data);
+  return userData;
+};
+
 //Updating Project Role details
 export const updateProjectRole = async (id, updates) => {
   const { data } = await axiosClient.put(`/projects/${id}`, updates);

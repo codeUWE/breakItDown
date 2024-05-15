@@ -1,10 +1,11 @@
 import { useState, useEffect, useContext } from "react";
 import { getProjectByOwner, createProject } from "../services/UserRequests";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../context/AuthProvider";
 
 const ManageProjects = () => {
+  const navigate = useNavigate();
   const [project, setProject] = useState("");
 
   const [enteredProject, setEnteredProject] = useState("");
@@ -28,6 +29,7 @@ const ManageProjects = () => {
     console.log({ title: enteredProject });
     const project = await createProject({ title: enteredProject });
     setProject(project);
+    navigate("/admin/dashboard/roles");
   };
 
   if (loading) {
@@ -36,63 +38,52 @@ const ManageProjects = () => {
 
   return (
     <>
-      {/* <h1>Manage Projects</h1>
-      <label className="block text-gray-700 text-sm font-bold mb-2">
-        Project:
-      </label>
-      <div>
-        <input
-          className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          // id="projectname"
-          // value={project?.title ? project.title : ""}
-          type="text"
-          onChange={(e) => setEnteredProject(e.target.value)}
-          placeholder="Enter your Project Name"
-        />
-        {project?.title === undefined ? (
-          <button
-            className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            onClick={handleClick}
-          >
-            Create Project
-          </button>
-        ) : (
-          <button
-            className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            onClick={handleClick}
-          >
-            Update Project
-          </button>
-        )}
-      </div> */}
-
-      <div className="flex flex-col items-center">
-        <h1 className="text-3xl font-bold mb-6">Manage Projects</h1>
+      <div className="flex flex-col items-center w-full justify-between mt-10 px-16">
+        <h1 className="font-outfit font-[600] text-[45px] m-2 ">
+          Manage Projects
+        </h1>
         <div className="w-full max-w-md">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block font-outfit font-[800] text-[20px] mb-5">
             Project:
           </label>
           <div className="flex">
-            <input
+            {/* <input
               className="flex-grow shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               type="text"
               onChange={(e) => setEnteredProject(e.target.value)}
-              placeholder="Enter your Project Name"
-            />
+              placeholder="Project Name"
+            /> */}
             {project?.title === undefined ? (
-              <button
-                className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                onClick={handleClick}
-              >
-                Create Project
-              </button>
+              <div className="flex-col">
+                <input
+                  className=" mt-2 p-2  flex-grow shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="text"
+                  onChange={(e) => setEnteredProject(e.target.value)}
+                  placeholder="Enter Project Name"
+                />
+                <button
+                  className="ml-2 text-white bg-indigo-600 hover:bg-indigo-700  font-bold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline"
+                  onClick={handleClick}
+                >
+                  Create Project
+                </button>
+              </div>
             ) : (
-              <button
-                className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                onClick={handleClick}
-              >
-                Update Project
-              </button>
+              <div className="flex flex-col">
+                <input
+                  className=" mt-2 p-2 flex-grow shadow appearance-none border rounded py-2 px-3 w-100 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="text"
+                  onChange={(e) => setEnteredProject(e.target.value)}
+                  placeholder={project.title}
+                />
+                <br />
+                <button
+                  className="ml-2 text-white bg-indigo-600 hover:bg-indigo-700  font-bold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline"
+                  onClick={handleClick}
+                >
+                  Update Project
+                </button>
+              </div>
             )}
           </div>
         </div>
