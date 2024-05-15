@@ -22,7 +22,7 @@ import Authorize from './components/Authorize';
 import ProjectProgress from './components/ProjectProgress';
 import TeamView from './components/TeamView';
 import TeamTable from './components/TeamTable';
-// import Landing from "./components/Landing";
+
 
 function App() {
 	return (
@@ -42,7 +42,7 @@ function App() {
 							<Route path="dashboard/users" element={<ManageUsers />} />
 						</Route>
 
-						 <Route path="/dashboard" element={<Dashboard />} />
+						<Route path="/dashboard" element={<Dashboard />} />
 						<Route path="/tasks" element={<Task />} />
 						<Route path="/team" element={<TeamView />} />
 						<Route path="/teamtable" element={<TeamTable />} />
@@ -50,7 +50,7 @@ function App() {
 						<Route path="/tasks/progress" element={<ProjectProgress />} />
 						<Route path="/notes" element={<Notes />} />
 					</Route> 
-				 </Routes>
+				</Routes>
 			</main>
 		</> 
 	);

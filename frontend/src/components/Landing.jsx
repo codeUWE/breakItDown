@@ -1,11 +1,11 @@
 import { Route, NavLink } from "react-router-dom";
-import facebook from "../assets/facebook.png";
-import twitter from "../assets/twitter.png";
-import linkedin from "../assets/linkedin.png";
-import heroImage from "../assets/heroImage.png";
+// import facebook from "../assets/facebook.png";
+// import twitter from "../assets/twitter.png";
+// import linkedin from "../assets/linkedin.png";
+// import heroImage from "../assets/heroImage.png";
 import breakitdown from "../assets/breakitdown.png";
-import projectmanagement from "../assets/projectmanagement.png";
-import sequence from "../assets/sequence.png"
+// import projectmanagement from "../assets/projectmanagement.png";
+// import sequence from "../assets/sequence.png"
 // import Home from "./components/Home";
 // import LoginCard from "./components/LoginCard";
 
@@ -39,8 +39,6 @@ function Landing() {
     
   </div>
 </div>
-          
-           
            
       </nav>
    
