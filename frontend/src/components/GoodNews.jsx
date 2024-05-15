@@ -47,6 +47,32 @@ function GoodNews() {
     fetchData();
   }, [user]); // Triggering a data fetching here
   
+  
+  const handleDelete = async (id) => {
+
+    try {
+      await deleteNews(id);
+      setNews(prevNews => prevNews.filter(item => item.id !==id));
+
+    } catch (error) {
+      console.error('Error deleting news:', error);
+    }
+    
+  }
+
+    const handleEdit = async (id, updatedData) => {
+      try {
+        const updatedNews = await updateNews(id, updatedData);
+        setNews(prevNews => prevNews.map(item => (item.id === id ? updatedNews : item)));
+      } catch (error) {
+        console.error('Error updating news:', error);
+      }
+    }
+  
+  
+  
+  
+  
   const handleSend = async () => {
     if (inputValue.trim() !== '') {
       try {
@@ -103,7 +129,7 @@ function GoodNews() {
   };
   
   return (
-    <div className='bg-[#EFF9FF] rounded-[30px] w-[1400px] ml-6'>
+    <div className='bg-[#EFF9FF] rounded-[30px] w-[1400px] ml-9'>
       <div className='relative'>
         <div className='flex justify-end items-center'>
           <div className='rounded-[20px] border-[2px] border-gray-900 outline-none placeholder-underline w-[522.85px] h-[430.58px] m-12 relative overflow-auto'>
@@ -118,8 +144,8 @@ function GoodNews() {
                 key={post.id}
                 post={post}
                 user={loggedInUser}
-                onDelete={() => onDelete(post.id)}
-                onUpdateNews={updateNews}
+                onDelete={() => onDelete(handleDelete)}
+                onEdit={handleDelete}
               />
             ))}
             <div className='relative'>
@@ -128,7 +154,7 @@ function GoodNews() {
                 placeholder="Share some good news"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                className="rounded-[15px] w-[506.63px] h-[36.87px] border-[2px] mt-4 border-gray-900 outline-none pl-4 pr-12 placeholder-underline"
+                className="rounded-[15px] w-[506.63px] h-[36.87px] border-[2px] mt-4 border-gray-900 outline-none  pr-12 placeholder-underline"
               />
               <img
                 src='./src/assets/sent.png'

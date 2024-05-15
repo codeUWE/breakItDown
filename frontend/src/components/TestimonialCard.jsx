@@ -4,12 +4,12 @@ import { AuthContext } from '../context/AuthProvider';
 import { getNews, deleteNews } from '../services/NewsRequests';
 import { getAllUsers } from '../services/UserRequests';
 
-export function TestimonialCard({ onDelete, onEdit }) {
+export function TestimonialCard({post, onDelete, onEdit}) {
   const { user } = useContext(AuthContext);
   const [news, setNews] = useState([]);
   const [users, setUsers] = useState([]);
-  const [deletedNews, setDeletedNews] = useState([]);
-  const [id, setId] = useState("");
+  // const [deletedNews, setDeletedNews] = useState([]);
+  // const [id, setId] = useState("");
 
   useEffect(() => {
     // Fetch news when the component mounts
@@ -32,14 +32,21 @@ export function TestimonialCard({ onDelete, onEdit }) {
         console.error('Error fetching users:', error);
       });
 
-      deleteNews(id)
-      .then(data => {
-        console.log('Deleted News:', data);
-        setDeletedNews(data);
-      })
-      .catch(error => {
-        console.error('Error deleting news:', error);
-      });
+      
+      
+      
+      
+      
+      
+      
+      // deleteNews(id)
+      // .then(data => {
+      //   console.log('Deleted News:', data);
+      //   setDeletedNews(data);
+      // })
+      // .catch(error => {
+      //   console.error('Error deleting news:', error);
+      // });
   }, []);
 
   // Rest of your component logic
@@ -119,6 +126,7 @@ const handleSubmit = async (e) => {
 
             <Typography variant='caption' className="text-xs flex justify-start items-start absolute bottom-[40px] ml-[65px]">{item.body}</Typography>
                 <div className='flex flex-col justify-end items-end absolute top-[-4px] right-[70px]'>
+                  
                   <p className='text-xs'> {item.time}</p> 
                  <p className=' text-xs'> {item.date}</p>
                 </div>
@@ -136,7 +144,7 @@ const handleSubmit = async (e) => {
               {/* Render edit and delete buttons only for the user's own posts */}
               {item.name === user.name && (
                 <div>
-                  {/* <button onClick={() => onEdit(item.id, item.body)} className="text-gray-400 mr-2">
+                  {/* <button onClick={() => onEdit(item.id, { body: 'Updated body text' })} className="text-gray-400 mr-2">
                     Edit
                   </button>
                   <button onClick={() => onDelete(item.id)} className="text-gray-400">
@@ -176,7 +184,7 @@ const handleSubmit = async (e) => {
                  <p className=' text-xs'> {item.date}</p>
                 </div>
                  
-                   <div className=" w-[480px] m-10 border-t border-gray-900 flex-grow"> 
+                   <div className=" w-[460px] m-10 border-t border-gray-900 flex-grow"> 
                     
                      {/* <p> {item.time}</p> */}
                       
