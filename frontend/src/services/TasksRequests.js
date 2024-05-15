@@ -46,6 +46,20 @@ export const deleteTask = async (id) => {
 		throw error;
 	}
 };
+// Toggle Task Closed
+export const toggleTaskClosed = async (id) => {
+	try {
+		const { data } = await axios.put(
+			`http://localhost:3001/tasks/${id}/toggleClosed`,
+			{},
+			{ withCredentials: true }
+		);
+		return data;
+	} catch (error) {
+		console.error(`Error toggling closed state for task with id ${id}:`, error);
+		throw error;
+	}
+};
 
 //Get Gantt Data
 export const getTasksForGantt = async () => {
@@ -97,10 +111,10 @@ export const update = async (id) => {
 	});
 	return data;
 };
-//Assign Subtask
+// Assign Subtask
 export const assignSubtask = async (id) => {
 	const { data } = await axios.patch(
-		`http://localhost:3001/subtasks/${id}`,
+		`http://localhost:3001/subtasks/${id}/assign`,
 		{},
 		{
 			withCredentials: true,
@@ -111,8 +125,20 @@ export const assignSubtask = async (id) => {
 
 //Get unassigned Subtask
 export const getUnassignedTasks = async () => {
-    const { data } = await axios.get('http://localhost:3001/subtasks/unassigned', {withCredentials: true});
+	const { data } = await axios.get(
+		'http://localhost:3001/subtasks/unassigned',
+		{ withCredentials: true }
+	);
 	return data;
 };
 
-export default getUnassignedTasks;
+// Get widget information
+export const getWidgetInfo = async () => {
+	try {
+		const { data } = await axios.get('http://localhost:3001/widget/info');
+		return data;
+	} catch (error) {
+		console.error('Error fetching widget info:', error);
+		throw error;
+	}
+};

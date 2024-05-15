@@ -7,6 +7,7 @@ import { useState } from "react";
 import AdmindropdownMenu from "./AdmindropdownMenu";
 
 function NavBar() {
+
   const { isLoading, user, logout } = useContext(AuthContext);
   // State to manage whether the dropdown is open or closed
   const [isOpen, setIsOpen] = useState(false);
@@ -75,6 +76,7 @@ function NavBar() {
       {/* Logout Button */}
     </nav>
   );
+
 }
 
 export default NavBar;

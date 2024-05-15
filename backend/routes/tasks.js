@@ -8,6 +8,7 @@ const {
 	createTask,
 	updateTask,
 	deleteTask,
+	toggleTaskClosed,
 } = require('../controllers/tasks');
 
 const tasksRouter = express.Router();
@@ -19,5 +20,6 @@ tasksRouter
 	.get(getTask)
 	.put(authenticate, updateTask)
 	.delete(deleteTask);
+tasksRouter.route('/:id/toggleClosed').put(toggleTaskClosed);
 
 module.exports = tasksRouter;

@@ -53,7 +53,7 @@ export const updateNews = async (id, newsData) => {
 // Delete a news item by ID
 export const deleteNews = async (id) => {
     try {
-      const response = await axiosInstance.delete(`${BASE_URL}/news/${id}`); // Ensure proper URL construction
+      const response = await axios.delete(`${BASE_URL}/${id}`); // Ensure proper URL construction
       console.log('Delete News Response:', response.data); // Logging the response data
       return response.data;
     } catch (error) {
