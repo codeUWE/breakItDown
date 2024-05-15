@@ -24,6 +24,33 @@ const createProject = async (req, res, next) => {
   }
 };
 
+const updateProject = async (req, res, next) => {
+  try {
+    console.log(1111111111111);
+    const { id } = req.params;
+    const { title, users = [], roles = [] } = req.body;
+
+    const updatedProject = await Project.findByIdAndUpdate(
+      id,
+      {
+        title,
+        users,
+        roles,
+      },
+      { new: true }
+    );
+
+    if (!updatedProject) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    res.json(updatedProject);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Something went wrong!");
+  }
+};
+
 const getProjects = async (req, res) => {
   try {
     const projects = await Project.find({});
@@ -117,6 +144,7 @@ module.exports = {
   createProject,
   deleteProject,
   getProjectByUser,
+  updateProject,
   // getProjectRole,
   // updateProjectRole,
   // deleteProjectRole

@@ -1,5 +1,5 @@
-import axiosClient from '../axiosClient';
-import axios from 'axios';
+import axiosClient from "../axiosClient";
+import axios from "axios";
 
 // Get Projects
 export const getProject = async () => {
@@ -17,11 +17,16 @@ export const createProject = async (payload) => {
   return data;
 };
 
+export const updateProject = async (id, updates) => {
+  const { data } = await axiosClient.put(`/projects/${id}`, updates);
+  return data;
+};
+
 //Get roles
 export const getRoles = async () => {
-	const { data } = await axiosClient.get('/roles');
-	// console.log(data)
-	return data;
+  const { data } = await axiosClient.get("/roles");
+  // console.log(data)
+  return data;
 };
 
 //Get Permissions
@@ -35,15 +40,15 @@ export const getUsers = async () => {
   return data;
 };
 // Create User
-export const createUser = async (data) => {
-  const { userData } = axiosClient.post("/users", data);
-  return userData;
+export const createUser = async (payload) => {
+  const { data } = await axiosClient.post("/users", payload);
+  return data;
 };
 
 //Delete User
-export const deleteUser = async (data) => {
-  const { userData } = await axiosClient.delete("/users", data);
-  return userData;
+export const deleteUser = async (payload) => {
+  const { data } = await axiosClient.delete("/users", payload);
+  return data;
 };
 
 export const updateUser = async (id, updates) => {
@@ -51,10 +56,10 @@ export const updateUser = async (id, updates) => {
   return data;
 };
 
-// Create User
-export const createRole = async (data) => {
-  const { userData } = axiosClient.post("/roles", data);
-  return userData;
+// Create Role
+export const createRole = async (payload) => {
+  const { data } = await axiosClient.post("/roles", payload);
+  return data;
 };
 
 //Updating Project Role details
@@ -69,31 +74,30 @@ export const deleteProjectRole = async (id) => {
   return data;
 };
 
-
 //Get All Users
 export const getAllUsers = async () => {
-	const { data } = await axios.get('http://localhost:3001/users/', {
-		withCredentials: true,
-	});
-	return data;
+  const { data } = await axios.get("http://localhost:3001/users/", {
+    withCredentials: true,
+  });
+  return data;
 };
 
 // Get Roles via id
 export const getUsersById = async (id) => {
-	const { data } = await axios.get(`http://localhost:3001/users/${id}`, {
-		withCredentials: true,
-	});
-	return data;
+  const { data } = await axios.get(`http://localhost:3001/users/${id}`, {
+    withCredentials: true,
+  });
+  return data;
 };
 
 //Update User
 export const updateUsersById = async (id, payload) => {
-	const { data } = await axios.put(
-		`http://localhost:3001/users/${id}`,
-		payload,
-		{ withCredentials: true }
-	);
-	return data;
+  const { data } = await axios.put(
+    `http://localhost:3001/users/${id}`,
+    payload,
+    { withCredentials: true }
+  );
+  return data;
 };
 
 export default { getAllUsers, getUsersById };

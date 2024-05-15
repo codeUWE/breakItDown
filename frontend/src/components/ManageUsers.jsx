@@ -33,7 +33,7 @@ const ManageUsers = () => {
 
   return (
     <div>
-      <CreateUserForm />
+      <CreateUserForm setUsers={setUsers} />
       <div className="container mx-auto">
         <h1 className="font-outfit font-[600] mb-4 text-[32px]">
           Registered Users
@@ -44,15 +44,9 @@ const ManageUsers = () => {
               <th className="px-4 py-2 font-outfit font-[600] text-[28px]">
                 Username
               </th>
-              <th className="px-4 py-2 font-outfit font-[600] text-[28px]">
-                User Email
-              </th>
-              <th className="px-4 py-2 font-outfit font-[600] text-[28px]">
-                Role
-              </th>
-              <th className="px-4 py-2 font-outfit font-[600] text-[28px]">
-                Action
-              </th>
+              <th className="px-4 py-2 font-outfit font-[600] text-[28px]">User Email</th>
+              <th className="px-4 py-2 font-outfit font-[600] text-[28px]">Role</th>
+              <th className="px-4 py-2 font-outfit font-[600] text-[28px] ">Action</th>
             </tr>
           </thead>
           <tbody>

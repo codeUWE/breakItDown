@@ -1,5 +1,9 @@
 import { useState, useEffect, useContext } from "react";
-import { getProjectByOwner, createProject } from "../services/UserRequests";
+import {
+  getProjectByOwner,
+  createProject,
+  updateProject,
+} from "../services/UserRequests";
 import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../context/AuthProvider";
@@ -31,6 +35,14 @@ const ManageProjects = () => {
     setProject(project);
     navigate("/admin/dashboard/roles");
   };
+  const handleUpdateClick = async () => {
+    console.log({ id: project._id }, { title: enteredProject });
+    const updatedProject = await updateProject(project._id, {
+      title: enteredProject,
+    });
+    setProject(updatedProject);
+    navigate("/admin/dashboard/roles");
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -38,7 +50,7 @@ const ManageProjects = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center w-full justify-between mt-10 px-16">
+      <div className="flex flex-col items-center w-[1000px] h-[670px] mx-auto rounded-[30px]  justify-center  bg-[#EFF9FF] shadow-md mt-10">
         <h1 className="font-outfit font-[600] text-[45px] m-2 ">
           Manage Projects
         </h1>
@@ -47,12 +59,6 @@ const ManageProjects = () => {
             Project:
           </label>
           <div className="flex">
-            {/* <input
-              className="flex-grow shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="text"
-              onChange={(e) => setEnteredProject(e.target.value)}
-              placeholder="Project Name"
-            /> */}
             {project?.title === undefined ? (
               <div className="flex-col">
                 <input
@@ -77,9 +83,12 @@ const ManageProjects = () => {
                   placeholder={project.title}
                 />
                 <br />
+                {/* <label className="block font-outfit font-[800] text-[20px] mb-5">
+                  Total No. Users: 
+                </label> */}
                 <button
                   className="ml-2 text-white bg-indigo-600 hover:bg-indigo-700  font-bold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline"
-                  onClick={handleClick}
+                  onClick={handleUpdateClick}
                 >
                   Update Project
                 </button>

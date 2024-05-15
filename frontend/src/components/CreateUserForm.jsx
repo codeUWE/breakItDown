@@ -14,7 +14,7 @@ import {
 
 import { AuthContext } from "../context/AuthProvider";
 
-const CreateUserForm = () => {
+const CreateUserForm = ({ setUsers }) => {
   const [project, setProject] = useState("");
   const [role, setRole] = useState("");
   const [roles, setRoles] = useState([]);
@@ -34,7 +34,9 @@ const CreateUserForm = () => {
     axiosClient
       .post("/users", data)
       .then((response) => {
-        console.log(response);
+        setUsers((prev) => {
+          return [...prev, response.data];
+        });
       })
       .catch((err) => {
         console.log(err);
