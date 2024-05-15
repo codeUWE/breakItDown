@@ -148,7 +148,12 @@ export const getUnassignedTasks = async () => {
 // Get widget information
 export const getWidgetInfo = async () => {
 	try {
+
+		const { data } = await axios.get('http://localhost:3001/widget/info');
+		
+
 		const { data } = await axiosClient.get('http://localhost:3001/widget/info');
+
 		return data;
 	} catch (error) {
 		console.error('Error fetching widget info:', error);
