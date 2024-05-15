@@ -14,6 +14,7 @@ const userSchema = new Schema({
     default: "available",
   },
   role: { type: Schema.Types.ObjectId, ref: "Role", required: true },
+  project: { type: Schema.Types.ObjectId, ref: "Project"}
 });
 
 const User = model("User", userSchema);
