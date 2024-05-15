@@ -49,12 +49,12 @@ function TaskLayout({ task }) {
 		const user = users.find((user) => user._id === userId);
 		return user
 			? user.profilePicture
-			: 'https://cdn-icons-png.flaticon.com/128/552/552848.png';
+			: 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
 	};
 
 	return (
 		<>
-			<div className="w-[390px] h-[140px] rounded-[20px]    flex bg-white">
+			<div className="w-[400px] h-[140px] rounded-[20px]    flex bg-white">
 				<div className="flex flex-col w-[60px] justify-center items-center   bg-red-600 text-white rounded-s-[18px]  ">
 					<h2 className="m-0 font-outfit font-[700] text-[16px]">
 						{formatDate(task.deadline).split(' ')[0]}
@@ -82,13 +82,16 @@ function TaskLayout({ task }) {
 						</span>{' '}
 						unassigned Subtasks
 					</h3>
-					<div className=" row-start-4 col-start-3 col-span-2">
+					<div className=" row-start-4 col-start-3 col-span-4">
 						<div className=" flex justify-start relative">
 							{task.collaborators.map((collaborator, index) => {
 								return (
 									<Avatar
 										key={collaborator._id}
-										src={getUserAvatarUrl(collaborator._id)}
+										src={
+											getUserAvatarUrl(collaborator._id) ||
+											'https://cdn-icons-png.flaticon.com/512/149/149071.png'
+										}
 										alt="avatar"
 										className={` w-[35px] h-[35px] absolute top-0 left-[${
 											15 * index

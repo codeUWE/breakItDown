@@ -9,7 +9,7 @@ import {
 	Input,
 } from '@material-tailwind/react';
 import { createTask } from '../services/TasksRequests';
-import { getAllUsers } from '../services/UserRequests';
+import { getAllUsers, getRoles } from '../services/UserRequests';
 
 function AddTaskDialog({ open, onClose, onUpdate }) {
 	const [formData, setFormData] = useState({
@@ -24,12 +24,18 @@ function AddTaskDialog({ open, onClose, onUpdate }) {
 	});
 
 	const [users, setUsers] = useState([]);
+	const [roles, setRoles] = useState([]);
 
 	useEffect(() => {
 		if (open) {
-			getAllUsers()
+			getAllUsers('project=true')
 				.then((data) => {
 					setUsers(data);
+				})
+				.catch((error) => console.error('Failed to fetch users:', error));
+			getRoles('project=true')
+				.then((data) => {
+					setRoles(data.map((role) => role.name));
 				})
 				.catch((error) => console.error('Failed to fetch users:', error));
 		}
@@ -103,9 +109,7 @@ function AddTaskDialog({ open, onClose, onUpdate }) {
 				<div>
 					<label>Leader:</label>
 					{users
-						.filter((user) =>
-							['Admin', 'Team Leader', 'Product Owner'].includes(user.role.name)
-						)
+						.filter((user) => ['Admin', ...roles].includes(user.role.name))
 						.map((user) => (
 							<div key={user._id}>
 								<input

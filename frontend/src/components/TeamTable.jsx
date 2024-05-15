@@ -27,7 +27,7 @@ function TeamTable() {
 	const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
 
 	useEffect(() => {
-		getAllUsers()
+		getAllUsers('project=true')
 			.then((data) => {
 				setUsers(data);
 			})
@@ -81,7 +81,10 @@ function TeamTable() {
 						</div>
 						{/* profile Avatar */}
 						<Avatar
-							src={user.profilePicture}
+							src={
+								user.profilePicture ||
+								'https://cdn-icons-png.flaticon.com/512/149/149071.png'
+							}
 							alt="avatar"
 							className="w-[120px] h-[120px] absolute right-[130px] top-[130px] "
 						/>
@@ -142,7 +145,10 @@ function TeamTable() {
 									<tr key={user._id}>
 										<td className="py-2 px-4 border-b border-gray-200 flex items-center gap-3">
 											<Avatar
-												src={user.profilePicture}
+												src={
+													user.profilePicture ||
+													'https://cdn-icons-png.flaticon.com/512/149/149071.png'
+												}
 												alt="avatar"
 												className="w-[50px] h-[50px]"
 											/>

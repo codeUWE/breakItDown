@@ -185,9 +185,9 @@ const getUnassignedSubtasks = async (req, res) => {
 					select: 'profilePicture role name email',
 				},
 			})
-			.select('title description detailedInformation deadline task')
+			// .select('title description detailedInformation deadline task')
 			.sort({ deadline: 1 }); // Sort by deadline in ascending order
-
+		console.log(unassignedSubtasks);
 		res.json(unassignedSubtasks);
 	} catch (error) {
 		console.error('Error fetching unassigned subtasks:', error);

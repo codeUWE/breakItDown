@@ -32,7 +32,7 @@ export default function EditSubtaskDialog({
 
 	useEffect(() => {
 		const fetchUsers = async () => {
-			const allUsers = await getAllUsers();
+			const allUsers = await getAllUsers('project=true');
 			setUsers(allUsers);
 		};
 		fetchUsers();
