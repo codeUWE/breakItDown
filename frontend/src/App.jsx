@@ -4,7 +4,6 @@ import { Routes, Route } from 'react-router-dom';
 //components
 import Task from './components/Task';
 import SingleTaskBoard from './components/SingleTaskBoard';
-<<<<<<< HEAD
 
 // import SignUp from './components/SignUp';
 import SignUpCard from "./components/SignUpCard";
@@ -20,34 +19,33 @@ import Notes from "./components/Notes";
 
 // import Schedule from "./components/Schedule";
 import Authorize from "./components/Authorize";
-import SignUpCard from './components/SignUpCard';
-import LoginCard from './components/LoginCard';
+// import SignUpCard from './components/SignUpCard';
+// import LoginCard from './components/LoginCard';
 import AdminDashboard from './components/AdminDashboard';
-import ManageProjects from './components/ManageProjects';
+// import ManageProjects from './components/ManageProjects';
 import ManageRoles from './components/ManageRoles';
-import ManageUsers from './components/ManageUsers';
-import Dashboard from './components/Dashboard';
-import Layout from './components/Layout';
+// import ManageUsers from './components/ManageUsers';
+// import Dashboard from './components/Dashboard';
+// import Layout from './components/Layout';
 // import Team from "./components/Team";
-import Notes from './components/Notes';
-=======
-import SignUpCard from './components/SignUpCard';
-import LoginCard from './components/LoginCard';
-import AdminDashboard from './components/AdminDashboard';
-import ManageProjects from './components/ManageProjects';
-import ManageRoles from './components/ManageRoles';
-import ManageUsers from './components/ManageUsers';
-import Dashboard from './components/Dashboard';
-import Layout from './components/Layout';
+// import Notes from './components/Notes';
+// import SignUpCard from './components/SignUpCard';
+// import LoginCard from './components/LoginCard';
+// import AdminDashboard from './components/AdminDashboard';
+// import ManageProjects from './components/ManageProjects';
+// import ManageRoles from './components/ManageRoles';
+// import ManageUsers from './components/ManageUsers';
+// import Dashboard from './components/Dashboard';
+// import Layout from './components/Layout';
 // import Team from "./components/Team";
-import Notes from './components/Notes';
+// import Notes from './components/Notes';
 
 import Schedule from './components/Schedule';
-import Authorize from './components/Authorize';
+// import Authorize from './components/Authorize';
 
 
-import Schedule from './components/Schedule';
-import Authorize from './components/Authorize';
+// import Schedule from './components/Schedule';
+// import Authorize from './components/Authorize';
 // import ProjectProgress from './components/ProjectProgress';
 import TeamView from './components/TeamView';
 import TeamTable from './components/TeamTable';
