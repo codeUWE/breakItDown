@@ -1,6 +1,11 @@
 import axiosClient from '../axiosClient';
 import axios from 'axios';
 
+export const updateProject = async (id, updates) => {
+	const { data } = await axiosClient.put(`/projects/${id}`, updates);
+	return data;
+};
+
 // Get Projects
 export const getProject = async () => {
 	const { data } = await axiosClient.get('/projects');
@@ -36,9 +41,9 @@ export const getUsers = async () => {
 	return data;
 };
 // Create User
-export const createUser = async (data) => {
-	const { userData } = axiosClient.post('/users', data);
-	return userData;
+export const createUser = async (payload) => {
+	const { data } = await axiosClient.post('/users', payload);
+	return data;
 };
 
 //Delete User
@@ -52,10 +57,10 @@ export const updateUser = async (id, updates) => {
 	return data;
 };
 
-// Create User
-export const createRole = async (data) => {
-	const { userData } = axiosClient.post('/roles', data);
-	return userData;
+// Create Role
+export const createRole = async (payload) => {
+	const { data } = await axiosClient.post('/roles', payload);
+	return data;
 };
 
 //Updating Project Role details

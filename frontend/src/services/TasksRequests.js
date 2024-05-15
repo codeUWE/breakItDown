@@ -139,7 +139,7 @@ export const assignSubtask = async (id) => {
 //Get unassigned Subtask
 export const getUnassignedTasks = async () => {
 	const { data } = await axiosClient.get(
-		'http://localhost:3001/subtasks/unassigned',
+		`http://localhost:3001/subtasks/unassigned`,
 		{ withCredentials: true }
 	);
 	return data;

@@ -123,13 +123,13 @@ const ManageUsers = () => {
 	return (
 		<>
 			<div className="w-[1400px] h-[670px] mt-10 mx-auto bg-[#D4ECFC] rounded-[30px] p-4">
-				<div className="w-full h-full flex justify-center items-center gap-4">
+				<div className="w-full h-full flex justify-center items-center gap-4 overflow-hidden">
 					{/* CreateUserForm */}
-					<div className="w-[30%] h-full rounded-[20px] bg-[#EFF9FF] p-4">
-						<CreateUserForm />
+					<div className="w-[30%] h-full rounded-[20px] bg-[#EFF9FF] p-4 overflow-auto">
+						<CreateUserForm setUsers={setUsers} />
 					</div>
 					{/* Team Table */}
-					<div className="w-[70%] h-full rounded-[20px] bg-[#EFF9FF] ">
+					<div className="w-[70%] h-full rounded-[20px] bg-[#EFF9FF] overflow-auto">
 						<table className="min-w-full bg-white rounded-[20px]">
 							<thead>
 								<tr>
@@ -156,17 +156,17 @@ const ManageUsers = () => {
 									</th>
 								</tr>
 							</thead>
-							<tbody className="font-outfit font-[500] text-[20px] ">
+							<tbody className="font-outfit font-[500] text-[16px] ">
 								{users.map((user) => (
-									<tr key={user._id}>
-										<td className="py-2 px-4 border-b border-gray-200 flex items-center gap-3">
+									<tr key={user._id} className="align-middle">
+										<td className="py-2 px-4 border-b border-gray-200 ">
 											<Avatar
 												src={
 													user.profilePicture ||
 													'https://cdn-icons-png.flaticon.com/512/149/149071.png'
 												}
 												alt="avatar"
-												className="w-[50px] h-[50px]"
+												className="w-[40px] h-[40px] me-2"
 											/>
 											{editingUserId === user._id ? (
 												<input
@@ -174,20 +174,20 @@ const ManageUsers = () => {
 													name="name"
 													value={editUserData.name}
 													onChange={handleEditChange}
-													className="p-2 border border-gray-300 rounded-md"
+													className="p-2 w-40 border border-gray-300 rounded-lg"
 												/>
 											) : (
 												user.name
 											)}
 										</td>
-										<td className="py-2 px-4 border-b border-gray-200">
+										<td className="py-2 px-4 border-b border-gray-200 ">
 											{editingUserId === user._id ? (
 												<input
 													type="email"
 													name="email"
 													value={editUserData.email}
 													onChange={handleEditChange}
-													className="p-2 border border-gray-300 rounded-md"
+													className="p-1 w-60 border border-gray-300 rounded-md"
 												/>
 											) : (
 												user.email
@@ -201,7 +201,7 @@ const ManageUsers = () => {
 													)}
 													onChange={handleRoleChange}
 													options={roleOptions}
-													className="p-2 border border-gray-300 rounded-md"
+													className=" border border-gray-300 rounded-md"
 												/>
 											) : (
 												user.role?.name
@@ -229,8 +229,7 @@ const ManageUsers = () => {
 														className="m-3"
 														onClick={() => handleEditUser(user)}
 													>
-														<img src={edit} alt="" width={27} height={27} />
-														Edit
+														<img src={edit} alt="edit" width={27} height={27} />
 													</button>
 													<button
 														className="m-3"
@@ -238,11 +237,10 @@ const ManageUsers = () => {
 													>
 														<img
 															src={deleteIcon}
-															alt=""
+															alt="delete"
 															width={27}
 															height={27}
 														/>
-														Delete
 													</button>
 												</div>
 											)}

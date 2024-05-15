@@ -328,7 +328,7 @@ const getWidgetInfo = async (req, res) => {
 			const today = new Date();
 			const deadline = new Date(nextTask.deadline);
 			const timeDiff = deadline - today;
-			daysUntilNextDeadline = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)); // Millisekunden in Tage umrechnen
+			daysUntilNextDeadline = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
 		}
 
 		res.json({

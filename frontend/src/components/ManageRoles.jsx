@@ -36,24 +36,18 @@ const ManageRoles = () => {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		// Add role/ send to backend?
-		console.log('Role submitted:', role);
-		console.log({
-			name: role,
-			permissions: selectedPermissions,
-		});
+
 		createRole({
 			name: role,
 			permissions: selectedPermissions.map((permission) => {
 				return permission.value;
 			}),
+		}).then((data) => {
+			setRoles((prev) => {
+				return [...prev, data];
+			});
 		});
-		navigate('/admin/dashboard/users');
-		console.log({
-			name: role,
-			permissions: selectedPermissions.map((permission) => {
-				return permission.value;
-			}),
-		});
+
 		// Clear the input field after submission
 		setRole('');
 	};
@@ -85,7 +79,7 @@ const ManageRoles = () => {
 
 	return (
 		<>
-			<div className="flex flex-col items-center w-[1000px] h-[670px] mx-auto rounded-[30px] justify-center bg-[#EFF9FF] shadow-md mt-12">
+			<div className="flex flex-col items-center w-[1000px] h-[670px] mx-auto rounded-[30px] justify-center bg-[#EFF9FF] shadow-md mt-10">
 				<h1 className="font-outfit font-[600] text-[45px] m-2">Manage Roles</h1>
 				<form className="mb-4 w-full max-w-md">
 					<label

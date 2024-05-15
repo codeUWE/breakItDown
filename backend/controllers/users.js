@@ -65,7 +65,7 @@ const createUser = async (req, res) => {
 		const found = await User.findOne({ email });
 		if (found) throw new Error('User already Exists');
 		const hash = await bcrypt.hash(password, 10);
-		const createdUser = await User.create({
+		let createdUser = await User.create({
 			name,
 			age,
 			email,
@@ -76,6 +76,7 @@ const createUser = async (req, res) => {
 			role,
 			project,
 		});
+		createdUser = await createdUser.populate('role');
 		const foundProject = await Project.findById(project);
 		foundProject.users.push(createdUser._id);
 		await foundProject.save();
