@@ -33,7 +33,7 @@ const ManageProjects = () => {
 		console.log({ title: enteredProject });
 		const project = await createProject({ title: enteredProject });
 		setProject(project);
-		navigate('/admin/dashboard/roles');
+		navigate('/api/admin/dashboard/roles');
 	};
 
 	const handleUpdateClick = async () => {
@@ -43,7 +43,7 @@ const ManageProjects = () => {
 			title: enteredProject,
 		});
 		setProject(updatedProject);
-		navigate('/admin/dashboard/roles');
+		navigate('/api/admin/dashboard/roles');
 	};
 
 	if (loading) {

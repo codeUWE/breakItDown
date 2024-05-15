@@ -112,7 +112,7 @@ const SubtaskWidget = () => {
 											<div className="absolute left-1 top-6 w-4 border border-black"></div>
 										</div>
 										<h3 className="self-end pe-3 text-[16px] font-outfit font-[400] mt-2 w-52 truncate">
-											{subtask.task?.title}
+											{subtask.task.title}
 										</h3>
 										<div className="flex w-[150px] h-[30px] justify-center items-center mt-2 bg-red-600 text-white rounded-xl">
 											<h2 className="text-[12px] font-outfit font-[700] me-1">

@@ -1,7 +1,9 @@
 require('dotenv/config');
 require('./db');
+
 const color = require('colors');
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
@@ -30,31 +32,23 @@ app.use(
 	})
 );
 app.use(cookieParser());
-
+app.use(express.static(path.resolve(__dirname, '../frontend', 'dist')));
 //Routers
-app.use('/projects', projectsRouter);
-app.use('/tasks', tasksRouter);
-app.use('/subtasks', subtasksRouter);
-app.use('/comments', commentsRouter);
-app.use('/news', newsRouter);
-app.use('/notes', notesRouter);
-app.use('/users', usersRouter);
-app.use('/roles', roleRouter);
-app.use('/permissions', permissionRouter);
-app.use('/auth', authRouter);
-app.use('/widget', widgetRouter);
+app.use('/api/projects', projectsRouter);
+app.use('/api/tasks', tasksRouter);
+app.use('/api/subtasks', subtasksRouter);
+app.use('/api/comments', commentsRouter);
+app.use('/api/news', newsRouter);
+app.use('/api/notes', notesRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/roles', roleRouter);
+app.use('/api/permissions', permissionRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/widget', widgetRouter);
 
-// // Constructing image Url for each users
-// const users = usersRouter;
-// // Construct image URL for each Pokémon entry
-// function constructImageUrl(userId) {
-//   return `https://randomuser.me/api/portraits/med/men/users/${userId}.png`;
-// }
-
-// user.forEach((user) => {
-//   const imageUrl = constructImageUrl(user.id);
-//   user.image_url = imageUrl;
-// });
+app.get('/*', (req, res) => {
+	res.sendFile(path.join(__dirname, '../frontend', 'dist', 'index.html'));
+});
 
 app.listen(port, () => {
 	console.log(`Example app listening on port ${port}`.bgGreen);
