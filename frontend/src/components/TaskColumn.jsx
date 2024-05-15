@@ -4,7 +4,7 @@ function TaskColumn({ title, tasks, className }) {
 	return (
 		<>
 			<div
-				className={`${className} w-[450px] h-[580px]  bg-[#d4ecfc] flex flex-col justify-center items-center gap-2 rounded-[30px]`}
+				className={`${className} w-[445px] h-[580px]  bg-[#d4ecfc] flex flex-col justify-center items-center gap-2 rounded-[30px]`}
 			>
 				<h3 className="mx-auto p-2 font-outfit font-[600] text-[28px]">
 					{title}

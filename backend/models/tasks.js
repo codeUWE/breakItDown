@@ -17,6 +17,7 @@ const taskSchema = new Schema(
 		subtasks: [{ type: Schema.Types.ObjectId, ref: 'Subtask' }],
 		isClosed: { type: Boolean, default: false },
 		comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
+		project: { type: Schema.Types.ObjectId, ref: 'Project' },
 	},
 	{
 		timestamps: true,

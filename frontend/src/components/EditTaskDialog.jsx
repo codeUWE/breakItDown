@@ -8,7 +8,7 @@ import {
 	Input,
 } from '@material-tailwind/react';
 import { updateTask } from '../services/TasksRequests';
-import { getAllUsers } from '../services/UserRequests';
+import { getAllUsers, getRoles } from '../services/UserRequests';
 
 function EditTaskDialog({ task, open, onClose, onUpdate }) {
 	const [formData, setFormData] = useState({
@@ -20,11 +20,17 @@ function EditTaskDialog({ task, open, onClose, onUpdate }) {
 		collaborators: [],
 	});
 	const [users, setUsers] = useState([]);
+	const [roles, setRoles] = useState([]);
 
 	useEffect(() => {
 		if (open) {
-			getAllUsers()
+			getAllUsers('project=true')
 				.then(setUsers)
+				.catch((error) => console.error('Failed to fetch users:', error));
+			getRoles('project=true')
+				.then((data) => {
+					setRoles(data.map((role) => role.name));
+				})
 				.catch((error) => console.error('Failed to fetch users:', error));
 		}
 	}, [open]);
@@ -119,9 +125,7 @@ function EditTaskDialog({ task, open, onClose, onUpdate }) {
 				<div>
 					<label>Leader:</label>
 					{users
-						.filter((user) =>
-							['Admin', 'Team Leader', 'Product Owner'].includes(user.role.name)
-						)
+						.filter((user) => ['Admin', ...roles].includes(user.role.name))
 						.map((user) => (
 							<div key={user._id}>
 								<input
@@ -140,6 +144,7 @@ function EditTaskDialog({ task, open, onClose, onUpdate }) {
 							</div>
 						))}
 				</div>
+
 				<div>
 					<label>Collaborators:</label>
 					{users.map((user) => (

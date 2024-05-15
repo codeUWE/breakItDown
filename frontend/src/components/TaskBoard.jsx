@@ -73,8 +73,8 @@ function TaskBoard() {
 				</select>
 			</div>
 
-			<div className="w-[1400px] h-[670px] mx-auto rounded-[30px] flex flex-col justify-center items-center bg-[#EFF9FF] shadow-md">
-				<div className="w-full px-8 flex justify-between items-center mb-4">
+			<div className="w-[1400px] h-[670px] mx-auto rounded-[30px] flex flex-col justify-center items-center bg-[#EFF9FF] ">
+				<div className="w-full px-8 flex justify-between items-center mb-3">
 					<h2 className="font-outfit font-[600]  text-[32px]">All Tasks</h2>
 					{hasPermission(user.role.permissions, ['addTicket']) ||
 					hasPermission(user.role.permissions, ['leaderAddTicket']) ? (
@@ -89,7 +89,7 @@ function TaskBoard() {
 						''
 					)}
 				</div>
-				<div className="flex justify-center items-center gap-3">
+				<div className="flex justify-center items-center gap-3 pb-3">
 					<TaskColumn
 						title={'To Do'}
 						tasks={todoTasks}

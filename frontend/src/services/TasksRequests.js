@@ -1,21 +1,21 @@
-import axios from 'axios';
+import axiosClient from '../axiosClient';
 
 //Get all Tasks
 export const getAllTasks = async () => {
-	const { data } = await axios.get('http://localhost:3001/tasks');
+	const { data } = await axiosClient.get('http://localhost:3001/tasks');
 	return data;
 };
 
 // Get Task via id
 export const getTaskById = async (id) => {
-	const { data } = await axios.get(`http://localhost:3001/tasks/${id}`);
+	const { data } = await axiosClient.get(`http://localhost:3001/tasks/${id}`);
 	return data;
 };
 
 // Update Task
 export const updateTask = async (id, updates) => {
 	try {
-		const { data } = await axios.put(
+		const { data } = await axiosClient.put(
 			`http://localhost:3001/tasks/${id}`,
 			updates,
 			{ withCredentials: true }
@@ -28,18 +28,25 @@ export const updateTask = async (id, updates) => {
 };
 //Post Task
 export const createTask = async (payload) => {
-	const { data } = await axios.post(`http://localhost:3001/tasks/`, payload, {
-		withCredentials: true,
-	});
+	const { data } = await axiosClient.post(
+		`http://localhost:3001/tasks/`,
+		payload,
+		{
+			withCredentials: true,
+		}
+	);
 	return data;
 };
 
 // Delete Task
 export const deleteTask = async (id) => {
 	try {
-		const { data } = await axios.delete(`http://localhost:3001/tasks/${id}`, {
-			withCredentials: true,
-		});
+		const { data } = await axiosClient.delete(
+			`http://localhost:3001/tasks/${id}`,
+			{
+				withCredentials: true,
+			}
+		);
 		return data;
 	} catch (error) {
 		console.error(`Error deleting task with id ${id}:`, error);
@@ -49,7 +56,7 @@ export const deleteTask = async (id) => {
 // Toggle Task Closed
 export const toggleTaskClosed = async (id) => {
 	try {
-		const { data } = await axios.put(
+		const { data } = await axiosClient.put(
 			`http://localhost:3001/tasks/${id}/toggleClosed`,
 			{},
 			{ withCredentials: true }
@@ -64,7 +71,7 @@ export const toggleTaskClosed = async (id) => {
 //Get Gantt Data
 export const getTasksForGantt = async () => {
 	try {
-		const { data } = await axios.get('http://localhost:3001/tasks/gantt');
+		const { data } = await axiosClient.get('http://localhost:3001/tasks/gantt');
 		return data;
 	} catch (error) {
 		console.error('Error fetching tasks for Gantt:', error);
@@ -74,7 +81,7 @@ export const getTasksForGantt = async () => {
 // Update Subtask
 export const updateSubtask = async (id, updates) => {
 	try {
-		const { data } = await axios.put(
+		const { data } = await axiosClient.put(
 			`http://localhost:3001/subtasks/${id}`,
 			updates,
 			{ withCredentials: true }
@@ -88,7 +95,7 @@ export const updateSubtask = async (id, updates) => {
 
 //Post Subtask
 export const createSubtask = async (payload) => {
-	const { data } = await axios.post(
+	const { data } = await axiosClient.post(
 		`http://localhost:3001/subtasks/`,
 		payload,
 		{ withCredentials: true }
@@ -98,22 +105,28 @@ export const createSubtask = async (payload) => {
 
 //Delete Subtask
 export const deleteSubtask = async (id) => {
-	const { data } = await axios.delete(`http://localhost:3001/subtasks/${id}`, {
-		withCredentials: true,
-	});
+	const { data } = await axiosClient.delete(
+		`http://localhost:3001/subtasks/${id}`,
+		{
+			withCredentials: true,
+		}
+	);
 	return data;
 };
 
 //Update Subtask
 export const update = async (id) => {
-	const { data } = await axios.put(`http://localhost:3001/subtasks/${id}`, {
-		withCredentials: true,
-	});
+	const { data } = await axiosClient.put(
+		`http://localhost:3001/subtasks/${id}`,
+		{
+			withCredentials: true,
+		}
+	);
 	return data;
 };
 // Assign Subtask
 export const assignSubtask = async (id) => {
-	const { data } = await axios.patch(
+	const { data } = await axiosClient.patch(
 		`http://localhost:3001/subtasks/${id}/assign`,
 		{},
 		{
@@ -125,7 +138,7 @@ export const assignSubtask = async (id) => {
 
 //Get unassigned Subtask
 export const getUnassignedTasks = async () => {
-	const { data } = await axios.get(
+	const { data } = await axiosClient.get(
 		'http://localhost:3001/subtasks/unassigned',
 		{ withCredentials: true }
 	);
@@ -135,7 +148,7 @@ export const getUnassignedTasks = async () => {
 // Get widget information
 export const getWidgetInfo = async () => {
 	try {
-		const { data } = await axios.get('http://localhost:3001/widget/info');
+		const { data } = await axiosClient.get('http://localhost:3001/widget/info');
 		return data;
 	} catch (error) {
 		console.error('Error fetching widget info:', error);
