@@ -3,7 +3,8 @@ const Subtask = require('../models/subtasks');
 
 const getTasks = async (req, res) => {
 	try {
-		const tasks = await Task.find({})
+		console.log(req.user);
+		const tasks = await Task.find({ project: req.user.project })
 			.sort('deadline')
 			.populate({
 				path: 'owner',
@@ -189,6 +190,7 @@ const createTask = async (req, res) => {
 			deadline,
 			leader,
 			collaborators,
+			project: req.user.project,
 		});
 		res.json(createdTask);
 	} catch (error) {
@@ -308,9 +310,13 @@ const toggleTaskClosed = async (req, res) => {
 
 const getWidgetInfo = async (req, res) => {
 	try {
-		const openTasksCount = await Task.countDocuments({ isClosed: false });
+		const openTasksCount = await Task.countDocuments({
+			project: req.user.project,
+			isClosed: false,
+		});
 
 		const nextTask = await Task.findOne({
+			project: req.user.project,
 			deadline: { $gte: new Date() },
 			isClosed: false,
 		})

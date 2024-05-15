@@ -5,33 +5,29 @@ const Role = require('../models/roles');
 
 //Post req
 const register = async (req, res) => {
+	try {
+		const {
+			body: { email, password },
+		} = req;
+		const found = await User.findOne({ email });
+		if (found) throw new Error('User already Exists');
 
-  try {
-    const {
-      body: { email, password },
-    } = req;
-    const found = await User.findOne({ email });
-    if (found) throw new Error("User already Exists");
+		const hash = await bcrypt.hash(password, 10);
 
-    const hash = await bcrypt.hash(password, 10);
-
-    //get admin role
-    const role = await Role.findOne({ name: "Admin" });
-    console.log(role);
-    const user = await User.create({
-      email,
-      password: hash,
-      role: role._id,
-    });
-    res.json({ email: user.email, id: user._id });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json("Something went wrong");
-  }
+		//get admin role
+		const role = await Role.findOne({ name: 'Admin' });
+		console.log(role);
+		const user = await User.create({
+			email,
+			password: hash,
+			role: role._id,
+		});
+		res.json({ email: user.email, id: user._id });
+	} catch (error) {
+		console.log(error);
+		res.status(500).json('Something went wrong');
+	}
 };
-
-
-	
 
 const login = async (req, res) => {
 	try {
@@ -49,7 +45,6 @@ const login = async (req, res) => {
 				},
 			});
 
-
 		if (!user) throw new Error("User doesn't Exists");
 		console.log(user);
 
@@ -64,7 +59,7 @@ const login = async (req, res) => {
 			role: user.role,
 			_id: user._id,
 			profilePicture: user.profilePicture,
-			project: user.project
+			project: user.project,
 		};
 		const token = jwt.sign(payload, process.env.JWT_SECRET, {
 			expiresIn: '480m',
@@ -88,7 +83,6 @@ const logout = async (req, res) => {
 	}
 };
 const getProfile = async (req, res) => {
-
 	try {
 		const {
 			user: { id },
@@ -112,6 +106,5 @@ const getProfile = async (req, res) => {
 		console.log(error);
 		res.status(500).json('Something went wrong');
 	}
-
 };
 module.exports = { register, login, logout, getProfile };

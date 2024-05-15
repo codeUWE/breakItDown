@@ -69,11 +69,13 @@ function TimeDashboard() {
 			<div className="text-[69px] font-[700] tracking-tighter flex">
 				{formatDate(currentTime)}
 			</div>
-			<div className="absolute top-[230px] left-[83.2px] border-[6px] border-[#E53935] h-[160px]"></div>
+			<div className="absolute top-[230px] left-[83.2px] border-[6px] border-[#E53935] h-[170px]"></div>
 			<div className="absolute top-[230px] left-[200px] border-[6px] border-[#E53935] h-[170px]"></div>
-			<div className="absolute top-[510px] left-[200px] border-[6px] border-[#E53935] h-[100px]"></div>
-			<div className="absolute top-[400px] left-[33px] flex items-center gap-[6px]">
-				<h1 className="text-[110px]">{widgetInfo.openTasksCount}</h1>
+			<div className="absolute top-[501px] left-[201px] border-[6px] border-[#E53935] h-[130px]"></div>
+			<div className="absolute top-[395px] left-[33px] flex items-center gap-[6px]">
+				<h1 className="text-[115px]">{widgetInfo.openTasksCount}</h1>
+			</div>
+			<div className="absolute top-[400px] left-[188px] flex items-center gap-[6px]">
 				<div className="flex flex-col items-start leading-none">
 					<h2 className="text-[50px]">Tasks</h2>
 					<h2 className="text-[50px] ps-[10px]">Left</h2>
