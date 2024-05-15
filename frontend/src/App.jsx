@@ -14,6 +14,7 @@ import ManageUsers from './components/ManageUsers';
 import Dashboard from './components/Dashboard';
 import Layout from './components/Layout';
 import Notes from './components/Notes';
+import Landing from './components/Landing';
 
 import Authorize from './components/Authorize';
 
@@ -48,7 +49,7 @@ function App() {
 						<Route path="/notes" element={<Notes />} />
 					</Route> 
 
-					</Route>
+					{/* </Route> */}
 
 				</Routes>
 			</main>

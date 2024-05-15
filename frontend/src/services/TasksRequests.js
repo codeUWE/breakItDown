@@ -152,7 +152,7 @@ export const getWidgetInfo = async () => {
 		const { data } = await axios.get('http://localhost:3001/widget/info');
 		
 
-		const { data } = await axiosClient.get('http://localhost:3001/widget/info');
+		// const { data } = await axiosClient.get('http://localhost:3001/widget/info');
 
 		return data;
 	} catch (error) {
