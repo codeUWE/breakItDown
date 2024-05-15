@@ -12,9 +12,9 @@ function Dashboard() {
 				<RecentCollaborations />
 			</div> */}
 			<div className="">
-				<div>
+				{/* <div>
 					<GoodNews />
-				</div>
+				</div> */}
 				<div>
 					<TimeDashboard />
 				</div>

@@ -176,19 +176,32 @@ const deleteSubtask = async (req, res) => {
 
 const getUnassignedSubtasks = async (req, res) => {
 	try {
-		const unassignedSubtasks = await Subtask.find({ assignee: null })
+		console.log(req.user.project);
+		const unassignedSubtasks = await Subtask.find({
+			assignee: null,
+		})
 			.populate({
 				path: 'task',
-				select: 'title leader',
+				select: 'title leader project',
+				match: { project: { $eq: req.user.project } },
 				populate: {
 					path: 'leader',
 					select: 'profilePicture role name email',
 				},
 			})
-			// .select('title description detailedInformation deadline task')
+			.select('title description detailedInformation deadline task')
 			.sort({ deadline: 1 }); // Sort by deadline in ascending order
-		console.log(unassignedSubtasks);
-		res.json(unassignedSubtasks);
+		console.log(
+			unassignedSubtasks.filter(
+				(subtask) => subtask?.task?.project === req.user.project
+			)
+		);
+		// console.log(unassignedSubtasks?[1].task.project);
+		res.json(
+			unassignedSubtasks.filter((subtask) => {
+				return subtask?.task;
+			})
+		);
 	} catch (error) {
 		console.error('Error fetching unassigned subtasks:', error);
 		res.status(500).send('Something went wrong!');

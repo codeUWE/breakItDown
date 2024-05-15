@@ -26,7 +26,7 @@ const getAllRoles = async (req, res) => {
 	try {
 		const query = {};
 		if (req.query.project) {
-			query.pro;
+			query.project;
 		}
 		const roles = await Role.find().populate({
 			path: 'permissions',

@@ -9,7 +9,7 @@ const SubtaskWidget = () => {
 	const [assignedSubtaskId, setAssignedSubtaskId] = useState(null);
 
 	useEffect(() => {
-		getUnassignedTasks()
+		getUnassignedTasks('project=true')
 			.then((data) => setUnassignedSubtasks(data))
 			.catch((err) => console.log(err));
 	}, []);
@@ -112,7 +112,7 @@ const SubtaskWidget = () => {
 											<div className="absolute left-1 top-6 w-4 border border-black"></div>
 										</div>
 										<h3 className="self-end pe-3 text-[16px] font-outfit font-[400] mt-2 w-52 truncate">
-											{subtask.task.title}
+											{subtask.task?.title}
 										</h3>
 										<div className="flex w-[150px] h-[30px] justify-center items-center mt-2 bg-red-600 text-white rounded-xl">
 											<h2 className="text-[12px] font-outfit font-[700] me-1">
@@ -134,14 +134,14 @@ const SubtaskWidget = () => {
 									<div className="w-[15%] flex self-center justify-end items-center gap-3">
 										<div className="mt-5">
 											<Tooltip
-												content={`Mail to: ${subtask.task.leader.name}`}
+												content={`Mail to: ${subtask.task.leader?.name}`}
 												className="tooltip-class font-outfit"
 											>
-												<a href={`mailto:${subtask.task.leader.email}`}>
+												<a href={`mailto:${subtask.task.leader?.email}`}>
 													<img
 														className="w-[45px] h-[45px] rounded-full cursor-pointer"
 														src={
-															subtask.task.leader.profilePicture ||
+															subtask.task.leader?.profilePicture ||
 															'https://cdn-icons-png.flaticon.com/512/149/149071.png'
 														}
 														alt="Leader Profile"

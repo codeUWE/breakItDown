@@ -435,7 +435,7 @@ function SingleTaskBoard() {
 												isClosed={task.isClosed}
 												key={subtask._id}
 												subtask={subtask}
-												taskLeaderId={task?.leader._id}
+												taskLeaderId={task?.leader?._id}
 												onUpdate={handleSubtaskUpdate}
 												onDelete={handleSubtaskDelete}
 											/>
