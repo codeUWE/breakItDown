@@ -27,3 +27,6 @@
 .red-slash {
   color: red;
 }
+/* 
+::-moz-scrollbar {
+  width: 45px; /* Adjust the width as needed */

@@ -1,7 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { getAllUsers } from '../services/UserRequests';
 import { Avatar } from '@material-tailwind/react';
 import { AuthContext } from '../context/AuthProvider';
+import googledrive from '../assets/googledrive.png';
+import github from '../assets/github.png';
 
 function RecentCollaborations() {
   const { user } = useContext(AuthContext);
@@ -53,13 +56,13 @@ function RecentCollaborations() {
     
           
        
-    <Avatar size="xl" variant="" 
+    <Avatar size="l" variant="circular" 
           key={collaborator.id}
           src={collaborator.profilePicture}
           alt={collaborator.name} 
           onMouseEnter={() => setHoveredUser(collaborator)}
           onMouseLeave={() => setHoveredUser(null)}
-          class="relative inline-block h-22 w-22 !rounded-full object-cover object-center"
+          class="relative inline-block ! rounded-full object-cover object-center "
           />
       ))}
           </div>
@@ -69,8 +72,35 @@ function RecentCollaborations() {
       <div className='relative flex justify-end'>
         <div className='flex justify-end absolute right-[-1002px] m-6'>
            <h3 className='font-semibold text-3xl text-gray-800 mr-2'>Links</h3>
-        <img src="./src/assets/googledrive.png" alt="Google Drive" className='w-[35px] h-[35px]' />
-        <img src="./src/assets/github.png" alt="GitHub" className='w-[35px] h-[35px]' />
+        
+           <a
+              href="https://www.google.com/intl/de/drive/"
+              target="_blank"
+              rel="noopener noreferrer"
+              // className="mx-2"
+            >
+              <img
+                src={googledrive}
+                alt="Google Drive"
+                className="w-[35px] h-[35px]"
+              />
+            </a>
+       
+         {/* <img src="./src/assets/googledrive.png" alt="Google Drive" className='w-[35px] h-[35px]' />  */}
+     
+         <a
+          href='https://github.com/'
+           target="_blank"
+            rel="noopener noreferrer"
+            className="mx-2"
+          >
+          <img 
+         src={github} 
+          alt="GitHub" 
+          className="w-[35px] h-[35px]" 
+          />
+        </a>
+        
         <img src="./src/assets/instagram.png" alt="Instagram" className='w-[35px] h-[35px]' />
         <img src="./src/assets/office.png" alt="MS Office" className='w-[35px] h-[35px]' />
         <img src="./src/assets/npm.png" alt="NPM" className='w-[35px] h-[35px]' />

@@ -26,15 +26,15 @@ function GoodNews() {
           return user ? post.userId === user.id : true;
         });
   
-        
+        // Set news data
         setNews(filteredNewsData);
-        setVisibleNews(filteredNewsData.slice(0, 10)); // 
+        setVisibleNews(filteredNewsData.slice(0, 10)); // Initially show only the first 10 news items
   
         // Fetch all users
         const usersData = await getAllUsers();
         setUsers(usersData);
   
-        
+        // Set the logged-in user if available
         if (usersData.length > 0) {
           const randomIndex = Math.floor(Math.random() * usersData.length);
           setLoggedInUser(usersData[randomIndex]);
@@ -45,33 +45,7 @@ function GoodNews() {
     };
   
     fetchData();
-  }, [user]); // Triggering a data fetching here
-  
-  
-  const handleDelete = async (id) => {
-
-    try {
-      await deleteNews(id);
-      setNews(prevNews => prevNews.filter(item => item.id !==id));
-
-    } catch (error) {
-      console.error('Error deleting news:', error);
-    }
-    
-  }
-
-    const handleEdit = async (id, updatedData) => {
-      try {
-        const updatedNews = await updateNews(id, updatedData);
-        setNews(prevNews => prevNews.map(item => (item.id === id ? updatedNews : item)));
-      } catch (error) {
-        console.error('Error updating news:', error);
-      }
-    }
-  
-  
-  
-  
+  }, [user]); // Trigger fetchData when user changes
   
   const handleSend = async () => {
     if (inputValue.trim() !== '') {
@@ -81,10 +55,10 @@ function GoodNews() {
         console.log("Message sent at:", formattedDateTime);
   
         const newPost = {
-          name: user ? user.name : 'Anonymous', // 
+          name: user ? user.name : 'Anonymous', // Use authenticated user's name or default to 'Anonymous'
           body: inputValue,
           timestamp: currentTime,
-          userId: user ? user.id : null // 
+          userId: user ? user.id : null // Associate the post with the authenticated user's ID
         };
   
         // Update UI immediately
@@ -95,12 +69,22 @@ function GoodNews() {
   
         const updatedNews = await getNews();
         setNews(updatedNews);
-        setVisibleNews(updatedNews.slice(0, 6)); // 
+        setVisibleNews(updatedNews.slice(0, 6)); // Update visible news after adding a new post
   
         setInputValue('');
       } catch (error) {
         console.error('Error sending message:', error);
       }
+    }
+  };
+
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteNews(id);
+      setNews(prevNews => prevNews.filter(item => item.id !== id));
+    } catch (error) {
+      console.error('Error deleting news:', error);
     }
   };
   
@@ -122,14 +106,14 @@ function GoodNews() {
     try {
       await deleteNews(postId);
       setNews(news.filter(post => post.id !== postId));
-      setVisibleNews(news.filter(post => post.id !== postId)); // 
+      setVisibleNews(news.filter(post => post.id !== postId)); // Update visible news after deleting a post
     } catch (error) {
       console.error('Error deleting post:', error);
     }
   };
   
   return (
-    <div className='bg-[#EFF9FF] rounded-[30px] w-[1400px] ml-9'>
+    <div className='bg-[#EFF9FF] rounded-[30px] w-[1400px] ml-6'>
       <div className='relative'>
         <div className='flex justify-end items-center'>
           <div className='rounded-[20px] border-[2px] border-gray-900 outline-none placeholder-underline w-[522.85px] h-[430.58px] m-12 relative overflow-auto'>
@@ -144,8 +128,8 @@ function GoodNews() {
                 key={post.id}
                 post={post}
                 user={loggedInUser}
-                onDelete={() => onDelete(handleDelete)}
-                onEdit={handleDelete}
+                onDelete={handleDelete}
+                onUpdateNews={updateNews}
               />
             ))}
             <div className='relative'>
@@ -154,12 +138,12 @@ function GoodNews() {
                 placeholder="Share some good news"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                className="rounded-[15px] w-[506.63px] h-[36.87px] border-[2px] mt-4 border-gray-900 outline-none  pr-12 placeholder-underline"
+                className="rounded-[15px] w-[506.63px] h-[36.87px] border-[2px] mt-4 border-gray-900 outline-none pl-4 pr-12 placeholder-underline"
               />
               <img
                 src='./src/assets/sent.png'
                 alt='send'
-                className='w-[25px] h-[25px] cursor-pointer absolute right-[11px] top-[22px]'
+                className='w-[25px] h-[25px] cursor-pointer absolute right-[19px] top-[22px]'
                 onClick={handleSend}
               />
             </div>
