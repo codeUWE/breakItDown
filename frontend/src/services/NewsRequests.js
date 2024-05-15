@@ -1,11 +1,12 @@
 import React from 'react';
 import axios from 'axios';
 
+
 const BASE_URL = 'http://localhost:3001/news';
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
-  withCredentials: true // Enable sending credentials with all requests
+  withCredentials: true // 
 });
 
 // Create a news item
@@ -23,12 +24,12 @@ export const createNews = async (newsData) => {
 // Get all news items
 export const getNews = async (userId) => {
     try {
-        const response = await axios.get(`http://localhost:3001/news?userId=${userId}`);
+        const response = await axiosInstance.get(`?userId=${userId}`);
         return response.data.map(post => ({
           ...post,
           user: {
-            name: post.name, // Assuming the user's name is stored as name
-            profilePicture: post.profilePicture // Assuming the user's profile picture is stored as profilePicture
+            name: post.name, // 
+            profilePicture: post.profilePicture // 
           },
           body: post.body // Adding the body field
         }));
@@ -41,8 +42,8 @@ export const getNews = async (userId) => {
 // Update a news item by ID
 export const updateNews = async (id, newsData) => {
   try {
-    const response = await axiosInstance.put(`${BASE_URL}/news${id}`, newsData);
-    console.log('Update News Response:', response.data); // Logging the response data
+    const response = await axiosInstance.put(`${id}`, newsData);
+    console.log('Update News Response:', response.data); //
     return response.data;
   } catch (error) {
     console.error('Error updating news:', error);
@@ -54,8 +55,8 @@ export const updateNews = async (id, newsData) => {
 export const deleteNews = async (id) => {
   try {
     console.log('ID:', id); // Log the id variable
-    const response = await axios.delete(`http://localhost:3001/news/${id}`); // Ensure proper URL construction
-    console.log('Delete News Response:', response.data); // Logging the response data
+    const response = await axios.delete(`/${id}`); // 
+    console.log('Delete News Response:', response.data); //
     return response.data;
   } catch (error) {
     console.error('Error deleting news:', error);

@@ -26,7 +26,6 @@ const ManageRoles = () => {
 		});
 		getProjectByOwner(user._id)
 			.then((data) => {
-				console.log(data);
 				setRoles(data.roles);
 			})
 			.catch((error) => {

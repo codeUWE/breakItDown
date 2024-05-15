@@ -32,16 +32,18 @@ export function TestimonialCard({ onDelete, onEdit }) {
         console.error('Error fetching users:', error);
       });
 
-      deleteNews(id)
-      .then(data => {
-        console.log('Deleted News:', data);
-        setDeletedNews(data);
-      })
-      .catch(error => {
-        console.error('Error deleting news:', error);
-      });
+     
   }, []);
 
+//  deleteNews(id)
+//       .then(data => {
+//         console.log('Deleted News:', data);
+//         setDeletedNews(data);
+//       })
+//       .catch(error => {
+//         console.error('Error deleting news:', error);
+//       });
+      
   // Rest of your component logic
 
 
@@ -98,16 +100,16 @@ const handleSubmit = async (e) => {
     <div>
       {/* Render the user's own posts */}
       {myPosts.map((item, index) => (
-        <Card className='' key={index}>
+        <Card className='flex justify-center ml-2 bg-blue-gray-40' key={index}>
          <div>
                     
          </div>
             {item && (
               <Avatar size="l" variant="circular" src={getUserProfilePicture(item.name)} alt={item.name} />
             )}
-            <div className="m-1">
+            <div className="m-2">
               <div>
-              <Typography variant="paragraph" type color="orange" className="text-xs ml-12  absolute bottom-[35px]">
+              <Typography variant="paragraph" type color="green" className="text-1xl ml-12  absolute bottom-[35px]">
                   {item ? item.name : 'Unknown User'}
                 </Typography>
               </div>
@@ -119,12 +121,12 @@ const handleSubmit = async (e) => {
 
             <Typography variant='caption' className="text-xs flex justify-start items-start absolute bottom-[40px] ml-[65px]">{item.body}</Typography>
                 <div className='flex flex-col justify-end items-end absolute top-[-4px] right-[70px]'>
-                  <p className='text-xs'> {item.time}</p> 
+                  <p className='text-xs font-semibold text-gray-600'> {item.time}</p> 
                  <p className=' text-xs'> {item.date}</p>
                 </div>
                  
                  <div className='mr-2'>
-                  <div className=" w-[450px] m-10 border-t border-gray-900 flex-grow"> 
+                  <div className=" w-[450px] m-10 border-[1px] border-gray-900 flex-grow"> 
                  </div>
                    
                     
@@ -136,31 +138,31 @@ const handleSubmit = async (e) => {
               {/* Render edit and delete buttons only for the user's own posts */}
               {item.name === user.name && (
                 <div>
-                  {/* <button onClick={() => onEdit(item.id, item.body)} className="text-gray-400 mr-2">
+                   {/* <button onClick={() => onEdit(item.id, item.body)} className="text-gray-400 mr-2">
                     Edit
                   </button>
-                  <button onClick={() => onDelete(item.id)} className="text-gray-400">
-                    Delete
-                  </button> */}
+                  <button onClick={() => handleDelete(item.id)} className="text-gray-400"> */}
+                    {/* Delete */}
+                  {/* </button>  */}
                 </div>
               )}
-            {/* </div> */}
+            
      
         </Card>
       ))}
       
       {/* Render posts from other users */}
       {otherUserPosts.map((item, index) => (
-         <Card className='' key={index}>
+         <Card className='flex justify-center ml-1' key={index}>
          <div>
                     
          </div>
             {item && (
-              <Avatar size="l" variant="circular" src={getUserProfilePicture(item.name)} alt={item.name} />
+              <Avatar size="l" variant="circular" src={getUserProfilePicture(item.name)} alt={item.name} className='ml-2' />
             )}
             <div className="m-1">
               <div>
-              <Typography variant="paragraph" type color="orange" className="text-xs ml-12  absolute bottom-[35px]">
+              <Typography variant="paragraph" type color="purple" className="text-1xl ml-12  absolute bottom-[35px]">
                   {item ? item.name : 'Unknown User'}
                 </Typography>
               </div>
@@ -176,7 +178,7 @@ const handleSubmit = async (e) => {
                  <p className=' text-xs'> {item.date}</p>
                 </div>
                  
-                   <div className=" w-[480px] m-10 border-t border-gray-900 flex-grow"> 
+                <div className=" w-[450px] m-10 border-[1px] border-gray-900 flex-grow"> 
                     
                      {/* <p> {item.time}</p> */}
                       

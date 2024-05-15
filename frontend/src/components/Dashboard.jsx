@@ -1,16 +1,16 @@
 // import React from 'react';
 import GoodNews from '../components/GoodNews';
 // import WidgetOpenSubTasks from '../components/WidgetOpenSubTasks';
-// import RecentCollaborations from './RecentCollaborations';
-import OpenSubtasks from './OpenSubtasks';
+import RecentCollaborations from './RecentCollaborations';
+// import OpenSubtasks from './OpenSubtasks';
 import TimeDashboard from './TimeDashboard';
 
 function Dashboard() {
 	return (
 		<>
-			{/* <div>
+			<div>
 				<RecentCollaborations />
-			</div> */}
+			</div>
 			<div className="">
 				{/* <div>
 					<GoodNews />
@@ -19,7 +19,7 @@ function Dashboard() {
 					<TimeDashboard />
 				</div>
 				<div>
-					<OpenSubtasks />
+					{/* <OpenSubtasks /> */}
 				</div>
 				{/* <div>
 					<WidgetOpenSubTasks />
