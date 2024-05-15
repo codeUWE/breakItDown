@@ -1,8 +1,6 @@
 const User = require('../models/users');
 const bcrypt = require('bcrypt');
-
 const { request } = require('express');
-
 
 const getUsers = async (req, res) => {
 	try {
@@ -85,14 +83,22 @@ const updateUser = async (req, res) => {
 			body,
 			params: { id },
 		} = req;
-
 		console.log(id, body, req.file);
-		const updatedUser = await User.findByIdAndUpdate(
-			id,
-			{ ...body, profilePicture: req.file.path },
-			{ new: true }
-		);
+		const data = { ...body };
+		if (req.file) {
+			data.profilePicture = req.file.path;
+		}
 
+		const updatedUser = await User.findByIdAndUpdate(id, data, {
+			new: true,
+		}).populate({
+			path: 'role',
+			populate: {
+				path: 'permissions',
+				model: 'Permission',
+				select: 'name',
+			},
+		});
 		res.send(updatedUser);
 	} catch (error) {
 		console.log(error);
@@ -111,33 +117,3 @@ const deleteUser = async (req, res) => {
 };
 
 module.exports = { getUsers, getUser, createUser, updateUser, deleteUser };
-
-// async function constructImageUrl(userId) {
-// 	// Construct the image URL based on the user's ID
-// 	return `https://randomuser.me/api/portraits/men/${userId}.jpg`;
-//   }
-
-//   async function updateUserImageUrls() {
-// 	try {
-// 	  // Fetch all users from the database
-// 	  const users = await User.find();
-
-// 	  // Iterate over each user
-// 	  for (const user of users) {
-// 		// Construct the image URL
-// 		const imageUrl = await constructImageUrl(user.id);
-
-// 		// Update the user document with the image URL
-// 		await User.findByIdAndUpdate(user._id, { image_url: imageUrl });
-// 	  }
-
-// 	  console.log('Image URLs updated successfully.');
-// 	} catch (error) {
-// 	  console.error('Error updating image URLs:', error);
-// 	}
-//   }
-
-//   // Call the function to update image URLs
-
-//   updateUserImageUrls();
-

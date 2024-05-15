@@ -1,14 +1,17 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { getTaskById, updateTask, deleteTask } from '../services/TasksRequests';
-import { useEffect, useState, useRef } from 'react';
+import {
+	getTaskById,
+	updateTask,
+	deleteTask,
+	toggleTaskClosed,
+} from '../services/TasksRequests';
+import { useEffect, useState, useRef, useContext } from 'react';
 import SingleTaskSubtask from './SingleTaskSubtask';
 import SingleTaskProgress from './SingleTaskProgress';
 import AddSubtaskDialog from './AddSubtaskDialog';
 import EditTaskDialog from './EditTaskDialog';
 import DeleteTaskDialog from './DeleteTaskDialog';
 
-//userIntegration
-import { useContext } from 'react';
 import { AuthContext } from '../context/AuthProvider';
 import { hasPermission } from '../services/utils';
 
@@ -16,6 +19,7 @@ import SpeechBubble from '../assets/speechBubble.png';
 import plus from '../assets/plus.png';
 import edit from '../assets/edit.png';
 import deleteIcon from '../assets/deleteIcon.png';
+import closedTicket from '../assets/closedTicket.png';
 import back from '../assets/back.png';
 import userIcon from '../assets/user.png';
 import collaborators from '../assets/collaborators.png';
@@ -28,12 +32,11 @@ import { Avatar } from '@material-tailwind/react';
 import Comments from './Comments';
 
 function SingleTaskBoard() {
-	//user
 	const { isLoading, user } = useContext(AuthContext);
-
 	const { id } = useParams();
 	const navigate = useNavigate();
 
+	// State variables
 	const [task, setTask] = useState(null);
 	const [activeTab, setActiveTab] = useState('subtasks');
 	const [sortMode, setSortMode] = useState('deadline');
@@ -42,55 +45,12 @@ function SingleTaskBoard() {
 	const [deleteOpen, setDeleteOpen] = useState(false);
 	const [showMoreDetails, setShowMoreDetails] = useState(false);
 	const moreDetailsRef = useRef(null);
+	const previousStatusRef = useRef(null); // Ref to store previous status
 
-	// Task Date formatter
-	function formatDate(dateString) {
-		if (!dateString) return 'No Date';
-		const date = new Date(dateString);
-		if (isNaN(date.getTime())) return 'Invalid Date';
-		return new Intl.DateTimeFormat('de-DE', {
-			day: '2-digit',
-			month: '2-digit',
-			year: '2-digit',
-		})
-			.format(date)
-			.split('.')
-			.join('/');
-	}
-	const deadlineFormatted = task ? formatDate(task.deadline) : 'No Date';
-	const startDateFormatted = task ? formatDate(task.startDate) : 'No Date';
-
-	// Status Label
-	function getStatusLabel(status) {
-		switch (status) {
-			case 'backlog':
-				return {
-					label: 'To Do',
-					className: 'bg-[#575761] text-white',
-				};
-			case 'inProgress':
-				return {
-					label: 'In Progress',
-					className: 'bg-[#c07a19] text-white',
-				};
-			case 'done':
-				return {
-					label: 'Done',
-					className: 'bg-[#08A045] text-white',
-				};
-			default:
-				return {
-					label: 'Unknown',
-					className: 'bg-[#d3d3d3] text-black',
-				};
-		}
-	}
-
+	// Fetch task data by ID
 	const fetchTask = async () => {
 		try {
 			const data = await getTaskById(id);
-			console.log(data); // Überprüfe die Struktur und Verfügbarkeit von 'leader'
-
 			const sortedSubtasks = sortSubtasks(data.subtasks, sortMode);
 			setTask({ ...data, subtasks: sortedSubtasks });
 		} catch (error) {
@@ -98,10 +58,7 @@ function SingleTaskBoard() {
 		}
 	};
 
-	useEffect(() => {
-		fetchTask();
-	}, [id, sortMode]);
-
+	// Sort subtasks based on the selected mode
 	const sortSubtasks = (subtasks, mode) => {
 		switch (mode) {
 			case 'priority':
@@ -121,6 +78,7 @@ function SingleTaskBoard() {
 		}
 	};
 
+	// Handlers for various actions
 	const handleSubtaskUpdate = (updatedSubtask) => {
 		setTask((prevTask) => {
 			const updatedSubtasks = prevTask.subtasks.map((subtask) =>
@@ -191,6 +149,74 @@ function SingleTaskBoard() {
 		setShowMoreDetails(!showMoreDetails);
 	};
 
+	const handleToggleTaskClosed = async () => {
+		try {
+			// Store the previous status before toggling the closed state
+			if (!task.isClosed) {
+				previousStatusRef.current = task.status;
+			}
+
+			const updatedTask = await toggleTaskClosed(task._id);
+
+			// If the task is closed, set the status to 'done'
+			if (updatedTask.isClosed) {
+				await updateTask(task._id, { status: 'done' });
+				setTask({ ...updatedTask, status: 'done' });
+			} else {
+				// If the task is reopened, restore the previous status
+				const previousStatus = previousStatusRef.current || 'backlog';
+				await updateTask(task._id, { status: previousStatus });
+				setTask({ ...updatedTask, status: previousStatus });
+			}
+		} catch (error) {
+			console.error('Error toggling task closed state:', error);
+		}
+	};
+
+	// Utility functions
+	function formatDate(dateString) {
+		if (!dateString) return 'No Date';
+		const date = new Date(dateString);
+		if (isNaN(date.getTime())) return 'Invalid Date';
+		return new Intl.DateTimeFormat('de-DE', {
+			day: '2-digit',
+			month: '2-digit',
+			year: '2-digit',
+		})
+			.format(date)
+			.split('.')
+			.join('/');
+	}
+
+	const deadlineFormatted = task ? formatDate(task.deadline) : 'No Date';
+	const startDateFormatted = task ? formatDate(task.startDate) : 'No Date';
+
+	function getStatusLabel(status) {
+		switch (status) {
+			case 'backlog':
+				return {
+					label: 'To Do',
+					className: 'bg-[#575761] text-white',
+				};
+			case 'inProgress':
+				return {
+					label: 'In Progress',
+					className: 'bg-[#c07a19] text-white',
+				};
+			case 'done':
+				return {
+					label: 'Done',
+					className: 'bg-[#08A045] text-white',
+				};
+			default:
+				return {
+					label: 'Unknown',
+					className: 'bg-[#d3d3d3] text-black',
+				};
+		}
+	}
+
+	// Permissions
 	const isLeader =
 		task && user.role.name === 'Team Leader' && task.leader._id === user._id;
 
@@ -203,33 +229,39 @@ function SingleTaskBoard() {
 	const canAddSubtask =
 		hasPermission(user.role.permissions, ['addSubtask']) ||
 		(isLeader && hasPermission(user.role.permissions, ['leaderAddSubtask']));
+	const canCloseTicket =
+		hasPermission(user.role.permissions, ['closeTicket']) ||
+		(isLeader && hasPermission(user.role.permissions, ['leaderCloseTicket']));
+
+	useEffect(() => {
+		fetchTask();
+	}, [id, sortMode]);
 
 	return (
 		<div className="w-full h-full flex-col justify-center items-center mt-10">
-			<h2 className="font-outfit font-[800] text-[45px] text-start px-14 mb-2">
+			<h2 className="font-outfit font-[600] text-[45px] text-start px-16 mb-2">
 				Task <span className="text-[#681FDE]">View</span>
 			</h2>
-			<div className="w-[1400px] h-[670px] mx-auto rounded-[30px] bg-[#eff9ff]  p-5 relative">
-				{/* Delete, Edit and Back Buttons and Dialogs */}
+			<div className="w-[1400px] h-[670px] mx-auto rounded-[30px] bg-[#eff9ff] p-5 relative">
 				<button onClick={() => navigate(-1)} className="absolute top-4 right-6">
 					<img src={back} alt="edit icon" width={22} />
 				</button>
-				{canEditTicket ? (
+				{!task?.isClosed && canEditTicket && (
 					<button
 						onClick={() => task && handleEditOpen()}
 						className="absolute top-6 left-[535px]"
 					>
 						<img src={edit} alt="edit icon" width={23} />
 					</button>
-				) : null}
-				{canDeleteTicket ? (
+				)}
+				{!task?.isClosed && canDeleteTicket && (
 					<button
 						onClick={() => task && handleDeleteOpen()}
 						className="absolute top-14 left-[535px]"
 					>
 						<img src={deleteIcon} alt="delete icon" width={23} />
 					</button>
-				) : null}
+				)}
 
 				<EditTaskDialog
 					task={task}
@@ -243,7 +275,6 @@ function SingleTaskBoard() {
 					onDelete={handleDeleteTask}
 					task={task}
 				/>
-				{/* Task Information left side */}
 				<div className="p-3 flex justify-center items-center w-full h-full rounded-3xl">
 					<div className="w-[38%] h-full flex flex-col justify-start items-center">
 						<h2 className="self-start font-outfit font-[700] text-[40px] text-[#363636] tracking-tight leading-tight mb-2">
@@ -345,7 +376,6 @@ function SingleTaskBoard() {
 							</div>
 						</div>
 						<div className="w-full mt-2 border-[.5px] border-[#0000003a] "></div>
-						{/* Comments */}
 						<div className="w-full flex justify-start items-center gap-2">
 							<h2 className="font-outfit font-[700] text-[28px] text-[#363636] tracking-tight">
 								Comments
@@ -357,11 +387,10 @@ function SingleTaskBoard() {
 								height={25}
 							/>
 						</div>
-						<div className="w-full h-full overflow-auto no-scrollbar  rounded-[20px] ">
+						<div className="w-full h-full overflow-auto no-scrollbar rounded-[20px] ">
 							<Comments />
 						</div>
 					</div>
-					{/* Right side of the div - Subtasks and Progress */}
 					<div className="w-[62%] h-full flex flex-col justify-start items-center ps-6 pt-1">
 						<div className="w-full flex justify-around items-center font-outfit text-[48px] font-[700] text-[#363636] tracking-tight mb-4">
 							<button
@@ -403,6 +432,7 @@ function SingleTaskBoard() {
 									<div className="h-[420px] w-full overflow-scroll flex flex-col gap-2">
 										{task?.subtasks.map((subtask) => (
 											<SingleTaskSubtask
+												isClosed={task.isClosed}
 												key={subtask._id}
 												subtask={subtask}
 												taskLeaderId={task?.leader._id}
@@ -411,18 +441,36 @@ function SingleTaskBoard() {
 											/>
 										))}
 									</div>
-									{canAddSubtask ? (
-										<button
-											onClick={handleAddOpen}
-											className="py-1 self-end px-4 bg-[#575761] w-40 text-white rounded-2xl flex justify-center items-center gap-2 mt-4 me-8"
-										>
-											<img src={plus} alt="Add Subtask" width={12} />
-											<h5 className="font-outfit font-[300] text-[14px]">
-												Add Subtask
-											</h5>
-										</button>
-									) : null}
-
+									<div className="w-full flex ps-6 justify-end items-center">
+										{!task?.isClosed && canAddSubtask && (
+											<button
+												onClick={handleAddOpen}
+												className="py-1 self-end px-4 bg-[#575761] w-40 text-white rounded-2xl flex justify-center items-center gap-2 mt-4 me-8"
+											>
+												<img src={plus} alt="Add Subtask" width={13} />
+												<h5 className="font-outfit font-[300] text-[14px]">
+													Add Subtask
+												</h5>
+											</button>
+										)}
+										{canCloseTicket && (
+											<button
+												onClick={handleToggleTaskClosed}
+												className={`py-1 self-end px-4 w-40 text-white rounded-2xl flex justify-center items-center gap-2 mt-4 me-8 ${
+													task.isClosed ? 'bg-[#575761]' : 'bg-[#08A045]'
+												}`}
+											>
+												<h4 className="font-outfit font-[500] text-[14px]">
+													{task.isClosed ? 'Reopen Ticket' : 'Close Ticket'}
+												</h4>
+												<img
+													src={closedTicket}
+													alt={task.isClosed ? 'Reopen Ticket' : 'Close Ticket'}
+													width={20}
+												/>
+											</button>
+										)}
+									</div>
 									<AddSubtaskDialog
 										open={addOpen}
 										onClose={handleAddClose}

@@ -13,7 +13,6 @@ function TaskLayout({ task }) {
 		const fetchUsers = async () => {
 			const allUsers = await getAllUsers();
 			setUsers(allUsers);
-			console.log(allUsers); // Überprüfen der User-Daten
 		};
 
 		fetchUsers();
@@ -86,7 +85,6 @@ function TaskLayout({ task }) {
 					<div className=" row-start-4 col-start-3 col-span-2">
 						<div className=" flex justify-start relative">
 							{task.collaborators.map((collaborator, index) => {
-								console.log('Key:', collaborator._id); // Überprüfung der Key-Werte
 								return (
 									<Avatar
 										key={collaborator._id}

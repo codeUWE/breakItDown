@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthProvider';
-import axios from 'axios';
 import { getAllRoles, getRoleById } from '../services/RoleRequests';
 import {
 	getAllUsers,
@@ -34,7 +33,6 @@ function TeamView() {
 		// Fetch roles
 		getAllRoles()
 			.then((data) => {
-				console.log('Roles:', data); // Log the roles data
 				setRoles(data);
 			})
 			.catch((error) => {
@@ -44,7 +42,6 @@ function TeamView() {
 		// Fetch users
 		getAllUsers()
 			.then((users) => {
-				console.log('Users:', users); // Log the roles data
 				setUsers(users);
 			})
 			.catch((error) => {
