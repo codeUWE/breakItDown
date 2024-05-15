@@ -50,18 +50,19 @@ export const updateNews = async (id, newsData) => {
   }
 };
 
-// Delete a news item by ID
+/// Delete a news item by ID
 export const deleteNews = async (id) => {
-    try {
-      const response = await axios.delete(`${BASE_URL}/${id}`); // Ensure proper URL construction
-      console.log('Delete News Response:', response.data); // Logging the response data
-      return response.data;
-    } catch (error) {
-      console.error('Error deleting news:', error);
-      throw error;
-    }
-  };
-  
+  try {
+    console.log('ID:', id); // Log the id variable
+    const response = await axios.delete(`http://localhost:3001/news/${id}`); // Ensure proper URL construction
+    console.log('Delete News Response:', response.data); // Logging the response data
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting news:', error);
+    throw error;
+  }
+};
+
 
 
 
