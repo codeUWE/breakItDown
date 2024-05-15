@@ -1,6 +1,8 @@
 const express = require('express');
 const { authenticate } = require('../middlewares/auth');
 
+const { getProject } = require('../middlewares/getProject');
+
 const {
 	getTasksForGantt,
 	getTasks,
@@ -13,8 +15,11 @@ const {
 
 const tasksRouter = express.Router();
 
-tasksRouter.route('/gantt').get(getTasksForGantt);
-tasksRouter.route('/').get(getTasks).post(createTask);
+tasksRouter.route('/gantt').get(authenticate, getProject, getTasksForGantt);
+tasksRouter
+	.route('/')
+	.get(authenticate, getProject, getTasks)
+	.post(authenticate, getProject, createTask);
 tasksRouter
 	.route('/:id')
 	.get(getTask)

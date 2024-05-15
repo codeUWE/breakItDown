@@ -289,7 +289,7 @@ function SingleTaskBoard() {
 											<Avatar
 												src={
 													task.leader.profilePicture ||
-													'https://cdn-icons-png.flaticon.com/128/552/552848.png'
+													'https://cdn-icons-png.flaticon.com/512/149/149071.png'
 												}
 												alt={`${task.leader.name}'s Avatar`}
 												className="w-[35px] h-[35px]"
@@ -329,7 +329,7 @@ function SingleTaskBoard() {
 												task.collaborators.map((collaborator) => {
 													const avatarUrl =
 														collaborator.profilePicture ||
-														'https://cdn-icons-png.flaticon.com/128/552/552848.png';
+														'https://cdn-icons-png.flaticon.com/512/149/149071.png';
 													return (
 														<Avatar
 															key={collaborator._id}

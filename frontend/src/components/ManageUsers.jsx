@@ -1,97 +1,268 @@
-import { useState, useEffect, useContext } from "react";
-import CreateUserForm from "./CreateUserForm";
+import React, { useEffect, useState, useContext } from 'react';
+import { AuthContext } from '../context/AuthProvider';
 import {
-  getProjectByOwner,
-  deleteUser,
-  updateUser,
-} from "../services/UserRequests";
-import deleteIcon from "../assets/deleteIcon.png";
-import edit from "../assets/edit.png";
-import { AuthContext } from "../context/AuthProvider";
+	getProjectByOwner,
+	deleteUser,
+	updateUser,
+} from '../services/UserRequests';
+import CreateUserForm from './CreateUserForm';
+import DeleteUserDialog from './DeleteUserDialog';
+import { Avatar } from '@material-tailwind/react';
+import Select from 'react-select';
+import edit from '../assets/edit.png';
+import deleteIcon from '../assets/deleteIcon.png';
 
 const ManageUsers = () => {
-  const [users, setUsers] = useState([]);
-  const { user } = useContext(AuthContext);
+	const { user } = useContext(AuthContext);
 
-  useEffect(() => {
-    // Fetch users from MongoDB when component mounts
-    getProjectByOwner(user._id).then((data) => {
-      console.log(data);
-      setUsers(data.users);
-    });
-  }, []);
+	const [users, setUsers] = useState([]);
+	const [roles, setRoles] = useState([]);
+	const [editingUserId, setEditingUserId] = useState(null);
+	const [editUserData, setEditUserData] = useState({
+		name: '',
+		email: '',
+		role: '',
+	});
+	const [deleteUserId, setDeleteUserId] = useState(null);
+	const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
 
-  const handleEditUser = async (userId) => {};
+	useEffect(() => {
+		getProjectByOwner(user._id).then((data) => {
+			setUsers(data.users);
+			setRoles(data.roles);
+		});
+	}, [user._id]);
 
-  const handleDeleteUser = async (userId) => {
-    // Delete user from MongoDB
-    await deleteUser(userId);
-    // After deletion, fetch updated list of users and update state
-    const updatedUsers = await fetchUsers();
-    setUsers(updatedUsers);
-  };
+	const handleEditUser = (user) => {
+		setEditingUserId(user._id);
+		setEditUserData({
+			name: user.name,
+			email: user.email,
+			role: user.role._id,
+		});
+	};
 
-  return (
-    <div>
-      <CreateUserForm />
-      <div className="container mx-auto">
-        <h1 className="font-outfit font-[600] mb-4 text-[32px]">
-          Registered Users
-        </h1>
-        <table className="min-w-full">
-          <thead>
-            <tr>
-              <th className="px-4 py-2 font-outfit font-[600] text-[28px]">
-                Username
-              </th>
-              <th className="px-4 py-2 font-outfit font-[600] text-[28px]">
-                User Email
-              </th>
-              <th className="px-4 py-2 font-outfit font-[600] text-[28px]">
-                Role
-              </th>
-              <th className="px-4 py-2 font-outfit font-[600] text-[28px]">
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user._id}>
-                <td className="border px-4 py-2 text-center">{user.name}</td>
-                <td className="border px-4 py-2 text-center">{user.email}</td>
-                <td className="border px-4 py-2 text-center">
-                  {user.role.name}
-                </td>
-                <td className="border px-4 py-2 text-center">
-                  <div className="flex justify-center">
-                    <button
-                      className="m-3"
-                      onClick={(e) => {
-                        handleEditUser(user._id);
-                      }}
-                    >
-                      <img src={edit} alt="" width={27} height={27} />
-                      Edit
-                    </button>
-                    <button
-                      className="m-3"
-                      onClick={(e) => {
-                        handleDeleteUser(user._id);
-                      }}
-                    >
-                      <img src={deleteIcon} alt="" width={27} height={27} />
-                      Delete
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
+	const handleEditChange = (e) => {
+		const { name, value } = e.target;
+		setEditUserData((prevData) => ({
+			...prevData,
+			[name]: value,
+		}));
+	};
+
+	const handleRoleChange = (selectedOption) => {
+		setEditUserData((prevData) => ({
+			...prevData,
+			role: selectedOption.value,
+		}));
+	};
+
+	const handleUpdateUser = async () => {
+		try {
+			await updateUser(editingUserId, editUserData);
+			const updatedUsers = users.map((user) =>
+				user._id === editingUserId
+					? {
+							...user,
+							...editUserData,
+							role: roles.find((role) => role._id === editUserData.role),
+					  }
+					: user
+			);
+			setUsers(updatedUsers);
+			setEditingUserId(null);
+		} catch (error) {
+			console.log('Error updating user:', error);
+		}
+	};
+
+	const handleDeleteUser = async () => {
+		try {
+			await deleteUser(deleteUserId);
+			setUsers((prev) => prev.filter((user) => user._id !== deleteUserId));
+			setDeleteUserId(null);
+		} catch (error) {
+			console.log('Error deleting user:', error);
+		}
+	};
+
+	const handleSort = (key) => {
+		let direction = 'asc';
+		if (sortConfig.key === key && sortConfig.direction === 'asc') {
+			direction = 'desc';
+		}
+		setSortConfig({ key, direction });
+
+		const sortedUsers = [...users].sort((a, b) => {
+			const aValue = key === 'role.name' ? a.role.name : a[key];
+			const bValue = key === 'role.name' ? b.role.name : b[key];
+
+			if (aValue < bValue) {
+				return direction === 'asc' ? -1 : 1;
+			}
+			if (aValue > bValue) {
+				return direction === 'asc' ? 1 : -1;
+			}
+			return 0;
+		});
+		setUsers(sortedUsers);
+	};
+
+	const getSortIndicator = (key) => {
+		if (sortConfig.key === key) {
+			return sortConfig.direction === 'asc' ? '↑' : '↓';
+		}
+		return '';
+	};
+
+	const roleOptions = roles.map((role) => ({
+		value: role._id,
+		label: role.name,
+	}));
+
+	return (
+		<>
+			<div className="w-[1400px] h-[670px] mt-10 mx-auto bg-[#D4ECFC] rounded-[30px] p-4">
+				<div className="w-full h-full flex justify-center items-center gap-4">
+					{/* CreateUserForm */}
+					<div className="w-[30%] h-full rounded-[20px] bg-[#EFF9FF] p-4">
+						<CreateUserForm />
+					</div>
+					{/* Team Table */}
+					<div className="w-[70%] h-full rounded-[20px] bg-[#EFF9FF] ">
+						<table className="min-w-full bg-white rounded-[20px]">
+							<thead>
+								<tr>
+									<th
+										className="font-outfit font-[700] text-[28px] text-start py-4 px-4 border-b border-gray-400 cursor-pointer"
+										onClick={() => handleSort('name')}
+									>
+										Name {getSortIndicator('name')}
+									</th>
+									<th
+										className="font-outfit font-[700] text-[28px] text-start py-4 px-4 border-b border-gray-400 cursor-pointer"
+										onClick={() => handleSort('email')}
+									>
+										Email {getSortIndicator('email')}
+									</th>
+									<th
+										className="font-outfit font-[700] text-[28px] text-start py-4 px-4 border-b border-gray-400 cursor-pointer"
+										onClick={() => handleSort('role.name')}
+									>
+										Role {getSortIndicator('role.name')}
+									</th>
+									<th className="font-outfit font-[700] text-[28px] text-start py-4 px-4 border-b border-gray-400">
+										Action
+									</th>
+								</tr>
+							</thead>
+							<tbody className="font-outfit font-[500] text-[20px] ">
+								{users.map((user) => (
+									<tr key={user._id}>
+										<td className="py-2 px-4 border-b border-gray-200 flex items-center gap-3">
+											<Avatar
+												src={
+													user.profilePicture ||
+													'https://cdn-icons-png.flaticon.com/512/149/149071.png'
+												}
+												alt="avatar"
+												className="w-[50px] h-[50px]"
+											/>
+											{editingUserId === user._id ? (
+												<input
+													type="text"
+													name="name"
+													value={editUserData.name}
+													onChange={handleEditChange}
+													className="p-2 border border-gray-300 rounded-md"
+												/>
+											) : (
+												user.name
+											)}
+										</td>
+										<td className="py-2 px-4 border-b border-gray-200">
+											{editingUserId === user._id ? (
+												<input
+													type="email"
+													name="email"
+													value={editUserData.email}
+													onChange={handleEditChange}
+													className="p-2 border border-gray-300 rounded-md"
+												/>
+											) : (
+												user.email
+											)}
+										</td>
+										<td className="py-2 px-4 border-b border-gray-200">
+											{editingUserId === user._id ? (
+												<Select
+													value={roleOptions.find(
+														(option) => option.value === editUserData.role
+													)}
+													onChange={handleRoleChange}
+													options={roleOptions}
+													className="p-2 border border-gray-300 rounded-md"
+												/>
+											) : (
+												user.role?.name
+											)}
+										</td>
+										<td className="py-2 px-4 border-b border-gray-200">
+											{editingUserId === user._id ? (
+												<div className="flex">
+													<button
+														onClick={handleUpdateUser}
+														className="m-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+													>
+														Update
+													</button>
+													<button
+														onClick={() => setEditingUserId(null)}
+														className="m-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+													>
+														Cancel
+													</button>
+												</div>
+											) : (
+												<div className="flex justify-center">
+													<button
+														className="m-3"
+														onClick={() => handleEditUser(user)}
+													>
+														<img src={edit} alt="" width={27} height={27} />
+														Edit
+													</button>
+													<button
+														className="m-3"
+														onClick={() => setDeleteUserId(user._id)}
+													>
+														<img
+															src={deleteIcon}
+															alt=""
+															width={27}
+															height={27}
+														/>
+														Delete
+													</button>
+												</div>
+											)}
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			{/* Delete User Dialog */}
+			<DeleteUserDialog
+				open={Boolean(deleteUserId)}
+				onClose={() => setDeleteUserId(null)}
+				onDelete={handleDeleteUser}
+				user={users.find((user) => user._id === deleteUserId)}
+			/>
+		</>
+	);
 };
 
 export default ManageUsers;
