@@ -11,7 +11,7 @@ export default function AuthProvider({ children }) {
 	console.log(user);
 	useEffect(() => {
 		axiosClient
-			.get('api/auth/profile')
+			.get('/api/auth/profile')
 			.then((response) => {
 				setUser(response.data);
 				console.log(response.data);
