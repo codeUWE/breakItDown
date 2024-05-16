@@ -239,7 +239,7 @@ function SingleTaskBoard() {
 
 	return (
 		<div className="w-full h-full flex-col justify-center items-center mt-10">
-			<h2 className="font-outfit font-[700] tracking-tighter text-[45px] text-start px-16 mb-2">
+			<h2 className="font-outfit font-[700] tracking-tighter text-[45px] text-start px-36 mb-2">
 				Task <span className="text-[#681FDE]">View</span>
 			</h2>
 			<div className="w-[1400px] h-[670px] mx-auto rounded-[30px] bg-[#eff9ff] p-5 relative">
