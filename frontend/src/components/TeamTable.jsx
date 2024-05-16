@@ -102,15 +102,15 @@ function TeamTable() {
 							<div className="font-outfit font-[700] text-[28px] text-[#681FDE] ">
 								<div className="flex items-center gap-5">
 									<img src={userIcon} alt="user icon" width={25} />
-									<h2>{user.name}</h2>
+									<h2>{user?.name}</h2>
 								</div>
 								<div className="flex items-center gap-5">
 									<img src={mail} alt="mail icon" width={25} />
-									<h2>{user.email}</h2>
+									<h2>{user?.email}</h2>
 								</div>
 
 								<h2 className="bg-[#201E50] text-center mt-6 px-4 py-1 rounded-full text-[#F0C808] text-[32px] ">
-									{user.role.name}
+									{user?.role?.name}
 								</h2>
 							</div>
 						</div>
@@ -141,29 +141,29 @@ function TeamTable() {
 								</tr>
 							</thead>
 							<tbody className="font-outfit font-[500] text-[20px] ">
-								{users.map((userTable) => (
+								{users?.map((userTable) => (
 									<tr key={userTable._id}>
 										<td className="py-2 px-4 border-b border-gray-200 flex items-center gap-3">
 											<Avatar
 												src={
-													userTable.profilePicture ||
+													userTable?.profilePicture ||
 													'https://cdn-icons-png.flaticon.com/512/149/149071.png'
 												}
 												alt="avatar"
 												className="w-[50px] h-[50px]"
 											/>
-											{userTable.name}
+											{userTable?.name}
 										</td>
 										<td className="py-2 px-4 border-b border-gray-200">
 											<a
-												href={`mailto:${userTable.email}`}
+												href={`mailto:${userTable?.email}`}
 												className="text-blue-600 hover:underline"
 											>
-												{userTable.email}
+												{userTable?.email}
 											</a>
 										</td>
 										<td className="py-2 px-4 border-b border-gray-200">
-											{userTable.role.name}
+											{userTable?.role.name}
 										</td>
 									</tr>
 								))}
