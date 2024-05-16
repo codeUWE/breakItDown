@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { assignSubtask, getUnassignedTasks } from '../services/TasksRequests';
 import assign from '../assets/assign.png';
 import show from '../assets/show.png';
@@ -7,6 +7,7 @@ import { Tooltip } from '@material-tailwind/react';
 const SubtaskWidget = () => {
 	const [unassignedSubtasks, setUnassignedSubtasks] = useState([]);
 	const [assignedSubtaskId, setAssignedSubtaskId] = useState(null);
+	const [showDetails, setShowDetails] = useState({}); // Use an object to track which subtask's details are shown
 
 	useEffect(() => {
 		getUnassignedTasks('project=true')
@@ -58,22 +59,29 @@ const SubtaskWidget = () => {
 		}
 	};
 
+	const toggleDetails = (subtaskId) => {
+		setShowDetails((prevShowDetails) => ({
+			...prevShowDetails,
+			[subtaskId]: !prevShowDetails[subtaskId],
+		}));
+	};
+
 	return (
 		<>
-			<div className="w-[900px] h-[420px] overflow-scroll no-scrollbar p-4 bg-[#D4ECFC] mt-10 ms-auto flex flex-col justify-center rounded-[30px]">
+			<div className="w-[900px] h-[500px] overflow-scroll no-scrollbar p-4 bg-[#D4ECFC] mt-24 me-16 flex flex-col justify-center rounded-[30px]">
 				<h2 className="text-[30px] font-outfit font-[600] px-3">
 					Unassigned Subtasks
 				</h2>
 				<div className="bg-[#fffcf3] rounded-xl mt-4 py-2 px-6 w-full flex justify-center gap-6 items-start font-outfit text-[18px] font-[800] text-[#4B4A67]">
 					<h3 className="w-[30%]">Subtask Title (in Task)</h3>
 					<h3 className="w-[50%]">Subtask Description</h3>
-					<h3 className="w-[15%]">Actions</h3>
+					<h3 className="w-[15%] ms-4">Actions</h3>
 				</div>
 				<div className="overflow-scroll no-scrollbar h-full flex flex-col mt-4 justify-start items-center rounded-[20px]">
 					{unassignedSubtasks.map((subtask) => (
 						<div
 							key={subtask._id}
-							className={`py-4 px-2 w-full flex justify-center items-start relative  ${
+							className={`py-4 px-2 w-full h-full flex justify-center items-start relative  ${
 								assignedSubtaskId === subtask._id
 									? 'bg-[#d3d3e346] text-white flex-col justify-center items-center'
 									: 'bg-[#EFF9FF]'
@@ -126,12 +134,32 @@ const SubtaskWidget = () => {
 											</h2>
 										</div>
 									</div>
-									<div className="w-[50%] flex self-center justify-start">
+									<div className="w-[50%] flex flex-col">
 										<h3 className="text-[16px] font-outfit font-[300] ps-2">
-											{subtask.detailedInformation}
+											{subtask.description}
 										</h3>
+										<div
+											className={`overflow-hidden transition-height duration-1000 ease-in-out ${
+												showDetails[subtask._id] ? 'max-h-[500px] ' : 'max-h-0'
+											}`}
+										>
+											<div className="p-2 mt-2">
+												<h5 className="font-outfit text-[18px] font-[500] text-[#5a5a5a] mb-2">
+													Detailed Information:
+												</h5>
+												<p className="font-outfit text-[15px] font-[300] text-[#5a5a5a]">
+													{subtask.detailedInformation}
+												</p>
+											</div>
+										</div>
+										<button
+											onClick={() => toggleDetails(subtask._id)}
+											className="font-outfit font-[400] w-40 text-[16px] px-3 py-1 mt-3 text-[#3c3c3c] bg-[#C1E1F5] rounded-[20px] self-end"
+										>
+											{showDetails[subtask._id] ? 'See less' : 'See more'}
+										</button>
 									</div>
-									<div className="w-[15%] flex self-center justify-end items-center gap-3">
+									<div className="w-[15%] ms-4 flex self-center justify-end items-center gap-3">
 										<div className="mt-5">
 											<Tooltip
 												content={`Mail to: ${subtask.task.leader?.name}`}

@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../context/AuthProvider';
-import { Dialog, Button, Input } from '@material-tailwind/react';
 import { updateUsersById } from '../services/UserRequests';
 
 function EditProfileDialog({ isOpen, onClose }) {
@@ -40,40 +39,56 @@ function EditProfileDialog({ isOpen, onClose }) {
 		}
 	};
 
+	if (!isOpen) {
+		return null;
+	}
+
 	return (
-		<Dialog size="sm" open={isOpen} handler={onClose}>
-			<Dialog.Header>Edit Profile</Dialog.Header>
-			<Dialog.Body className={`flex flex-col gap-4`}>
-				<Input
-					type="text"
-					name="name"
-					label="Name"
-					value={formData.name}
-					onChange={handleChange}
-				/>
-				<Input
-					type="email"
-					name="email"
-					label="Email"
-					value={formData.email}
-					onChange={handleChange}
-				/>
-				<input type="file" onChange={handleInputChange} name="profilePicture" />
-			</Dialog.Body>
-			<Dialog.Footer>
-				<Button
-					color="green"
-					onClick={handleSaveChanges}
-					className="me-4"
-					ripple="light"
-				>
-					Save Changes
-				</Button>
-				<Button color="red" onClick={onClose} ripple="dark">
-					Cancel
-				</Button>
-			</Dialog.Footer>
-		</Dialog>
+		<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+			<div className="bg-[#D4ECFC] rounded-3xl p-6 w-full max-w-md mx-auto">
+				<div className="font-outfit text-[32px] font-[500] text-[#F55D3E] mb-4">
+					Edit Profile
+				</div>
+				<div className="flex flex-col gap-4 bg-[#EFF9FF] p-4 py-6 rounded-2xl">
+					<input
+						type="text"
+						name="name"
+						value={formData.name}
+						onChange={handleChange}
+						className="text-[18px] font-outfit font-[500] text-black bg-transparent border border-black rounded-2xl px-3 py-2"
+						placeholder="Name"
+					/>
+					<input
+						type="email"
+						name="email"
+						value={formData.email}
+						onChange={handleChange}
+						className="text-[18px] font-outfit font-[500] text-black bg-transparent border border-black rounded-2xl px-3 py-2"
+						placeholder="Email"
+					/>
+					<input
+						type="file"
+						onChange={handleInputChange}
+						name="profilePicture"
+						className="text-[18px] font-outfit font-[500] text-black bg-transparent border border-black rounded-2xl px-3 py-2"
+					/>
+				</div>
+				<div className="flex justify-end gap-4 mt-4">
+					<button
+						onClick={onClose}
+						className="py-1 w-20 text-white rounded-2xl flex justify-center items-center mt-4 bg-[#FE4A49] font-outfit font-[500]"
+					>
+						Cancel
+					</button>
+					<button
+						onClick={handleSaveChanges}
+						className="me-4 py-1 w-32 text-white rounded-2xl flex justify-center items-center mt-4 bg-[#08A045] font-outfit font-[500]"
+					>
+						Save Changes
+					</button>
+				</div>
+			</div>
+		</div>
 	);
 }
 

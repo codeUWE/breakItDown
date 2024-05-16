@@ -1,7 +1,7 @@
 import axiosClient from '../axiosClient';
 
 export const updateProject = async (id, updates) => {
-	const { data } = await axiosClient.put(`/projects/${id}`, updates);
+	const { data } = await axiosClient.put(`/api/projects/${id}`, updates);
 	return data;
 };
 
@@ -25,7 +25,6 @@ export const createProject = async (payload) => {
 //Get roles
 export const getRoles = async (query) => {
 	const { data } = await axiosClient.get(`/api/roles?${query}`);
-	console.log(data);
 	return data;
 };
 

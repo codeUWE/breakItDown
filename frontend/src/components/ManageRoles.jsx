@@ -79,21 +79,23 @@ const ManageRoles = () => {
 
 	return (
 		<>
-			<div className="flex flex-col items-center w-[1000px] h-[670px] mx-auto rounded-[30px] justify-center bg-[#EFF9FF] shadow-md mt-10">
-				<h1 className="font-outfit font-[600] text-[45px] m-2">Manage Roles</h1>
-				<form className="mb-4 w-full max-w-md">
+			<div className="flex flex-col items-center w-[500px] h-[670px] mx-auto rounded-[30px] justify-center bg-[#EFF9FF] shadow-md mt-10">
+				<h1 className="font-outfit font-[600] text-[45px] mb-2">
+					Manage Roles
+				</h1>
+				<form className="mb-4 w-full max-w-md bg-[#D4ECFC] px-8 py-10 rounded-2xl">
 					<label
 						htmlFor="role"
 						className="font-outfit font-[500] text-[20px] my-2"
 					>
-						Select a Role with Permissions:
+						Select Permissions:
 					</label>
 					<br />
 					<Select
 						isMulti={true}
 						value={selectedPermissions}
 						onChange={handlePermissionChange}
-						className="block w-full border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm m-4"
+						className="bg-white font-outfit font-[400] text-[20px]  px-4 py-2 rounded-3xl w-96"
 						options={options}
 						placeholder="Select permissions..."
 					/>
@@ -103,26 +105,26 @@ const ManageRoles = () => {
 					>
 						Enter Role:
 					</label>
-					<div className="flex">
+					<div className="flex flex-col gap-2 items-center">
 						<input
 							type="text"
 							id="roleInput"
 							value={role}
 							onChange={handleRoleChange}
-							className="mt-2 p-2 border flex-grow border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-2xl shadow-sm"
+							className="bg-white font-outfit font-[400] text-[20px]  px-4 py-2 rounded-3xl w-96"
 							placeholder="Enter role..."
 						/>
 						<button
 							type="submit"
 							onClick={handleSubmit}
-							className="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-2xl shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+							className="w-40 bg-[#080708] text-[#F55D3E] font-outfit font-[600] py-2 rounded-full mt-2 text-[20px] "
 						>
 							Create Role
 						</button>
 					</div>
 				</form>
 
-				<div className="overflow-x-auto w-full max-w-md">
+				<div className="overflow-x-auto w-full max-w-md rounded-2xl">
 					<table className="min-w-full divide-y divide-gray-200">
 						<thead className="bg-gray-50">
 							<tr>

@@ -9,17 +9,17 @@ import {
 import { Avatar } from '@material-tailwind/react';
 import { AuthContext } from '../context/AuthProvider';
 
-// Importiere die Assets wie benötigt
 import sent from '../assets/sent.png';
 import moreWhite from '../assets/moreWhite.png';
 
 function Comment({ comment, onDelete, onUpdate }) {
-	const { user } = useContext(AuthContext); // Angenommen, dass dies der aktuelle Benutzer aus Ihrem AuthContext ist
+	const { user } = useContext(AuthContext);
 	const [isEditing, setIsEditing] = useState(false);
 	const [editedBody, setEditedBody] = useState(comment.body);
 	const [menuOpen, setMenuOpen] = useState(false);
 
 	const isOwner = user && comment.user && user._id === comment.user._id;
+
 	const handleEdit = () => {
 		setIsEditing(true);
 		setMenuOpen(false);
@@ -69,10 +69,10 @@ function Comment({ comment, onDelete, onUpdate }) {
 	return (
 		<div
 			className={`w-full flex ${
-				comment.isOwner ? 'justify-end' : 'justify-start'
+				isOwner ? 'justify-end' : 'justify-start'
 			} mb-4 relative`}
 		>
-			{!comment.isOwner && (
+			{!isOwner && (
 				<Avatar
 					src={
 						comment.user?.profilePicture ||
@@ -80,13 +80,13 @@ function Comment({ comment, onDelete, onUpdate }) {
 					}
 					alt="avatar"
 					className={`w-[40px] h-[40px] ${
-						comment.isOwner ? 'absolute right-0' : 'absolute left-0'
+						isOwner ? 'absolute right-0' : 'absolute left-0'
 					}`}
 				/>
 			)}
 			<div
 				className={`comment max-w-[350px] min-w-[80px] font-outfit font-[500] ${
-					comment.isOwner
+					isOwner
 						? 'text-[#131313] text-[18px] bg-blue-300 me-9 ps-3 pe-2 py-1'
 						: 'text-[#131313] text-[18px] bg-green-300 ms-9 ps-3 pe-2 py-1'
 				} rounded-2xl break-words overflow-hidden`}
@@ -118,7 +118,7 @@ function Comment({ comment, onDelete, onUpdate }) {
 					<>
 						<div className="flex flex-col">
 							<p className="w-full ">{parseText(comment.body)}</p>
-							{comment.isOwner && (
+							{isOwner && (
 								<>
 									<button
 										onClick={toggleMenu}
@@ -148,12 +148,15 @@ function Comment({ comment, onDelete, onUpdate }) {
 					</>
 				)}
 			</div>
-			{comment.isOwner && (
+			{isOwner && (
 				<Avatar
-					src={comment.user?.profilePicture || 'default-avatar-url.jpg'} // Setzen eines Fallback-Bildes
+					src={
+						comment.user?.profilePicture ||
+						'https://cdn-icons-png.flaticon.com/512/149/149071.png'
+					}
 					alt="avatar"
 					className={`w-[40px] h-[40px] ${
-						comment.isOwner ? 'absolute right-0' : 'absolute left-0'
+						isOwner ? 'absolute right-0' : 'absolute left-0'
 					}`}
 				/>
 			)}
@@ -191,7 +194,6 @@ export default function Comments() {
 				}
 			} catch (error) {
 				console.error('Error fetching comments:', error);
-				// Optional: Handle the error in a user-friendly way, e.g., show a message
 			}
 		}
 
@@ -228,9 +230,16 @@ export default function Comments() {
 
 	const handleUpdateComment = async (commentId, updatedData) => {
 		const updatedComment = await updateComment(commentId, updatedData);
+
+		const updatedCommentWithOwner = {
+			...updatedComment,
+			isOwner:
+				user && updatedComment.user && user._id === updatedComment.user._id,
+		};
+
 		setComments((prevComments) =>
 			prevComments.map((comment) =>
-				comment._id === commentId ? updatedComment : comment
+				comment._id === commentId ? updatedCommentWithOwner : comment
 			)
 		);
 	};
@@ -240,6 +249,12 @@ export default function Comments() {
 		setComments((prevComments) =>
 			prevComments.filter((comment) => comment._id !== id)
 		);
+	};
+
+	const handleKeyDown = (event) => {
+		if (event.key === 'Enter') {
+			handleAddComment();
+		}
 	};
 
 	return (
@@ -261,6 +276,7 @@ export default function Comments() {
 					placeholder="Add a comment..."
 					value={newCommentBody}
 					onChange={(e) => setNewCommentBody(e.target.value)}
+					onKeyDown={handleKeyDown}
 					className="w-full ps-4 pe-9 py-1 bg-[##EFF9FF] rounded-xl placeholder:text-[#575761] placeholder:font-outfit font-outfit"
 				/>
 				<button onClick={handleAddComment}>

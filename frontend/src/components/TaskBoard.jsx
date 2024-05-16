@@ -49,8 +49,8 @@ function TaskBoard() {
 
 	return (
 		<>
-			<div className="w-full flex justify-between mt-10 px-16">
-				<h2 className="font-outfit font-[600] text-[45px] text-start mb-2">
+			<div className="w-full flex justify-between mt-10 px-36">
+				<h2 className="font-outfit font-[700] tracking-tighter  text-[45px] text-start mb-2">
 					Team <span className="text-[#681FDE]">Board</span>
 				</h2>
 				<select
@@ -62,7 +62,7 @@ function TaskBoard() {
 						className="font-outfit font-[500] text-[20px]"
 						value="My Tasks"
 					>
-						My Tasks
+						Task Board
 					</option>
 					<option
 						className="font-outfit font-[500] text-[20px]"

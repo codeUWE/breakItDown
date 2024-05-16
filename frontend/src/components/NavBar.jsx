@@ -55,7 +55,10 @@ function NavBar() {
 							</button>
 						</div>
 						<Avatar
-							src={user.profilePicture}
+							src={
+								user.profilePicture ||
+								'https://cdn-icons-png.flaticon.com/512/149/149071.png'
+							}
 							alt="avatar"
 							className="w-[90px] h-[90px] "
 						/>

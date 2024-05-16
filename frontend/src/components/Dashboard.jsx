@@ -6,7 +6,7 @@ import TimeDashboard from './TimeDashboard';
 function Dashboard() {
 	return (
 		<>
-			<div className="">
+			<div className="flex justify-between px-20">
 				<div>
 					<TimeDashboard />
 				</div>

@@ -97,19 +97,25 @@ export default function ProjectProgress() {
 
 	return (
 		<>
-			<div className="w-full flex justify-between mt-10">
-				<h2 className="font-outfit font-[800] text-[45px] text-start px-20 mb-2">
+			<div className="w-full flex justify-between mt-10 px-36">
+				<h2 className="font-outfit font-[800] text-[45px] text-start tracking-tighter mb-2">
 					Project <span className="text-[#681FDE]">Progress</span>
 				</h2>
 				<select
 					value={view}
 					onChange={handleViewChange}
-					className="mx-20 mt-4 mb-4 px-4 py-2 bg-[#EFF9FF] rounded-[30px] font-inter font-[800] text-[28px] text-black  "
+					className=" mt-4 mb-4 px-4 py-2 bg-[#5D737E] rounded-[30px] font-outfit font-[500] text-[24px] text-[#fff] shadow-md "
 				>
-					<option className="font-inter font-[800] " value="My Tasks">
-						My Tasks
+					<option
+						className="font-outfit font-[500] text-[20px]"
+						value="My Tasks"
+					>
+						Team Board
 					</option>
-					<option className="font-inter font-[800] " value="Project Progress">
+					<option
+						className="font-outfit font-[500] text-[20px]"
+						value="Project Progress"
+					>
 						Project Progress
 					</option>
 				</select>

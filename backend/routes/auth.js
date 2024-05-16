@@ -5,7 +5,7 @@ const { authenticate, authorize } = require('../middlewares/auth');
 
 const authRouter = express.Router();
 
-authRouter.post('/apisignup', register);
+authRouter.post('/signup', register);
 authRouter.post('/login', login);
 authRouter.post('/logout', logout);
 authRouter.get('/profile', authenticate, getProfile);

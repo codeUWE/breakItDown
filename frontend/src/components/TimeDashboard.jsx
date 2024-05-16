@@ -69,10 +69,10 @@ function TimeDashboard() {
 			<div className="text-[69px] font-[700] tracking-tighter flex">
 				{formatDate(currentTime)}
 			</div>
-			<div className="absolute top-[230px] left-[83.2px] border-[6px] border-[#E53935] h-[170px]"></div>
-			<div className="absolute top-[230px] left-[200px] border-[6px] border-[#E53935] h-[170px]"></div>
+			<div className="absolute top-[230px] left-[84.2px] border-[6px] border-[#E53935] h-[170px]"></div>
+			<div className="absolute top-[230px] left-[201px] border-[6px] border-[#E53935] h-[170px]"></div>
 			<div className="absolute top-[501px] left-[201px] border-[6px] border-[#E53935] h-[130px]"></div>
-			<div className="absolute top-[395px] left-[33px] flex items-center gap-[6px]">
+			<div className="absolute top-[393px] left-[33px] flex items-center gap-[6px]">
 				<h1 className="text-[115px]">{widgetInfo.openTasksCount}</h1>
 			</div>
 			<div className="absolute top-[400px] left-[188px] flex items-center gap-[6px]">
@@ -81,11 +81,13 @@ function TimeDashboard() {
 					<h2 className="text-[50px] ps-[10px]">Left</h2>
 				</div>
 			</div>
-			<div className="absolute top-[630px] left-[20px] flex items-center gap-[6px]">
-				<h1 className="text-[80px]">{widgetInfo.daysUntilNextDeadline}</h1>
+			<div className="absolute top-[630px] left-[50px]">
+				<h1 className="text-[125px]">{widgetInfo.daysUntilNextDeadline}</h1>
+			</div>
+			<div className="absolute top-[640px] left-[240px] flex items-center gap-[6px]">
 				<div className="flex flex-col items-start leading-none">
-					<h2 className="text-[40px] ps-[10px]">Days until</h2>
-					<h2 className="text-[40px] ps-[10px]">Next Deadline</h2>
+					<h2 className="text-[50px] w-96">Days until</h2>
+					<h2 className="text-[50px]">Next Deadline</h2>
 				</div>
 			</div>
 		</div>

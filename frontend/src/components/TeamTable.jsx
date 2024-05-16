@@ -116,7 +116,7 @@ function TeamTable() {
 						</div>
 					</div>
 					{/* Team Table */}
-					<div className="w-[70%] h-full rounded-[20px] bg-[#EFF9FF] ">
+					<div className="w-[70%] h-full rounded-[20px] bg-[#EFF9FF] overflow-scroll no-scrollbar ">
 						<table className="min-w-full bg-white rounded-[20px]">
 							<thead>
 								<tr>
@@ -141,24 +141,29 @@ function TeamTable() {
 								</tr>
 							</thead>
 							<tbody className="font-outfit font-[500] text-[20px] ">
-								{users.map((user) => (
-									<tr key={user._id}>
+								{users.map((userTable) => (
+									<tr key={userTable._id}>
 										<td className="py-2 px-4 border-b border-gray-200 flex items-center gap-3">
 											<Avatar
 												src={
-													user.profilePicture ||
+													userTable.profilePicture ||
 													'https://cdn-icons-png.flaticon.com/512/149/149071.png'
 												}
 												alt="avatar"
 												className="w-[50px] h-[50px]"
 											/>
-											{user.name}
+											{userTable.name}
 										</td>
 										<td className="py-2 px-4 border-b border-gray-200">
-											{user.email}
+											<a
+												href={`mailto:${userTable.email}`}
+												className="text-blue-600 hover:underline"
+											>
+												{userTable.email}
+											</a>
 										</td>
 										<td className="py-2 px-4 border-b border-gray-200">
-											{user.role.name}
+											{userTable.role.name}
 										</td>
 									</tr>
 								))}

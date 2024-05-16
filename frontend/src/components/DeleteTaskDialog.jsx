@@ -1,29 +1,39 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import {
-	Button,
-	Dialog,
-	DialogHeader,
-	DialogBody,
-	DialogFooter,
-} from '@material-tailwind/react';
 
 function DeleteTaskDialog({ open, onClose, onDelete, task }) {
+	if (!open) {
+		return null;
+	}
+
 	return (
-		<Dialog open={open} handler={onClose}>
-			<DialogHeader>Delete Task &quot;{task?.title}&quot;</DialogHeader>
-			<DialogBody>
-				Are you sure you want to delete this task? This action cannot be undone.
-			</DialogBody>
-			<DialogFooter>
-				<Button variant="text" color="red" onClick={onClose} className="mr-1">
-					<span>Cancel</span>
-				</Button>
-				<Button variant="gradient" color="green" onClick={onDelete}>
-					<span>Confirm</span>
-				</Button>
-			</DialogFooter>
-		</Dialog>
+		<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+			<div className="bg-white rounded-3xl p-6 w-full max-w-md mx-auto">
+				<div className="font-outfit text-[22px] text-[#F55D3E] mb-4">
+					Delete Task &quot;
+					<span className="font-[600] text-[#681FDE]">{task?.title}</span>
+					&quot;?
+				</div>
+				<div className="text-[18px] font-outfit font-[500] text-black mb-4">
+					Are you sure you want to delete this task? This action cannot be
+					undone.
+				</div>
+				<div className="flex justify-end mt-4">
+					<button
+						onClick={onClose}
+						className="me-4 py-1 w-32 text-white rounded-2xl flex justify-center items-center gap-2 mt-4 bg-[#FE4A49] font-outfit font-[500]"
+					>
+						Cancel
+					</button>
+					<button
+						onClick={onDelete}
+						className="py-1 w-32 text-white rounded-2xl flex justify-center items-center gap-2 mt-4 bg-[#08A045] font-outfit font-[500]"
+					>
+						Confirm
+					</button>
+				</div>
+			</div>
+		</div>
 	);
 }
 

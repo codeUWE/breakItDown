@@ -28,7 +28,7 @@ import startDate from '../assets/startDate.png';
 import status from '../assets/status.png';
 import more from '../assets/more.png';
 
-import { Avatar } from '@material-tailwind/react';
+import { Avatar, Tooltip } from '@material-tailwind/react';
 import Comments from './Comments';
 
 function SingleTaskBoard() {
@@ -239,7 +239,7 @@ function SingleTaskBoard() {
 
 	return (
 		<div className="w-full h-full flex-col justify-center items-center mt-10">
-			<h2 className="font-outfit font-[600] text-[45px] text-start px-16 mb-2">
+			<h2 className="font-outfit font-[700] tracking-tighter text-[45px] text-start px-16 mb-2">
 				Task <span className="text-[#681FDE]">View</span>
 			</h2>
 			<div className="w-[1400px] h-[670px] mx-auto rounded-[30px] bg-[#eff9ff] p-5 relative">
@@ -286,14 +286,23 @@ function SingleTaskBoard() {
 								{task && task.leader && (
 									<div>
 										<div className="flex items-center gap-2">
-											<Avatar
-												src={
-													task.leader.profilePicture ||
-													'https://cdn-icons-png.flaticon.com/512/149/149071.png'
-												}
-												alt={`${task.leader.name}'s Avatar`}
-												className="w-[35px] h-[35px]"
-											/>
+											<Tooltip
+												key={task.leader.name}
+												content={`Send mail to: ${task.leader.name}`}
+												className="bg-[#363636] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
+											>
+												<Avatar
+													src={
+														task.leader.profilePicture ||
+														'https://cdn-icons-png.flaticon.com/512/149/149071.png'
+													}
+													alt={`${task.leader.name}'s Avatar`}
+													className="w-[35px] h-[35px] cursor-pointer"
+													onClick={() =>
+														(window.location.href = `mailto:${task.leader.email}`)
+													}
+												/>
+											</Tooltip>
 										</div>
 									</div>
 								)}
@@ -331,12 +340,23 @@ function SingleTaskBoard() {
 														collaborator.profilePicture ||
 														'https://cdn-icons-png.flaticon.com/512/149/149071.png';
 													return (
-														<Avatar
-															key={collaborator._id}
-															src={avatarUrl}
-															alt={`${collaborator.name}'s Avatar`}
-															className={`w-[35px] h-[35px]`}
-														/>
+														<Tooltip
+															key={collaborator.name}
+															content={`Send mail to: ${collaborator.name}`}
+															className="bg-[#363636] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
+														>
+															<Avatar
+																src={
+																	avatarUrl ||
+																	'https://cdn-icons-png.flaticon.com/512/149/149071.png'
+																}
+																alt={`${collaborator.name}'s Avatar`}
+																className="w-[35px] h-[35px] cursor-pointer"
+																onClick={() =>
+																	(window.location.href = `mailto:${collaborator.email}`)
+																}
+															/>
+														</Tooltip>
 													);
 												})}
 										</div>

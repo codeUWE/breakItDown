@@ -24,8 +24,8 @@ export default function SignUpCard() {
 	} = useForm();
 	const onSubmit = (data) => {
 		console.log(data);
-		axios
-			.post('http://localhost:3001/auth/signup', data, {
+		axiosClient
+			.post('/api/auth/signup', data, {
 				withCredentials: true,
 			})
 			.then((response) => {

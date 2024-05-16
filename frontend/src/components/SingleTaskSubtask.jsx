@@ -303,14 +303,22 @@ function SingleTaskSubtask({
 								''
 							)}
 							{canEditSubtask() ? (
-								<Tooltip content="Edit Subtask" className="tooltip-class">
+								<Tooltip
+									content="Edit Subtask"
+									className="tooltip-class"
+									className="bg-[#363636] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
+								>
 									<button onClick={handleEditOpen}>
 										<img src={edit} alt="Edit Subtask" width={27} />
 									</button>
 								</Tooltip>
 							) : null}
 							{canDeleteSubtask() ? (
-								<Tooltip content="Delete Subtask" className="tooltip-class">
+								<Tooltip
+									content="Delete Subtask"
+									className="tooltip-class"
+									className="bg-[#363636] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
+								>
 									<button onClick={handleDeleteOpen}>
 										<img src={deleteIcon} alt="Delete Subtask" width={27} />
 									</button>

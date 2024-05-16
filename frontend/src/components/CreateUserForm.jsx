@@ -1,17 +1,8 @@
-import { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { getProjectByOwner } from '../services/UserRequests';
 import axiosClient from '../axiosClient';
-import {
-	Card,
-	Input,
-	Button,
-	Typography,
-	Select,
-	Option,
-} from '@material-tailwind/react';
-
 import { AuthContext } from '../context/AuthProvider';
 
 const CreateUserForm = ({ setUsers }) => {
@@ -50,95 +41,67 @@ const CreateUserForm = ({ setUsers }) => {
 				setRoles(data.roles);
 				setProject(data);
 			})
-
 			.catch((error) => console.log(error));
-	}, []);
+	}, [user._id]);
 
 	return (
-		<>
-			<div className="flex justify-center items-center gap-3 p-5">
-				<Card
-					className="w-full h-full flex flex-col justify-center items-center gap-2"
-					color="transparent"
-					shadow={false}
-				>
-					<form
-						onSubmit={handleSubmit(onSubmit)}
-						className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
+		<div className="flex justify-center items-center gap-3 p-5">
+			<div className="bg-[#EFF9FF] rounded-3xl p-6 w-full max-w-lg mx-auto">
+				<div className="text-[32px] text-[#F55D3E] font-outfit font-[500] mb-4">
+					Create User
+				</div>
+				<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+					<input
+						type="text"
+						placeholder="User Name"
+						{...register('name', { required: 'Name is required' })}
+						className="text-[18px] font-outfit font-[500] text-black bg-white  rounded-2xl px-3 py-2"
+					/>
+					{errors.name && <span>{errors.name.message}</span>}
+					<input
+						type="text"
+						placeholder="name@mail.com"
+						{...register('email', { required: 'Email is required' })}
+						className="text-[18px] font-outfit font-[500] text-black bg-white  rounded-2xl px-3 py-2"
+					/>
+					{errors.email && <span>{errors.email.message}</span>}
+					<input
+						type="password"
+						placeholder="********"
+						{...register('password', {
+							required: 'Password is required',
+							minLength: {
+								value: 8,
+								message: 'Must be at least 8 Characters!',
+							},
+						})}
+						className="text-[18px] font-outfit font-[500] text-black bg-white  rounded-2xl px-3 py-2"
+					/>
+					{errors.password && <span>{errors.password.message}</span>}
+					<select
+						{...register('role')}
+						onChange={(e) => setRole(e.target.value)}
+						className="text-[18px] font-outfit font-[500] text-black bg-white  rounded-2xl px-3 py-2"
 					>
-						<div className="mb-1 flex flex-col gap-6">
-							{/* <label >{project}</label> */}
-							<Typography variant="h4" color="blue-gray" className="font-inter">
-								User Name
-							</Typography>
-							<Input
-								size="lg"
-								placeholder="userName"
-								{...register('name')}
-								className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-								labelProps={{
-									className: 'before:content-none after:content-none',
-								}}
-							/>
-							<Typography variant="h4" color="blue-gray" className="-mb-3">
-								User Email
-							</Typography>
-							<Input
-								size="lg"
-								placeholder="name@mail.com"
-								{...register('email', { required: 'Email is required' })}
-								className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-								labelProps={{
-									className: 'before:content-none after:content-none',
-								}}
-							/>
-							<Typography variant="h4" color="blue-gray" className="-mb-3">
-								Password
-							</Typography>
-							<Input
-								type="password"
-								size="lg"
-								placeholder="********"
-								{...register('password', {
-									required: 'Password is required',
-									minLength: {
-										value: 8,
-										message: 'Must be at least 8 Charachters!',
-									},
-								})}
-								className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-								labelProps={{
-									className: 'before:content-none after:content-none',
-								}}
-							/>
-							<Typography variant="h4" color="blue-gray" className="-mb-3">
-								Role
-							</Typography>
-
-							<Select
-								{...register('role')}
-								onChange={(value) => {
-									console.log(value);
-									setRole(value);
-								}}
+						<option value="">Select Role</option>
+						{roles?.map((option) => (
+							<option
+								key={option._id}
+								value={option._id}
+								className="font-outfit"
 							>
-								{roles?.map((option) => (
-									<Option key={option._id} value={option._id}>
-										{option.name}
-									</Option>
-								))}
-							</Select>
-						</div>
-						<br />
-						<input
-							type="submit"
-							value="Create User"
-							className=" text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl px-8  py-2 transition duration-300 ease-in-out"
-						/>
-					</form>
-				</Card>
+								{option.name}
+							</option>
+						))}
+					</select>
+					<input
+						type="submit"
+						value="Create User"
+						className="w-40 bg-[#080708] text-[#F55D3E] font-outfit font-[600] py-2 rounded-full mt-2 text-[20px] mx-auto"
+					/>
+				</form>
 			</div>
-		</>
+		</div>
 	);
 };
 
