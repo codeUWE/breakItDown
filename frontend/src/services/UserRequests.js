@@ -75,25 +75,19 @@ export const deleteProjectRole = async (id) => {
 
 //Get All Users
 export const getAllUsers = async (query) => {
-	const { data } = await axiosClient.get(`/api/users?${query}`, {
-		withCredentials: true,
-	});
+	const { data } = await axiosClient.get(`/api/users?${query}`);
 	return data;
 };
 
 // Get Roles via id
 export const getUsersById = async (id) => {
-	const { data } = await axiosClient.get(`/api/users/${id}`, {
-		withCredentials: true,
-	});
+	const { data } = await axiosClient.get(`/api/users/${id}`);
 	return data;
 };
 
 //Update User
 export const updateUsersById = async (id, payload) => {
-	const { data } = await axiosClient.put(`/api/users/${id}`, payload, {
-		withCredentials: true,
-	});
+	const { data } = await axiosClient.put(`/api/users/${id}`, payload);
 	return data;
 };
 

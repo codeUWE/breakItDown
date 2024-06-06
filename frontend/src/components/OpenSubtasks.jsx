@@ -68,11 +68,11 @@ const SubtaskWidget = () => {
 
 	return (
 		<>
-			<div className="w-[900px] h-[500px] overflow-scroll no-scrollbar p-4 bg-[#D4ECFC] mt-24 me-16 flex flex-col justify-center rounded-[30px]">
-				<h2 className="text-[30px] font-outfit font-[600] px-3">
+			<div className="w-[100%] xl:h-[500px] lg:h-[450px] md:h-[700px] overflow-scroll no-scrollbar p-4 bg-[#D4ECFC] xl:mt-10 md:mt-6 flex flex-col justify-center rounded-[30px] shadow-md">
+				<h2 className="lg:text-[30px] md:text-[20px] font-outfit font-[600] px-3">
 					Unassigned Subtasks
 				</h2>
-				<div className="bg-[#fffcf3] rounded-xl mt-4 py-2 px-6 w-full flex justify-center gap-6 items-start font-outfit text-[18px] font-[800] text-[#4B4A67]">
+				<div className="bg-[#fffcf3] rounded-xl mt-4 py-2 px-6 w-full flex justify-center gap-6 items-start font-outfit lg:text-[18px] font-[800] text-[#4B4A67]">
 					<h3 className="w-[30%]">Subtask Title (in Task)</h3>
 					<h3 className="w-[50%]">Subtask Description</h3>
 					<h3 className="w-[15%] ms-4">Actions</h3>
@@ -81,7 +81,7 @@ const SubtaskWidget = () => {
 					{unassignedSubtasks.map((subtask) => (
 						<div
 							key={subtask._id}
-							className={`py-4 px-2 w-full h-full flex justify-center items-start relative  ${
+							className={`py-4 px-2 w-full max-h-sreen flex justify-center items-start relative  ${
 								assignedSubtaskId === subtask._id
 									? 'bg-[#d3d3e346] text-white flex-col justify-center items-center'
 									: 'bg-[#EFF9FF]'
@@ -112,14 +112,14 @@ const SubtaskWidget = () => {
 							) : (
 								<>
 									<div className="flex flex-col w-[30%] items-start">
-										<h3 className="self-start text-[18px] font-outfit font-[600]">
+										<h3 className="self-start lg:text-[18px] font-outfit font-[600]">
 											{subtask.title}
 										</h3>
 										<div className="relative">
 											<div className="absolute left-1 top-2 h-4 border border-black"></div>
 											<div className="absolute left-1 top-6 w-4 border border-black"></div>
 										</div>
-										<h3 className="self-end pe-3 text-[16px] font-outfit font-[400] mt-2 w-52 truncate">
+										<h3 className="self-end lg:pe-3 lg:text-[16px] md:text-[14px] font-outfit font-[400] mt-2 lg:w-52 md:w-44 md:mt-3 truncate">
 											{subtask.task.title}
 										</h3>
 										<div className="flex w-[150px] h-[30px] justify-center items-center mt-2 bg-red-600 text-white rounded-xl">
@@ -154,7 +154,7 @@ const SubtaskWidget = () => {
 										</div>
 										<button
 											onClick={() => toggleDetails(subtask._id)}
-											className="font-outfit font-[400] w-40 text-[16px] px-3 py-1 mt-3 text-[#3c3c3c] bg-[#C1E1F5] rounded-[20px] self-end"
+											className="font-outfit font-[400] w-40 text-[16px] px-3 py-1 mt-3 me-2 text-[#3c3c3c] bg-[#C1E1F5] rounded-[20px] self-end"
 										>
 											{showDetails[subtask._id] ? 'See less' : 'See more'}
 										</button>
@@ -167,7 +167,7 @@ const SubtaskWidget = () => {
 											>
 												<a href={`mailto:${subtask.task.leader?.email}`}>
 													<img
-														className="w-[45px] h-[45px] rounded-full cursor-pointer"
+														className="lg:w-[45px] lg:h-[45px] md:w-[35px] md:h-[35px] rounded-full cursor-pointer"
 														src={
 															subtask.task.leader?.profilePicture ||
 															'https://cdn-icons-png.flaticon.com/512/149/149071.png'

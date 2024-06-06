@@ -11,7 +11,7 @@ import { AuthContext } from '../context/AuthProvider';
 import plus from '../assets/plus.png';
 
 function TaskBoard() {
-	const { isLoading, user } = useContext(AuthContext);
+	const { user } = useContext(AuthContext);
 	const navigate = useNavigate();
 	const [tasks, setTasks] = useState([]);
 	const [addOpen, setAddOpen] = useState(false);
@@ -49,8 +49,8 @@ function TaskBoard() {
 
 	return (
 		<>
-			<div className="w-full flex justify-between mt-10 px-36">
-				<h2 className="font-outfit font-[700] tracking-tighter  text-[45px] text-start mb-2">
+			<div className="w-full flex items-center justify-between mt-5">
+				<h2 className="font-outfit font-[700] tracking-tighter  xl:text-[45px] md:text-[35px] text-start mb-2">
 					Team <span className="text-[#681FDE]">Board</span>
 				</h2>
 				<select
@@ -73,8 +73,8 @@ function TaskBoard() {
 				</select>
 			</div>
 
-			<div className="w-[1400px] h-[670px] mx-auto rounded-[30px] flex flex-col justify-center items-center bg-[#EFF9FF] ">
-				<div className="w-full px-8 flex justify-between items-center mb-3">
+			<div className="w-full h-full rounded-3xl flex flex-col justify-center items-center bg-[#EFF9FF] mb-5">
+				<div className="w-full px-6 pt-4 flex justify-between items-center mb-3">
 					<h2 className="font-outfit font-[600]  text-[32px]">All Tasks</h2>
 					{hasPermission(user.role.permissions, ['addTicket']) ||
 					hasPermission(user.role.permissions, ['leaderAddTicket']) ? (
@@ -89,7 +89,7 @@ function TaskBoard() {
 						''
 					)}
 				</div>
-				<div className="flex justify-center items-center gap-3 pb-3">
+				<div className="w-full flex lg:flex-row lg:justify-center lg:items-center xl:gap-4 lg:gap-3 xl:pb-3 md:flex-col">
 					<TaskColumn
 						title={'To Do'}
 						tasks={todoTasks}

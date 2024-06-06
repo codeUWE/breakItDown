@@ -238,28 +238,32 @@ function SingleTaskBoard() {
 	}, [id, sortMode]);
 
 	return (
-		<div className="w-full h-full flex-col justify-center items-center mt-10">
-			<h2 className="font-outfit font-[700] tracking-tighter text-[45px] text-start px-36 mb-2">
+		<div className="xl:w-[97%] md:w-[95%]  h-full mx-auto flex-col justify-center items-center mt-5 mb-5 ">
+			<h2 className="font-outfit font-[700] tracking-tighter xl:text-[45px] md:text-[35px] text-start mb-2">
 				Task <span className="text-[#681FDE]">View</span>
 			</h2>
-			<div className="w-[1400px] h-[670px] mx-auto rounded-[30px] bg-[#eff9ff] p-5 relative">
-				<button onClick={() => navigate(-1)} className="absolute top-4 right-6">
+			<div className="w-full xl:h-[670px] lg:h-[540px] md:h-[800px] mx-auto rounded-[30px] bg-[#eff9ff] p-5 relative ">
+				{/* edit and delete buttons */}
+				<button
+					onClick={() => navigate(-1)}
+					className="absolute top-4 lg:right-6 md:right-10"
+				>
 					<img src={back} alt="edit icon" width={22} />
 				</button>
 				{!task?.isClosed && canEditTicket && (
 					<button
 						onClick={() => task && handleEditOpen()}
-						className="absolute top-6 left-[535px]"
+						className="absolute lg:top-6 lg:left-[410px] xl:left-[535px] md:top-12 md:right-9 w-7"
 					>
-						<img src={edit} alt="edit icon" width={23} />
+						<img src={edit} alt="edit icon" className="w-[23px]" />
 					</button>
 				)}
 				{!task?.isClosed && canDeleteTicket && (
 					<button
 						onClick={() => task && handleDeleteOpen()}
-						className="absolute top-14 left-[535px]"
+						className="absolute lg:top-14 lg:left-[410px] xl:left-[535px] md:top-[75px] md:right-9 w-7"
 					>
-						<img src={deleteIcon} alt="delete icon" width={23} />
+						<img src={deleteIcon} alt="delete icon" className="w-[23px]" />
 					</button>
 				)}
 
@@ -275,9 +279,10 @@ function SingleTaskBoard() {
 					onDelete={handleDeleteTask}
 					task={task}
 				/>
-				<div className="p-3 flex justify-center items-center w-full h-full rounded-3xl">
-					<div className="w-[38%] h-full flex flex-col justify-start items-center">
-						<h2 className="self-start font-outfit font-[700] text-[40px] text-[#363636] tracking-tight leading-tight mb-2">
+				{/* task information and comments */}
+				<div className="xl:p-0 md:p-1 flex md:flex-col md:gap-6 lg:gap-2 md:items-start md:justify-start lg:flex-row lg:justify-center lg:items-center w-full h-full rounded-3xl md:overflow-scroll md:no-scrollbar">
+					<div className="xl:w-[38%] lg:w-[43%] lg:h-full md:h-[600px]  flex flex-col justify-start items-center">
+						<h2 className="self-start font-outfit font-[700] md:text-[40px] lg:text-[30px] xl:text-[40px] text-[#363636] tracking-tight leading-tight lg:mb-2 md:mb-8 ">
 							{task?.title}
 						</h2>
 						<div className="taskInformation w-full flex flex-wrap justify-center items-center">
@@ -307,7 +312,7 @@ function SingleTaskBoard() {
 									</div>
 								)}
 							</div>
-							<div className="w-1/2 h-[40px] flex items-center justify-between">
+							<div className="w-1/2 h-[40px] flex items-center lg:justify-between md:justify-start">
 								<div className="flex items-center justify-start gap-3">
 									<img src={status} alt="status icon" width={23} />
 									{task && (
@@ -322,7 +327,12 @@ function SingleTaskBoard() {
 									)}
 								</div>
 								<button onClick={toggleMoreDetails}>
-									<img src={more} alt="see more icon" width={30} />
+									<img
+										src={more}
+										alt="see more icon"
+										width={30}
+										className="md:ms-32 lg:ms-0"
+									/>
 								</button>
 							</div>
 							<div
@@ -351,7 +361,7 @@ function SingleTaskBoard() {
 																	'https://cdn-icons-png.flaticon.com/512/149/149071.png'
 																}
 																alt={`${collaborator.name}'s Avatar`}
-																className="w-[35px] h-[35px] cursor-pointer"
+																className="xl:w-[25px] xl:h-[25px] md:w-[35px] md:h-[35px] lg:w-[22px] lg:h-[22px] cursor-pointer"
 																onClick={() =>
 																	(window.location.href = `mailto:${collaborator.email}`)
 																}
@@ -361,13 +371,13 @@ function SingleTaskBoard() {
 												})}
 										</div>
 									</div>
-									<div className="w-1/2 h-[40px] flex items-center justify-between gap-3 pe-6">
+									<div className="w-1/2 h-[40px] flex items-center lg:justify-between md:justify-start gap-3 pe-6">
 										<div className="flex items-center gap-2">
 											<img
 												src={startDate}
 												alt="lead icon"
 												width={18}
-												className="ms-[2px]"
+												className="ms-[0px]"
 											/>
 											<h5>
 												<span className="font-outfit text-[16px] font-[400] text-[#5a5a5a]">
@@ -375,12 +385,12 @@ function SingleTaskBoard() {
 												</span>
 											</h5>
 										</div>
-										<div className="flex items-center gap-2">
+										<div className="flex items-center xl:gap-2 lg:gap-1">
 											<img
 												src={deadline}
 												alt="lead icon"
 												width={18}
-												className="ms-[2px]"
+												className="ms-[4px]"
 											/>
 											<h5>
 												<span className="font-outfit text-[16px] font-[400] text-[#5a5a5a]">
@@ -411,8 +421,8 @@ function SingleTaskBoard() {
 							<Comments />
 						</div>
 					</div>
-					<div className="w-[62%] h-full flex flex-col justify-start items-center ps-6 pt-1">
-						<div className="w-full flex justify-around items-center font-outfit text-[48px] font-[700] text-[#363636] tracking-tight mb-4">
+					<div className="xl:w-[62%] lg:w-[57%] md:w-full lg:h-full flex flex-col justify-start items-center xl:ps-6 pt-1">
+						<div className="w-full flex justify-around items-center font-outfit xl:text-[48px] md:text-[35px] font-[700] text-[#363636] tracking-tight mb-4">
 							<button
 								className={`h2 ${
 									activeTab === 'subtasks' ? 'text-[#681FDE]' : 'text-[#575761]'
@@ -433,9 +443,9 @@ function SingleTaskBoard() {
 						<div className="w-full h-full flex flex-col">
 							{activeTab === 'subtasks' && task?.subtasks ? (
 								<>
-									<div className="w-full ps-6 mb-4 flex justify-between items-center bg-transparent">
-										<div className="flex gap-3">
-											<p className="font-outfit font-[600] text-[18px] text-[#438CDB]">
+									<div className="w-full lg:ps-6 mb-4 flex justify-between items-center bg-transparent">
+										<div className="flex lg:gap-3 md:gap-1">
+											<p className="font-outfit font-[600] text-[18px] text-[#438CDB] w-16">
 												sort by
 											</p>
 											<select
@@ -448,8 +458,42 @@ function SingleTaskBoard() {
 												<option value="status">Status</option>
 											</select>
 										</div>
+										<div className="flex gap-2 ps-6 justify-center items-center xl:hidden">
+											{!task?.isClosed && canAddSubtask && (
+												<button
+													onClick={handleAddOpen}
+													className="py-1 self-end px-4 bg-[#575761] md:w-40 lg:w-36 text-white rounded-2xl flex justify-center items-center gap-2"
+												>
+													<img src={plus} alt="Add Subtask" width={13} />
+													<h5 className="font-outfit font-[300] text-[14px]">
+														Add Subtask
+													</h5>
+												</button>
+											)}
+											{canCloseTicket && (
+												<button
+													onClick={handleToggleTaskClosed}
+													className={`py-1 self-end px-4 md:w-40 text-white rounded-2xl flex justify-center items-center gap-2 ${
+														task.isClosed
+															? 'bg-[#575761] lg:w-40'
+															: 'bg-[#08A045] lg:w-36'
+													}`}
+												>
+													<h4 className="font-outfit font-[500] text-[14px]">
+														{task.isClosed ? 'Reopen Ticket' : 'Close Ticket'}
+													</h4>
+													<img
+														src={closedTicket}
+														alt={
+															task.isClosed ? 'Reopen Ticket' : 'Close Ticket'
+														}
+														width={20}
+													/>
+												</button>
+											)}
+										</div>
 									</div>
-									<div className="h-[420px] w-full overflow-scroll flex flex-col gap-2">
+									<div className="xl:h-[420px] md:h-[440px] lg:h-[370px] w-full overflow-scroll md:no-scrollbar flex flex-col gap-2">
 										{task?.subtasks.map((subtask) => (
 											<SingleTaskSubtask
 												isClosed={task.isClosed}
@@ -461,7 +505,7 @@ function SingleTaskBoard() {
 											/>
 										))}
 									</div>
-									<div className="w-full flex ps-6 justify-end items-center">
+									{/* <div className="w-full flex ps-6 justify-end items-center">
 										{!task?.isClosed && canAddSubtask && (
 											<button
 												onClick={handleAddOpen}
@@ -496,14 +540,50 @@ function SingleTaskBoard() {
 										onClose={handleAddClose}
 										onUpdate={handleSubtaskAdded}
 										taskId={task._id}
-									/>
+									/> */}
 								</>
 							) : (
-								<div className="px-4 h-full w-full">
+								<div className="lg:ps-4 h-full w-full">
 									<SingleTaskProgress />
 								</div>
 							)}
 						</div>
+						<div className="w-full ps-6 justify-end items-center hidden xl:flex">
+							{!task?.isClosed && canAddSubtask && (
+								<button
+									onClick={handleAddOpen}
+									className="py-1 self-end px-4 bg-[#575761] w-40 text-white rounded-2xl flex justify-center items-center gap-2 mt-4 me-8"
+								>
+									<img src={plus} alt="Add Subtask" width={13} />
+									<h5 className="font-outfit font-[300] text-[14px]">
+										Add Subtask
+									</h5>
+								</button>
+							)}
+							{canCloseTicket && (
+								<button
+									onClick={handleToggleTaskClosed}
+									className={`py-1 self-end px-4 w-40 text-white rounded-2xl flex justify-center items-center gap-2 mt-4 me-8 ${
+										task?.isClosed ? 'bg-[#575761]' : 'bg-[#08A045]'
+									}`}
+								>
+									<h4 className="font-outfit font-[500] text-[14px]">
+										{task?.isClosed ? 'Reopen Ticket' : 'Close Ticket'}
+									</h4>
+									<img
+										src={closedTicket}
+										alt={task?.isClosed ? 'Reopen Ticket' : 'Close Ticket'}
+										width={20}
+									/>
+								</button>
+							)}
+						</div>
+						<AddSubtaskDialog
+							open={addOpen}
+							onClose={handleAddClose}
+							onUpdate={handleSubtaskAdded}
+							taskId={task?._id}
+						/>
 					</div>
 				</div>
 			</div>

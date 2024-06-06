@@ -1,8 +1,8 @@
 const Project = require('../models/projects');
+const User = require('../models/users');
 
 const updateProject = async (req, res, next) => {
 	try {
-		console.log(1111111111111);
 		const { id } = req.params;
 		const { title, users = [], roles = [] } = req.body;
 
@@ -29,20 +29,15 @@ const updateProject = async (req, res, next) => {
 
 const createProject = async (req, res, next) => {
 	try {
-		console.log(1111111111111);
 		const { title, users = [], roles = [] } = req.body;
-		console.log({
-			title,
-			users,
-			roles,
-			owner: req.user.id,
-		});
+
 		const createdProject = await Project.create({
 			title,
 			users,
 			roles,
 			owner: req.user.id,
 		});
+		await User.findByIdAndUpdate(req.user.id, { project: createdProject._id });
 
 		res.json(createdProject);
 	} catch (error) {

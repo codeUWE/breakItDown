@@ -9,13 +9,13 @@ export default function EditSubtaskDialog({
 	onUpdate,
 }) {
 	const [formData, setFormData] = useState({
-		title: subtask.title,
-		description: subtask.description,
-		detailedInformation: subtask.detailedInformation,
-		deadline: subtask.deadline ? subtask.deadline.substring(0, 10) : '',
-		status: subtask.status,
-		priority: subtask.priority,
-		assignee: subtask.assignee ? subtask.assignee._id : '',
+		title: '',
+		description: '',
+		detailedInformation: '',
+		deadline: '',
+		status: '',
+		priority: '',
+		assignee: '',
 	});
 
 	const [users, setUsers] = useState([]);
@@ -27,6 +27,20 @@ export default function EditSubtaskDialog({
 		};
 		fetchUsers();
 	}, []);
+
+	useEffect(() => {
+		if (subtask && open) {
+			setFormData({
+				title: subtask.title || '',
+				description: subtask.description || '',
+				detailedInformation: subtask.detailedInformation || '',
+				deadline: subtask.deadline ? subtask.deadline.substring(0, 10) : '',
+				status: subtask.status || '',
+				priority: subtask.priority || '',
+				assignee: subtask.assignee ? subtask.assignee._id : '',
+			});
+		}
+	}, [subtask, open]);
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
@@ -52,7 +66,7 @@ export default function EditSubtaskDialog({
 
 	return (
 		<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-			<div className="bg-[#EFF9FF] rounded-3xl p-6 w-full max-w-lg mx-auto">
+			<div className="bg-[#EFF9FF] rounded-3xl p-6 w-full max-w-lg mx-auto md:h-[700px] md:overflow-scroll">
 				<div className="font-outfit text-[32px] text-[#F55D3E] font-[500] mb-4">
 					Edit Subtask below
 				</div>

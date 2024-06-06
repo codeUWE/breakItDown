@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useRef, useContext } from 'react';
 import {
 	assignSubtask,
@@ -48,19 +49,17 @@ function SingleTaskSubtask({
 	} = subtask;
 
 	//permissions
-	const { isLoading, user } = useContext(AuthContext);
+	const { user } = useContext(AuthContext);
 	const isAssignee = assignee ? assignee._id === user._id : false;
 	function canEditSubtask() {
-		const isLeader =
-			user.role.name === 'Team Leader' && taskLeaderId === user._id;
+		const isLeader = taskLeaderId === user._id;
 		const canEdit =
 			hasPermission(user.role.permissions, ['editSubtask']) ||
 			(isLeader && hasPermission(user.role.permissions, ['leaderEditSubtask']));
 		return canEdit;
 	}
 	function canDeleteSubtask() {
-		const isLeader =
-			user.role.name === 'Team Leader' && taskLeaderId === user._id;
+		const isLeader = taskLeaderId === user._id;
 		const canDelete =
 			hasPermission(user.role.permissions, ['deleteSubtask']) ||
 			(isLeader &&
@@ -158,13 +157,13 @@ function SingleTaskSubtask({
 
 	return (
 		<>
-			<div className="w-full flex flex-col px-6 gap-3">
+			<div className="w-full flex flex-col xl:px-6 lg:ps-4 xl:gap-3 md:gap-2 ">
 				<div className="w-full flex justify-between items-center">
 					<div className="w-[500px] h-max-[40px] ">
-						<h2 className="font-outfit text-[24px] font-[500] text-[#2c2c2c] ">
+						<h2 className="font-outfit xl:text-[24px] md:text-[20px] font-[500] text-[#2c2c2c] ">
 							{title}
 						</h2>
-						<p className=" font-outfit text-[16px] font-[300] text-[#5a5a5a] text-ellipsis">
+						<p className=" font-outfit xl:text-[16px] md:text-[14px] font-[300] text-[#5a5a5a] text-ellipsis">
 							{description}
 						</p>
 					</div>
@@ -178,20 +177,22 @@ function SingleTaskSubtask({
 								className="w-8 h-8"
 							/>
 						) : (
-							<span className="font-outfit font-[700]">No Assignee</span>
+							<span className="font-outfit font-[700] text-right w-28">
+								No Assignee
+							</span>
 						)}
 					</div>
 				</div>
-				<div className="w-full flex justify-between items-center">
-					<div className="flex justify-center items-center gap-3">
-						<h3 className="font-outfit text-[16px] font-[500] text-[#575761]">
+				<div className="w-full flex justify-between items-center md:mt-2">
+					<div className="flex justify-center items-center xl:gap-3 lg:gap-1 md:gap-3 ">
+						<h3 className="font-outfit xl:text-[16px] lg:text-[14px] font-[500] text-[#575761]">
 							Deadline:
 						</h3>
 						<p>
 							{dateParts.map((part, index) => (
 								<span
 									key={index}
-									className="font-outfit text-[16px] font-[400] text-[#575761]"
+									className="font-outfit xl:text-[16px] lg:text-[14px] font-[400] text-[#575761]"
 								>
 									{part}
 									{index !== dateParts.length - 1 && (
@@ -203,33 +204,33 @@ function SingleTaskSubtask({
 							))}
 						</p>
 						<span
-							className={`font-outfit font-[400] text-[13px] text-white w-[90px] h-[21px] rounded-[20px] flex justify-center items-center gap-1 ${
+							className={`font-outfit font-[400] xl:text-[13px] lg:text-[12px] text-white xl:w-[90px] md:w-[90px] lg:w-[70px] h-[21px] rounded-[20px] flex justify-center items-center gap-1 lg:ms-2 ${
 								getPriorityLabel(priority).className
 							}`}
 						>
 							<h4>{getPriorityLabel(priority).label}</h4>
 						</span>
 						{status === 'backlog' && (
-							<span className="font-outfit font-[200] text-[13px] text-white w-[90px] h-[21px] bg-[#575761] rounded-[20px] flex justify-center items-center gap-1 ">
+							<span className="font-outfit font-[200] xl:text-[13px] lg:text-[12px] text-white xl:w-[90px] lg:w-[80px] md:w-[90px] h-[21px] bg-[#575761] rounded-[20px] flex justify-center items-center gap-1 ">
 								<div className="w-[4px] h-[4px] rounded-full bg-white "></div>
 								<h4>To Do</h4>
 							</span>
 						)}
 						{status === 'inProgress' && (
-							<span className="font-outfit font-[200] text-[13px] text-white w-[90px] h-[21px] bg-[#c07a19] rounded-[20px] flex justify-center items-center gap-1 ">
+							<span className="font-outfit font-[200] xl:text-[13px] lg:text-[12px] text-white xl:w-[90px] lg:w-[80px] md:w-[90px] h-[21px] bg-[#c07a19] rounded-[20px] flex justify-center items-center gap-1 ">
 								<div className="w-[4px] h-[4px] rounded-full bg-white "></div>
 								<h4>In Progress</h4>
 							</span>
 						)}
 						{status === 'done' && (
-							<span className="font-outfit font-[200] text-[13px] text-white w-[90px] h-[21px] bg-[#08A045] rounded-[20px] flex justify-center items-center gap-1 ">
+							<span className="font-outfit font-[200] xl:text-[13px] lg:text-[12px] text-white xl:w-[90px] lg:w-[80px] md:w-[90px] h-[21px] bg-[#08A045] rounded-[20px] flex justify-center items-center gap-1 ">
 								<div className="w-[4px] h-[4px] rounded-full bg-white "></div>
 								<h4>Done</h4>
 							</span>
 						)}
 					</div>
 					{!isClosed && (
-						<div className="ms-[20%] flex justify-center items-center gap-2">
+						<div className="xl:ms-[20%] flex justify-center items-center xl:gap-2 lg:gap-1 md:gap-3">
 							{isAssignee && (
 								<>
 									{status === 'backlog' && (
@@ -241,7 +242,11 @@ function SingleTaskSubtask({
 												<button
 													onClick={() => handleStatusChange('inProgress')}
 												>
-													<img src={start} alt="" width={27} height={27} />
+													<img
+														src={start}
+														alt=""
+														className="xl:w-[27px] xl:h-[27px] md:w-[27px] md:h-[27px] lg:w-[20px] lg:h-[20px]"
+													/>
 												</button>
 											</Tooltip>
 										</>
@@ -253,7 +258,11 @@ function SingleTaskSubtask({
 												className="bg-[#575761] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
 											>
 												<button onClick={() => handleStatusChange('backlog')}>
-													<img src={backlog} alt="" width={27} height={27} />
+													<img
+														src={backlog}
+														alt=""
+														className="xl:w-[27px] xl:h-[27px] md:w-[27px] md:h-[27px] lg:w-[20px] lg:h-[20px]"
+													/>
 												</button>
 											</Tooltip>
 											<Tooltip
@@ -261,7 +270,11 @@ function SingleTaskSubtask({
 												className="bg-[#575761] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
 											>
 												<button onClick={() => handleStatusChange('done')}>
-													<img src={done} alt="" width={27} height={27} />
+													<img
+														src={done}
+														alt=""
+														className="xl:w-[27px] xl:h-[27px] md:w-[27px] md:h-[27px] lg:w-[20px] lg:h-[20px]"
+													/>
 												</button>
 											</Tooltip>
 										</>
@@ -275,15 +288,11 @@ function SingleTaskSubtask({
 												<button
 													onClick={() => handleStatusChange('inProgress')}
 												>
-													<img src={inProgress} alt="" width={27} height={27} />
-												</button>
-											</Tooltip>
-											<Tooltip
-												content="Let Subtask verify"
-												className="bg-[#575761] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
-											>
-												<button>
-													<img src={letVerify} alt="" width={27} height={27} />
+													<img
+														src={inProgress}
+														alt=""
+														className="xl:w-[27px] xl:h-[27px] md:w-[27px] md:h-[27px] lg:w-[20px] lg:h-[20px]"
+													/>
 												</button>
 											</Tooltip>
 										</>
@@ -296,7 +305,11 @@ function SingleTaskSubtask({
 									className="bg-[#575761] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
 								>
 									<button onClick={handleAssign}>
-										<img src={assign} alt="" width={27} height={27} />
+										<img
+											src={assign}
+											alt=""
+											className="xl:w-[27px] xl:h-[27px] md:w-[27px] md:h-[27px] lg:w-[20px] lg:h-[20px]"
+										/>
 									</button>
 								</Tooltip>
 							) : (
@@ -308,7 +321,11 @@ function SingleTaskSubtask({
 									className="bg-[#363636] text-[12px] font-outfit font-[500] p-1 px-2 rounded-3xl"
 								>
 									<button onClick={handleEditOpen}>
-										<img src={edit} alt="Edit Subtask" width={27} />
+										<img
+											src={edit}
+											alt="Edit Subtask"
+											className="xl:w-[27px] xl:h-[27px] md:w-[27px] md:h-[27px] lg:w-[20px] lg:h-[20px]"
+										/>
 									</button>
 								</Tooltip>
 							) : null}
@@ -318,7 +335,11 @@ function SingleTaskSubtask({
 									className="bg-[#363636] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
 								>
 									<button onClick={handleDeleteOpen}>
-										<img src={deleteIcon} alt="Delete Subtask" width={27} />
+										<img
+											src={deleteIcon}
+											alt="Delete Subtask"
+											className="xl:w-[27px] xl:h-[27px] md:w-[27px] md:h-[27px] lg:w-[20px] lg:h-[20px]"
+										/>
 									</button>
 								</Tooltip>
 							) : null}
@@ -339,7 +360,7 @@ function SingleTaskSubtask({
 					)}
 					<button
 						onClick={toggleDetails}
-						className="font-outfit font-[400] text-[16px] px-3 py-1 text-[#3c3c3c]   bg-[#C1E1F5] rounded-[20px] "
+						className="font-outfit font-[400] xl:text-[16px] lg:text-[12px] px-3 py-1 text-[#3c3c3c] bg-[#C1E1F5] rounded-3xl "
 					>
 						see more
 					</button>

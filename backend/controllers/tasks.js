@@ -332,8 +332,9 @@ const getWidgetInfo = async (req, res) => {
 		}
 
 		res.json({
-			openTasksCount,
-			daysUntilNextDeadline,
+			openTasksCount: openTasksCount > 0 ? openTasksCount : '00',
+			daysUntilNextDeadline:
+				daysUntilNextDeadline !== null ? daysUntilNextDeadline : '00',
 		});
 	} catch (error) {
 		console.error('Error fetching widget info:', error);

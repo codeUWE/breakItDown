@@ -34,7 +34,7 @@ function EditTaskDialog({ task, open, onClose, onUpdate }) {
 				description: task.description || '',
 				startDate: task.startDate ? task.startDate.substring(0, 10) : '',
 				deadline: task.deadline ? task.deadline.substring(0, 10) : '',
-				leader: task.leader || '',
+				leader: task.leader ? task.leader._id : '', // Sicherstellen, dass leader korrekt gesetzt ist
 				collaborators: task.collaborators.map((collab) => collab._id) || [],
 			});
 		}
@@ -87,7 +87,7 @@ function EditTaskDialog({ task, open, onClose, onUpdate }) {
 
 	return (
 		<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-			<div className="bg-[#EFF9FF] rounded-3xl p-6 w-full max-w-lg mx-auto">
+			<div className="bg-[#EFF9FF] rounded-3xl p-6 w-full max-w-lg mx-auto md:h-[700px] md:overflow-scroll">
 				<div className="font-outfit text-[32px] font-[500] text-[#F55D3E] mb-4">
 					Edit Task below
 				</div>

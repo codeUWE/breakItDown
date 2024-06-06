@@ -72,7 +72,8 @@ const createSubtask = async (req, res) => {
 			task,
 			assignee,
 		} = req.body;
-		console.log(
+
+		console.log('Received data:', {
 			title,
 			description,
 			detailedInformation,
@@ -80,8 +81,9 @@ const createSubtask = async (req, res) => {
 			status,
 			deadline,
 			task,
-			assignee
-		);
+			assignee,
+		});
+
 		const createdSubtask = await Subtask.create({
 			title,
 			description,
@@ -89,7 +91,7 @@ const createSubtask = async (req, res) => {
 			status,
 			priority,
 			task,
-			assignee,
+			assignee: assignee || null, // Stelle sicher, dass assignee null ist, wenn nicht gesetzt
 		});
 
 		await Task.findByIdAndUpdate(

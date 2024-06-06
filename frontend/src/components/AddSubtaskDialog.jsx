@@ -3,17 +3,18 @@ import { createSubtask } from '../services/TasksRequests';
 import { getAllUsers } from '../services/UserRequests';
 
 function AddSubtaskDialog({ taskId, open, onClose, onUpdate }) {
-	const [formData, setFormData] = useState({
+	const initialFormData = {
 		title: '',
 		description: '',
 		detailedInformation: '',
 		deadline: '',
 		status: 'backlog',
 		priority: 'low',
-		assignee: '',
+		assignee: null, // Standardwert auf null setzen
 		task: taskId,
-	});
+	};
 
+	const [formData, setFormData] = useState(initialFormData);
 	const [users, setUsers] = useState([]);
 
 	useEffect(() => {
@@ -36,10 +37,15 @@ function AddSubtaskDialog({ taskId, open, onClose, onUpdate }) {
 			if (newSubtask) {
 				onUpdate(newSubtask);
 			}
+			resetForm();
 			onClose();
 		} catch (error) {
 			console.error('Failed to create subtask:', error);
 		}
+	};
+
+	const resetForm = () => {
+		setFormData(initialFormData);
 	};
 
 	if (!open) {
@@ -47,8 +53,8 @@ function AddSubtaskDialog({ taskId, open, onClose, onUpdate }) {
 	}
 
 	return (
-		<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-			<div className="bg-[#EFF9FF] rounded-3xl p-6 w-full max-w-lg mx-auto">
+		<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 ">
+			<div className="bg-[#EFF9FF] rounded-3xl p-6 w-full max-w-lg mx-auto md:h-[700px] md:overflow-scroll">
 				<div className="font-outfit text-[32px] font-[500] text-[#F55D3E] mb-4">
 					Add Subtask
 				</div>
@@ -89,6 +95,21 @@ function AddSubtaskDialog({ taskId, open, onClose, onUpdate }) {
 							className="text-[18px] font-outfit font-[500] text-black bg-transparent border border-black rounded-2xl px-3 w-full py-2"
 						/>
 					</div>
+					<div className="w-full">
+						<h2 className="text-[20px] font-outfit font-[500] text-black">
+							Priority
+						</h2>
+						<select
+							name="priority"
+							value={formData.priority}
+							onChange={handleChange}
+							className="text-[18px] font-outfit font-[500] text-black bg-transparent border border-black rounded-2xl px-3 w-full py-2"
+						>
+							<option value="low">Low</option>
+							<option value="medium">Medium</option>
+							<option value="high">High</option>
+						</select>
+					</div>
 					<div className="bg-[#C1E1F5] p-4 rounded-xl">
 						<label className="text-[20px] font-outfit font-[500] text-black">
 							Assignee:
@@ -127,7 +148,10 @@ function AddSubtaskDialog({ taskId, open, onClose, onUpdate }) {
 				</div>
 				<div className="flex justify-end mt-4">
 					<button
-						onClick={onClose}
+						onClick={() => {
+							resetForm();
+							onClose();
+						}}
 						className="me-4 py-1 w-40 text-white rounded-2xl flex justify-center items-center gap-2 mt-4 bg-[#FE4A49] font-outfit font-[500]"
 					>
 						Cancel

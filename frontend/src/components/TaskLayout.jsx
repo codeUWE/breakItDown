@@ -58,36 +58,36 @@ function TaskLayout({ task }) {
 
 	return (
 		<>
-			<div className="w-[400px] h-[140px] rounded-[20px] flex bg-white">
+			<div className="xl:w-[98%] md:w-[98%] xl:h-[140px] lg:h-[160px] md:h-[115px] rounded-3xl flex bg-white">
 				<div className="flex flex-col w-[60px] justify-center items-center bg-red-600 text-white rounded-s-[18px]">
-					<h2 className="m-0 font-outfit font-[700] text-[16px]">
+					<h2 className="m-0 font-outfit font-[700] text-[16px] ">
 						{formatDate(task.deadline).split(' ')[0]}
 					</h2>
 					<h2 className="m-0 font-outfit font-[700] text-[24px] leading-none tracking-tighter">
 						{formatDate(task.deadline).split(' ')[1]}
 					</h2>
 				</div>
-				<div className="w-full grid grid-rows-4 grid-cols-6 ps-3 pe-1 pt-[4px] pb-[10px] bg-[#EFF9FF] rounded-e-[20px]">
+				<div className="w-full grid grid-rows-4 grid-cols-6 ps-3 pe-1 xl:pt-[4px] lg:pt-3 md:pt-2 pb-[5px] bg-[#EFF9FF] rounded-e-[24px]">
 					<Tooltip
 						content={task.title}
 						className="bg-[#363636] text-[12px] font-outfit font-[600] p-1 px-2 rounded-3xl"
 					>
-						<h2 className="font-outfit font-[500] text-[20px] row-start-1 col-start-1 col-span-5 truncate">
+						<h2 className="font-outfit font-[500] xl:text-[20px] md:row-start-1 md:col-start-1 md:col-span-5  truncate xl:row-start-1 xl:col-start-1 xl:col-span-7">
 							{task.title}
 						</h2>
 					</Tooltip>
 
-					<h3 className="font-outfit font-[300] text-[14px] row-start-2 row-end-2 col-start-1 col-span-5 tracking-tight leading-tight mt-1">
+					<h3 className="font-outfit font-[300] xl:text-[14px] lg:text-[13px]  md:row-start-2 md:row-end-2 md:col-start-1 md:col-span-5 tracking-tight leading-tight mt-1 xl:row-start-2 xl:col-start-1 xl:col-span-5 ">
 						{task.description}
 					</h3>
-					<h3 className="row-start-4 col-start-1 col-span-3 font-outfit text-[15px]">
+					<h3 className="row-start-4 col-start-1 col-span-3 md:col-end-6 xl:col-end-4 lg:mt-2  font-outfit text-[15px]">
 						<span className="font-outfit font-[600] text-[#E53935]">
 							{task.unassignedSubtasksCount}
 						</span>{' '}
 						unassigned Subtasks
 					</h3>
-					<div className="row-start-4 col-start-3 col-span-4">
-						<div className="flex justify-start relative ms-12">
+					<div className="xl:row-start-4 xl:col-start-3 xl:m-0 xl:col-span-4 md:row-start-3 md:col-start-3 md:row-span-2 md:col-span-4 md:mt-3">
+						<div className="flex xl:justify-start relative xl:ms-14 md:ms-44 ">
 							{task.collaborators.map((collaborator, index) => (
 								<Tooltip
 									key={collaborator._id}
@@ -118,7 +118,7 @@ function TaskLayout({ task }) {
 						alt="icon step into"
 						width={35}
 						height={35}
-						className="row-start-2 row-end-4 col-start-6 ms-1 mt-5 p-1 hover:bg-yellow-500 hover:rounded-full cursor-pointer"
+						className="row-start-2 row-end-4 col-start-6 md:m-auto p-1 hover:bg-yellow-500 hover:rounded-full cursor-pointer"
 						onClick={() => navigate(`/tasks/${task._id}`)}
 					/>
 					<h4 className="font-outfit font-[400] text-[13px] pt-[6px] row-start-1 col-start-6 mx-auto">

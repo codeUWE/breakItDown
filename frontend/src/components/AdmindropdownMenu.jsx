@@ -36,19 +36,23 @@ const AdmindropdownMenu = ({ isActive }) => {
 		>
 			<button
 				onClick={() => setIsOpen(!isOpen)}
-				className={`flex items-center px-3 py-2 border border-transparent hover:text-[#F55D3E] rounded-md font-outfit text-[40px] font-[600] ${
+				className={`flex items-center px-3 py-2 border border-transparent hover:text-[#F55D3E] rounded-md font-outfit xl:text-[45px] lg:text-[35px] md:text-[26px] sm:text-[18px] font-[600] ${
 					isActive ? 'text-[#F55D3E]' : ''
 				}`}
 			>
 				Admin
-				<img src={dropdown} alt="" width={35} height={35} className="ms-3" />
+				<img
+					src={dropdown}
+					alt=""
+					className="ms-3 lg:w-[35px] lg:h-[35px] sm:w-[20px] sm:h-[20px] "
+				/>
 			</button>
 
 			{/* Dropdown menu */}
 			<div
 				className={`${
 					isOpen ? 'block' : 'hidden'
-				} font-outfit text-[30px] text-white bg-[#8c87d4] font-[400] origin-top-right absolute left-0 w-72 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50`}
+				} font-outfit lg:text-[30px] text-white bg-[#8c87d4] font-[400] origin-top-right absolute left-0 w-72 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50`}
 				role="menu"
 				aria-orientation="vertical"
 				aria-labelledby="options-menu"
@@ -85,8 +89,6 @@ const AdmindropdownMenu = ({ isActive }) => {
 					>
 						Manage Users
 					</NavLink>
-
-					{/* Add more dropdown items as needed */}
 				</div>
 			</div>
 		</div>

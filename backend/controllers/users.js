@@ -29,6 +29,31 @@ const getUsers = async (req, res) => {
 		res.status(500).json('Something went wrong');
 	}
 };
+
+// const getUsers = async (req, res) => {
+// 	try {
+// 		const query = {};
+// 		if (req.query.project) {
+// 			query.project = req.user.project;
+// 		}
+
+// 		const users = await User.find({
+// 			$or: [query, { 'role.name': 'Admin' }],
+// 		}).populate({
+// 			path: 'role',
+// 			populate: {
+// 				path: 'permissions',
+// 				model: 'Permission',
+// 				select: 'name',
+// 			},
+// 		});
+// 		res.json(users);
+// 	} catch (error) {
+// 		console.log(error);
+// 		res.status(500).json('Something went wrong');
+// 	}
+// };
+
 const getUser = async (req, res) => {
 	try {
 		const { id } = req.params;
@@ -49,7 +74,6 @@ const getUser = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-	// console.log(`Inside create User ${req.body}`);
 	try {
 		const {
 			name,
@@ -62,8 +86,13 @@ const createUser = async (req, res) => {
 			role,
 			project,
 		} = req.body;
+
+		// Logging to check if the name is received
+		console.log('Received data:', req.body);
+
 		const found = await User.findOne({ email });
 		if (found) throw new Error('User already Exists');
+
 		const hash = await bcrypt.hash(password, 10);
 		let createdUser = await User.create({
 			name,
@@ -76,16 +105,24 @@ const createUser = async (req, res) => {
 			role,
 			project,
 		});
+
 		createdUser = await createdUser.populate('role');
-		const foundProject = await Project.findById(project);
-		foundProject.users.push(createdUser._id);
-		await foundProject.save();
+
+		if (project) {
+			const foundProject = await Project.findById(project);
+			if (foundProject) {
+				foundProject.users.push(createdUser._id);
+				await foundProject.save();
+			}
+		}
+
 		res.json(createdUser);
 	} catch (error) {
 		console.log(error);
 		res.status(500).json('Something went wrong');
 	}
 };
+
 const updateUser = async (req, res) => {
 	try {
 		const {

@@ -38,7 +38,7 @@ function SingleTaskProgress() {
 
 	return (
 		<>
-			<div className="w-[95%]  h-full mx-auto rounded-[30px] flex flex-col justify-center items-center gap-2 p-2">
+			<div className="xl:w-[95%]  h-full mx-auto rounded-[30px] flex flex-col justify-center items-center gap-2 lg:p-2">
 				<div className="w-full px-1 flex justify-between items-center">
 					<h2 className="font-outfit font-[600] text-[24px] text-[#363636]">
 						Task Progress: {getStatus(task.status)}
@@ -52,7 +52,7 @@ function SingleTaskProgress() {
 						</h4>
 					</div>
 				</div>
-				<div className="h-full w-full flex justify-between items-center gap-3">
+				<div className="h-full w-full flex justify-center lg:items-center md:items-stretch gap-3">
 					<SingleTaskColumn title={'To Do'} tasks={todoSubtasks} />
 					<SingleTaskColumn title={'In Progress'} tasks={inProgressSubtasks} />
 					<SingleTaskColumn title={'Done'} tasks={doneSubtasks} />
