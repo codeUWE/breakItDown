@@ -17,18 +17,17 @@ function NavBar() {
 	const isAdminRoute = location.pathname.startsWith('/admin');
 
 	return (
-		<nav className="w-[1400px] h-[125px] mx-auto rounded-[30px] bg-[#6A66A3] flex items-center justify-self-auto font-Inter font-[500] text-[25px] mt-5 shadow-xl relative">
+		<nav className="w-[97%] mx-auto lg:rounded-3xl sm:rounded-2xl bg-[#6A66A3] flex items-center justify-self-auto font-Inter font-[500] xl:text-[45px] lg:text-[35px] md:text-[26px] sm:text-[20px] mt-5 shadow-xl relative md:py-2 sm:py-1">
 			<div className="absolute right-[34px] h-full flex ">
-				<div className="border-[8px] border-[#FE4A49] h-full "></div>
-				<div className="border-[8px] border-[#FED766] h-full "></div>
-				<div className="border-[8px] border-[#08A045] h-full "></div>
-				<div className="border-[8px] border-[#FFD5FF] h-full "></div>
-				<div className="border-[8px] border-[#438CDB] h-full "></div>
+				<div className="xl:border-[10px] lg:border-[8px] sm:border-[5px] md:border-[6px] border-[#FE4A49] h-full "></div>
+				<div className="xl:border-[10px] lg:border-[8px] sm:border-[5px] md:border-[6px] border-[#FED766] h-full "></div>
+				<div className="xl:border-[10px] lg:border-[8px] sm:border-[5px] md:border-[6px] border-[#08A045] h-full "></div>
+				<div className="xl:border-[10px] lg:border-[8px] sm:border-[5px] md:border-[6px] border-[#FFD5FF] h-full "></div>
+				<div className="xl:border-[10px] lg:border-[8px] sm:border-[5px] md:border-[6px] border-[#438CDB] h-full "></div>
 			</div>
-
 			{!isLoading && (
-				<div className="flex w-full px-7 mx-auto justify-between items-center">
-					<ul className="flex items-center text-white font-outfit text-[40px] font-[600] gap-10 ">
+				<div className="flex w-full lg:px-4  sm:px-3 mx-auto justify-between items-center">
+					<ul className="flex items-center text-white font-outfit font-[600] sm:gap-4 lg:gap-6 xl:gap-10 ">
 						{user.role.name === 'Admin' && (
 							<AdmindropdownMenu isActive={isAdminRoute} />
 						)}
@@ -43,12 +42,12 @@ function NavBar() {
 						</NavLink>
 					</ul>
 					<div className="flex items-center gap-5  ">
-						<div className="flex flex-col justify-center items-center gap-2">
-							<span className="text-[16px] text-[#CFCFCD] font-outfit font-[600]">
+						<div className="flex flex-col justify-center items-center lg:gap-2">
+							<span className="xl:text-[20px] lg:text-[16px] md:text-[14px] sm:text-[12px] text-[#CFCFCD] font-outfit font-[600]">
 								Welcome, {user.name}
 							</span>
 							<button
-								className="flex justify-end px-7 rounded-full text-[#F55D3E] font-outfit text-[30px] font-[600] bg-[#080708] shadow-lg"
+								className="flex justify-end px-7 rounded-full text-[#F55D3E] font-outfit xl:text-[30px] lg:text-[24px] md:text-[20px] sm:text-[16px] font-[600] bg-[#080708] shadow-lg"
 								onClick={logout}
 							>
 								Logout
@@ -60,7 +59,7 @@ function NavBar() {
 								'https://cdn-icons-png.flaticon.com/512/149/149071.png'
 							}
 							alt="avatar"
-							className="w-[90px] h-[90px] "
+							className="xl:w-[105px] xl:h-[105px]  lg:w-[85px] lg:h-[85px] md:w-[65px] md:h-[65px] sm:w-[55px] sm:h-[55px] sm:me-5 lg:me-4"
 						/>
 					</div>
 				</div>

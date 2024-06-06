@@ -45,8 +45,8 @@ const CreateUserForm = ({ setUsers }) => {
 	}, [user._id]);
 
 	return (
-		<div className="flex justify-center items-center gap-3 p-5">
-			<div className="bg-[#EFF9FF] rounded-3xl p-6 w-full max-w-lg mx-auto">
+		<div className="flex justify-center items-center gap-3 p-5 lg:p-0">
+			<div className="bg-[#EFF9FF] rounded-3xl lg:p-6 sm:p-1 w-full max-w-lg mx-auto">
 				<div className="text-[32px] text-[#F55D3E] font-outfit font-[500] mb-4">
 					Create User
 				</div>

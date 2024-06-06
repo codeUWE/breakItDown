@@ -37,12 +37,10 @@ export default function ProjectProgress() {
 		fetchTasks();
 	}, []);
 
-	// Dynamically calculate chart height and width with min constraints
 	const baseHeight = 150; // Base height
 	const taskHeight = 50; // Height per task
 	const minHeight = 550; // Minimum chart height
 	const calculatedHeight = baseHeight + taskCount * taskHeight;
-	console.log(calculatedHeight);
 
 	const baseWidth = 400; // Base width
 	const taskWidth = 180; // Width per task (adjust based on estimated chart layout)
@@ -77,13 +75,11 @@ export default function ProjectProgress() {
 			fill: '#EFF9FF',
 		},
 		hAxis: {
-			// Enable scrolling for horizontal axis
 			allowScroll: true,
 		},
-		// Additional option for vertical scrollbar
 		chartArea: {
-			width: '1180px', // Adjust width to accommodate scrollbar
-			height: '480px', // Adjust height as needed
+			width: '100%',
+			height: '100%',
 		},
 	};
 
@@ -97,8 +93,8 @@ export default function ProjectProgress() {
 
 	return (
 		<>
-			<div className="w-full flex justify-between mt-10 px-36">
-				<h2 className="font-outfit font-[800] text-[45px] text-start tracking-tighter mb-2">
+			<div className="w-[97%] mx-auto flex justify-between items-center mt-10">
+				<h2 className="font-outfit font-[800] xl:text-[45px] md:text-[35px] text-start tracking-tighter mb-2">
 					Project <span className="text-[#681FDE]">Progress</span>
 				</h2>
 				<select
@@ -120,14 +116,16 @@ export default function ProjectProgress() {
 					</option>
 				</select>
 			</div>
-			<div className="overflow-auto w-[1400px] mx-auto flex justify-center bg-[#EFF9FF] rounded-[30px] ">
-				<div className="p-4">
+			<div className="overflow-x-auto w-[97%] mx-auto flex justify-center bg-[#EFF9FF] rounded-[30px] ">
+				<div className="p-4 min-w-[800px] md:min-w-[800px] lg:min-w-[1000px] xl:min-w-[1200px]">
 					<Chart
 						chartType="Gantt"
 						data={data}
 						options={options}
-						width="1200px"
-						height="500px"
+						width="100%"
+						height={`${
+							calculatedHeight > minHeight ? calculatedHeight : minHeight
+						}px`}
 					/>
 				</div>
 			</div>

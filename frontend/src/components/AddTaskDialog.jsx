@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createTask } from '../services/TasksRequests';
 import { getAllUsers, getRoles } from '../services/UserRequests';
+import axiosClient from '../axiosClient';
 
 function AddTaskDialog({ open, onClose, onUpdate }) {
-	const [formData, setFormData] = useState({
+	const initialFormData = {
 		title: '',
 		description: '',
 		startDate: '',
@@ -12,10 +13,12 @@ function AddTaskDialog({ open, onClose, onUpdate }) {
 		priority: 'low',
 		leader: '',
 		collaborators: [],
-	});
+	};
 
+	const [formData, setFormData] = useState(initialFormData);
 	const [users, setUsers] = useState([]);
 	const [roles, setRoles] = useState([]);
+	const [error, setError] = useState('');
 
 	useEffect(() => {
 		if (open) {
@@ -53,15 +56,25 @@ function AddTaskDialog({ open, onClose, onUpdate }) {
 	};
 
 	const handleSave = async () => {
+		if (!formData.leader) {
+			setError('A leader must be selected.');
+			return;
+		}
 		try {
 			const newTask = await createTask(formData);
 			if (newTask) {
 				onUpdate(newTask);
 			}
+			resetForm();
 			onClose();
 		} catch (error) {
 			console.error('Failed to create task:', error);
 		}
+	};
+
+	const resetForm = () => {
+		setFormData(initialFormData);
+		setError('');
 	};
 
 	if (!open) {
@@ -70,7 +83,7 @@ function AddTaskDialog({ open, onClose, onUpdate }) {
 
 	return (
 		<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-			<div className="bg-[#EFF9FF] rounded-3xl p-6 w-full max-w-lg mx-auto">
+			<div className="bg-[#EFF9FF] rounded-3xl p-6 w-full max-w-lg mx-auto md:h-[700px] md:overflow-scroll">
 				<div className="font-outfit text-[32px] font-[500] text-[#F55D3E] mb-4">
 					Add Task
 				</div>
@@ -176,10 +189,18 @@ function AddTaskDialog({ open, onClose, onUpdate }) {
 							))}
 						</div>
 					</div>
+					{error && (
+						<div className="text-red-500 text-[18px] font-outfit font-[500]">
+							{error}
+						</div>
+					)}
 				</div>
 				<div className="flex justify-end mt-4">
 					<button
-						onClick={onClose}
+						onClick={() => {
+							resetForm();
+							onClose();
+						}}
 						className="me-4 py-1 w-40 text-white rounded-2xl flex justify-center items-center gap-2 mt-4 bg-[#FE4A49] font-outfit font-[500]"
 					>
 						Cancel

@@ -52,25 +52,25 @@ const ManageProjects = () => {
 
 	return (
 		<>
-			<div className="flex flex-col items-center w-[500px] h-[670px] mx-auto rounded-[30px] justify-start pt-20 bg-[#EFF9FF] shadow-md mt-10">
-				<h1 className="font-outfit font-[600] text-[45px] m-2 ">
+			<div className="flex flex-col items-center lg:w-[500px] lg:h-[430px] md:h-[550px] sm:h-[450px] sm:w-3/5 md:w-3/4 h-full mx-auto rounded-3xl justify-start lg:p-4 md:p-4 sm:p-6 bg-[#EFF9FF] shadow-md sm:mt-5 md:mt-10 lg:mt-8 xl:mt-14">
+				<h1 className="font-outfit font-[600]  xl:text-[55px] md:text-[50px] sm:text-[40px] m-2 ">
 					Manage Projects
 				</h1>
-				<div className="mt-10 bg-[#D4ECFC] rounded-2xl px-10 py-20">
-					<label className="block font-outfit font-[400] text-[30px] mb-5">
+				<div className="sm:mt-16 md:mt-10 lg:mt-6 bg-[#D4ECFC] rounded-2xl lg:px-16 lg:py-8 sm:px-4 sm:py-10 md:px-24 md:py-20">
+					<label className="block font-outfit font-[200] sm:text-[30px] md:text-[40px] mb-5">
 						Project:
 					</label>
 					<div className="flex ">
 						{project?.title === undefined ? (
-							<div className="flex-col">
+							<div className="flex flex-col items-center justify-center">
 								<input
-									className=" mt-2 p-2 bg-transparent"
+									className=" bg-white font-outfit font-[400] sm:text-[20px] md:text-[24px]  px-4 py-2 rounded-3xl w-80 mb-6"
 									type="text"
 									onChange={(e) => setEnteredProject(e.target.value)}
 									placeholder="Enter Project Name"
 								/>
 								<button
-									className=" text-white bg-indigo-600 hover:bg-indigo-700  font-bold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline"
+									className=" bg-[#080708] text-[#F55D3E] md:text-[24px] font-bold py-2 px-4 rounded-3xl focus:outline-none focus:shadow-outline"
 									onClick={handleClick}
 								>
 									Create Project
@@ -79,14 +79,14 @@ const ManageProjects = () => {
 						) : (
 							<div className="flex flex-col items-center justify-center">
 								<input
-									className="bg-white font-outfit font-[400] text-[20px]  px-4 py-2 rounded-3xl w-80"
+									className="bg-white font-outfit font-[400] sm:text-[20px] md:text-[24px]  px-4 py-2 rounded-3xl w-80"
 									type="text"
 									onChange={(e) => setEnteredProject(e.target.value)}
 									placeholder={project.title}
 								/>
 
 								<button
-									className="mt-6 text-white bg-indigo-600 hover:bg-indigo-700  font-bold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline disabled:bg-gray-400"
+									className="mt-6 bg-[#080708] text-[#F55D3E]  md:text-[24px]  font-bold py-2 px-4 rounded-3xl focus:outline-none focus:shadow-outline disabled:bg-gray-400 disabled:text-white"
 									onClick={handleUpdateClick}
 									disabled={!enteredProject}
 								>

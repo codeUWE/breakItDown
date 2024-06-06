@@ -12,7 +12,6 @@ function TimeDashboard() {
 		const fetchWidgetInfo = async () => {
 			try {
 				const data = await getWidgetInfo();
-				// Formatieren Sie die Zahlen als zweistellige Zeichenketten
 				setWidgetInfo({
 					openTasksCount: String(data.openTasksCount).padStart(2, '0'),
 					daysUntilNextDeadline: String(data.daysUntilNextDeadline).padStart(
@@ -62,32 +61,32 @@ function TimeDashboard() {
 	};
 
 	return (
-		<div className="flex flex-col items-start ms-16 mt-8 justify-center font-inter font-[900] text-[#080708] leading-none	relative">
-			<div className="text-[150px] tracking-tighter flex">
+		<div className="w-full  h-full font-inter font-[900] text-[#080708] leading-none relative ">
+			<div className="text-[100px] tracking-tighter">
 				{formatTime(currentTime)}
 			</div>
-			<div className="text-[69px] font-[700] tracking-tighter flex">
+			<div className="text-[69px] font-[700] tracking-tighter">
 				{formatDate(currentTime)}
 			</div>
-			<div className="absolute top-[230px] left-[84.2px] border-[6px] border-[#E53935] h-[170px]"></div>
-			<div className="absolute top-[230px] left-[201px] border-[6px] border-[#E53935] h-[170px]"></div>
-			<div className="absolute top-[501px] left-[201px] border-[6px] border-[#E53935] h-[130px]"></div>
-			<div className="absolute top-[393px] left-[33px] flex items-center gap-[6px]">
-				<h1 className="text-[115px]">{widgetInfo.openTasksCount}</h1>
+			<div className="absolute top-[180px] left-[97.2px] border-[6px] border-[#E53935] h-[90px]"></div>
+			<div className="absolute top-[180px] left-[215px] border-[6px] border-[#E53935] h-[90px]"></div>
+			<div className="absolute top-[370px] left-[215px] border-[6px] border-[#E53935] h-[130px]"></div>
+			<div className="absolute top-[260px] left-[33px]">
+				<h1 className="text-[120px]">{widgetInfo.openTasksCount}</h1>
 			</div>
-			<div className="absolute top-[400px] left-[188px] flex items-center gap-[6px]">
+			<div className="absolute top-[270px] left-[203px]">
 				<div className="flex flex-col items-start leading-none">
 					<h2 className="text-[50px]">Tasks</h2>
 					<h2 className="text-[50px] ps-[10px]">Left</h2>
 				</div>
 			</div>
-			<div className="absolute top-[630px] left-[50px]">
-				<h1 className="text-[125px]">{widgetInfo.daysUntilNextDeadline}</h1>
+			<div className="absolute top-[498px] left-[30px]">
+				<h1 className="text-[85px]">{widgetInfo.daysUntilNextDeadline}</h1>
 			</div>
-			<div className="absolute top-[640px] left-[240px] flex items-center gap-[6px]">
+			<div className="absolute top-[505px] left-[150px]">
 				<div className="flex flex-col items-start leading-none">
-					<h2 className="text-[50px] w-96">Days until</h2>
-					<h2 className="text-[50px]">Next Deadline</h2>
+					<h2 className="text-[35px] w-96">Days until</h2>
+					<h2 className="text-[35px]">Next Deadline</h2>
 				</div>
 			</div>
 		</div>

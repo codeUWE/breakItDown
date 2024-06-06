@@ -3,7 +3,9 @@ import TaskBoard from './TaskBoard';
 function Task() {
 	return (
 		<>
-			<TaskBoard />
+			<div className="w-[97%] mx-auto ">
+				<TaskBoard />
+			</div>
 		</>
 	);
 }

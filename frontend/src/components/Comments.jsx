@@ -258,7 +258,7 @@ export default function Comments() {
 	};
 
 	return (
-		<div className="h-full w-full comments-container overflow-scroll flex flex-col justify-center relative no-scrollbar px-3 py-3 bg-[#C1E1F5]">
+		<div className="lg:h-full w-full md:h-[250px] comments-container overflow-scroll flex flex-col justify-center relative no-scrollbar px-3 py-3 bg-[#C1E1F5]">
 			<div className="h-full w-full overflow-scroll no-scrollbar">
 				{comments.map((comment) => (
 					<Comment

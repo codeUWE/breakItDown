@@ -9,8 +9,5 @@ module.exports = withMT({
 			outfit: ['Outfit', 'sans-serif'],
 		},
 	},
-	plugins: [
-		require ('tailwind-scrollbar-hide')
-	],
+	plugins: [require('tailwind-scrollbar-hide')],
 });
-

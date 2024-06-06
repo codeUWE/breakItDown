@@ -7,7 +7,7 @@ const Role = require('../models/roles');
 const register = async (req, res) => {
 	try {
 		const {
-			body: { email, password },
+			body: { email, password, name },
 		} = req;
 		const found = await User.findOne({ email });
 		if (found) throw new Error('User already Exists');
@@ -20,9 +20,10 @@ const register = async (req, res) => {
 		const user = await User.create({
 			email,
 			password: hash,
+			name,
 			role: role._id,
 		});
-		res.json({ email: user.email, id: user._id });
+		res.json({ email: user.email, id: user._id, name: user.name });
 	} catch (error) {
 		console.log(error);
 		res.status(500).json('Something went wrong');
@@ -55,6 +56,7 @@ const login = async (req, res) => {
 		// add multiple roles and
 		const payload = {
 			id: user._id,
+			name: user.name,
 			email: user.email,
 			role: user.role,
 			_id: user._id,

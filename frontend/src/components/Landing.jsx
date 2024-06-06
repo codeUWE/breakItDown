@@ -1,263 +1,127 @@
-import { Route, NavLink } from "react-router-dom";
-// import facebook from "../assets/facebook.png";
-// import twitter from "../assets/twitter.png";
-// import linkedin from "../assets/linkedin.png";
-// import heroImage from "../assets/heroImage.png";
-import breakitdown from "../assets/breakitdown.png";
-// import projectmanagement from "../assets/projectmanagement.png";
-// import sequence from "../assets/sequence.png"
-// import Home from "./components/Home";
-// import LoginCard from "./components/LoginCard";
+import { Link, useNavigate } from 'react-router-dom';
+import heroImage from '../assets/heroImage.png'; // Beispielbild
 
-function Landing() {
-  return (
-<div className="bg-gray-100">
-    <div className="flex flex-col min-h-screen">
+const LandingPage = () => {
+	const navigate = useNavigate();
+	return (
+		<div className="min-h-screen bg-[#f18a75] pt-5">
+			<nav className="w-[97%] h-[100px] mx-auto lg:rounded-3xl sm:rounded-2xl bg-[#6A66A3] flex items-center justify-between font-Inter font-[500] xl:text-[45px] lg:text-[35px] md:text-[24px] sm:text-[20px]  shadow-xl relative md:py-2 sm:py-1 xl:ps-10 xl:pe-40 md:ps-10 md:pe-28">
+				<h2 className="font-outfit font-[600] text-white">
+					Welcome at Break it Down!
+				</h2>
+				<div>
+					<Link
+						to="/signup"
+						className="px-7 rounded-full text-white font-outfit xl:text-[30px] lg:text-[24px] md:text-[20px] sm:text-[16px] font-[600] bg-[#080708] shadow-lg py-2"
+					>
+						sign up
+					</Link>
+					<Link
+						to="/login"
+						className="px-7 rounded-full text-[#F55D3E] font-outfit xl:text-[30px] lg:text-[24px] md:text-[20px] sm:text-[16px] font-[600] bg-[#080708] shadow-lg xl:ms-5 md:ms-3 py-2"
+					>
+						login
+					</Link>
+				</div>
+				<div className="absolute right-[34px] h-full flex ">
+					<div className="xl:border-[10px] lg:border-[8px] sm:border-[5px] md:border-[6px] border-[#FE4A49] h-full "></div>
+					<div className="xl:border-[10px] lg:border-[8px] sm:border-[5px] md:border-[6px] border-[#FED766] h-full "></div>
+					<div className="xl:border-[10px] lg:border-[8px] sm:border-[5px] md:border-[6px] border-[#08A045] h-full "></div>
+					<div className="xl:border-[10px] lg:border-[8px] sm:border-[5px] md:border-[6px] border-[#FFD5FF] h-full "></div>
+					<div className="xl:border-[10px] lg:border-[8px] sm:border-[5px] md:border-[6px] border-[#438CDB] h-full "></div>
+				</div>
+			</nav>
+			<main className="">
+				<section className="bg-[#f18a75]">
+					<div className="container ms-4 px-6 my-10 text-center">
+						<h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-[100px] text-left font-bold text-[#080708] font-outfit">
+							Organize your project with ease and efficiency
+						</h2>
+						<p className="mt-4  md:text-2xl lg:text-3xl xl:text-[50px] text-left font-outfit leading-4 text-[#080708]">
+							With our project management tool, you always have an overview of
+							your tasks and deadlines.
+						</p>
+					</div>
+				</section>
 
-      <nav className="h-[50px] flex justify-between items-center bg-[#6A66A3] p-4">
-        <div className="flex items-center space-x-4">
-         
-          <img src={breakitdown} alt="Logo" className="h-8 w-auto" />{" "}
-         
-          <h1 className="text-white text-2xl font-bold">Break it Down</h1>
-        </div>
-<ul className="space-x-4 flex justify-center absolute right-[19px]">
-  <li><a href="" className="font-bold text-white hover:underline">Home</a> </li>
-  <li><a href="" className="text-white font-bold hover:underline">About Us</a> </li>
-  <li><a href="" className="text-white font-bold hover:underline">Pricing</a> </li>
-  <li><a href="" className="text-white font-bold hover:underline">Contact Us</a> </li>
+				<section className="container  flex justify-start  gap-10 md:gap-0 ">
+					<div className="xl:w-[80%] flex flex-col xl:justify-start xl:items-start md:w-3/4 md:z-40 md:justify-start ">
+						<div className="w-full md:px-12 xl:px-20 lg:px-14  py-4 ">
+							<div className=" p-3 shadow-lg bg-[#D4ECFC] rounded-[30px]">
+								<div className="bg-[#EFF9FE] rounded-[20px] p-3">
+									<h3 className="text-2xl font-bold text-[#080708] font-outfit">
+										Responsive{' '}
+									</h3>
+									<p className="mt-4 text-[#080708] font-outfit">
+										This tool is fully responsive for tablets and laptops. It is
+										tested for Screens in 768px, 1024px and 1440px.
+									</p>
+								</div>
+							</div>
+						</div>
+						<div className="w-full md:px-12 xl:px-20 lg:px-14  py-4">
+							<div className=" p-3 shadow-lg bg-[#D4ECFC] rounded-[30px]">
+								<div className="bg-[#EFF9FE] rounded-[20px] p-3">
+									<h3 className="text-2xl font-bold text-[#080708] font-outfit">
+										Manage Tasks{' '}
+									</h3>
+									<p className="mt-4 text-[#080708] font-outfit">
+										Manage your tasks, create subtasks and assign them to your
+										team members.
+									</p>
+								</div>
+							</div>
+						</div>
+						<div className="w-full md:px-12 xl:px-20 lg:px-14  py-4">
+							<div className=" p-3 shadow-lg bg-[#D4ECFC] rounded-[30px] font-outfit">
+								<div className="bg-[#EFF9FE] rounded-[20px] p-3">
+									<h3 className="text-2xl font-bold text-[#080708] font-outfit">
+										Your own permissions
+									</h3>
+									<p className="mt-4 text-[#080708]">
+										You can set permissions for your team members and manage
+										their access for different actions like creating tasks,
+										editing tasks, closing tickets, etc.
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
 
+					<img
+						src={heroImage}
+						alt="Hero"
+						className="xl:w-[550px] xl:h-[550px] md:w-[400px] md:h-[400px] xl:top-[350px] md:mt-20 md:z-10 md:absolute md:right-4 xl:right-24 "
+					/>
+				</section>
 
-</ul>
+				<section className="bg-[#f18a75]">
+					<div className="container mx-auto px-6  pt-5 pb-16 text-center">
+						<h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-[#080708] font-outfit">
+							Start organizing your projects today
+						</h2>
+						<p className="my-4 text-lg md:text-xl lg:text-2xl xl:text-3xl font-outfit text-[#080708]">
+							Just sign up and start organizing your projects with ease.
+						</p>
+						<Link
+							to="/signup"
+							className="px-7 rounded-full text-white font-outfit xl:text-[30px] lg:text-[24px] md:text-[20px] sm:text-[16px] font-[600] bg-[#080708] shadow-lg py-2"
+						>
+							sign up
+						</Link>
+					</div>
+				</section>
+			</main>
 
-<div className="flex items-center p-2 space-x-2 relative"> {/* Add relative positioning */}
-  <div className="absolute mt-12">
-    <div className="flex justify-center">
-      {/* <p className="text-white text-sm">No Account?</p> */}
-    </div>
-    
-    
-  </div>
-</div>
-           
-      </nav>
-   
-   <div className="relative">
-     <section className="flex flex-row justify-center  flex-grow">
-       <div className="container mx-auto py-20 text-center" >
-          <h1 className="text-gray-800 text-8xl font-bold ">
-         Revolutionize your <br />team workflow!
-        
-        </h1>
+			<footer className="bg-white shadow py-6">
+				<div className="container mx-auto text-center">
+					<p className="text-[#080708]">
+						&copy; 2024 by Break it Down. All rights reserved.
+					</p>
+				</div>
+			</footer>
+		</div>
+	);
+};
 
-        <div className="flex justify-center text-2xl m-4">
-          <p><span className="font-bold underline">Break It Down </span>- Empowering Teams </p>
-        </div>
-        <div className="flex justify-center m-10">
-        {/* <button className="bg-blue-800 rounded border-[3px] w-[100px] hover:bg-blue-gray-500">
-          Get Started
-        </button> */}
-
-        <div>
-  <div className="flex justify-center m-10">
-     <button className="flex justify-end px-7 rounded-full font-outfit text-[30px] hover:bg-[#4a458b] font-[600] bg-[#080708] shadow-lg">
-      <NavLink
-        to="/login"
-        className="text-[#f55d3e]"
-        activeClassName="font-bold"
-      >
-        Login
-      </NavLink>
-      
-    </button>
-  </div>
-          <p className="font-semibold"> Have no account? </p>
-          <div className="flex justify-center "> {/* Wrap the links in a flex container */}
-      <NavLink
-        to="/signup"
-        className="hover:underline text-blue-700 text-2xl"
-      >
-        Sign Up
-      </NavLink>
-    </div>
-    
-        </div>
-       
-      </div>
-      {/* * */}
-       </div>
-       
-       
-      
-      
-        {/* <p>Break It Down - A guide to Project Mayhem</p> */}
-        <div className="md:w-1/2 mt-4 md:mt-0 absolute top-[360px] left-[90px]">
-          
-          {/* <img
-            src={projectmanagement}
-            alt="Hero"
-            className="w-[300px] border-[5px] rounded-lg shadow-lg"
-          />
-          <p>Agile Collaboration</p> */}
-        </div>
-
-        {/* <div>
-        <img
-            src={sequence}
-            alt="Hero"
-            className="w-[300px] border-[5px] rounded-lg shadow-lg"
-          />
-        </div> */}
-      </section>
-   </div>
-     
-      
-      {/* Footer */}
-      {/* <footer className="bg-[#6A66A3] text-white text-center p-4">
-        <div className="container mx-auto">
-          <div className="flex justify-end space-x-4">
-           
-            <NavLink
-              to="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mx-2"
-            >
-              <img
-                src={facebook}
-                alt="Facebook"
-                className="w-8 h-8 rounded-full shadow-lg"
-              />
-            </NavLink>
-            <NavLink
-              to="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mx-2"
-            >
-              <img
-                src={twitter}
-                alt="Twitter"
-                className="w-8 h-8 rounded-full shadow-lg"
-              />
-            </NavLink>
-            <NavLink
-              to="https://www.linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mx-2"
-            >
-              <img
-                src={linkedin}
-                alt="LinkedIn"
-                className="w-8 h-8 rounded-full shadow-lg"
-              />
-            </NavLink>
-          </div>
-        </div>
-      </footer> */}
-    </div>
-    </div>
-  );
-}
-
-export default Landing;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React from 'react';
-
-// function Landing() {
-//   return (
-    
-//     <section className="bg-custom-color">
-//       <div className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center">
-//         <div className="mx-auto max-w-6xl text-center">
-//         <h1 className="p-6 bg-gradient-to-r from-green-300 via-black-500 to-black-600 bg-clip-text text-3xl font-extrabold text-black sm:text-6xl">
-//   Revolutionize your workflow, <br />seamlessly collaborate and <br /> control your versions
-//   {/* <span className="sm:block"> Increase Conversion. </span> */}
-// </h1>
-// <p className="mx-auto text-xl/relaxed">
-//   Introducing <span className="underline">Break It Down</span> - Collaboration and Version Control Made Effortless!
-// </p>
-//           <div className="mt-8 flex flex-wrap justify-center gap-4">
-//             <a
-//               className="block w-12 h-12 rounded border border-brown-600 bg-brown-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-black focus:outline-none focus:ring active:text-opacity-50 sm:w-auto"
-//               href="#"
-//             >
-//               Free Trial
-//             </a>
-
-//             <a
-//               className="block w-12 h-12 rounded border  border-blue-600 px-12 py-3 text-sm font-text-black-bold hover:bg-blue-600 focus:outline-none focus:ring active:bg-blue-500 sm:w-auto"
-//               href="#"
-//             >
-//               Call Us 
-//              <span><img className='inline-block w-5 h-5 justify-center ml-2 ' src="https://cdn-icons-png.freepik.com/512/3870/3870799.png" alt="pic" /></span>
-//             </a>
-
-            
-//           </div>
-//           <div className='p-10'>
-//             <p className='font-bold p-10 m-9'>
-//            Trust by the following organizations
-//           </p>
-//           <span><img src="./src/assets/org.png" alt="organizations" /></span>
-//           </div>
-          
-//         </div>
-        
-//       </div>
-  
-
-//     </section>
-//   );
-// }
-
-// export default Landing;
+export default LandingPage;

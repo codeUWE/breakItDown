@@ -25,13 +25,13 @@ function SingleTaskLayout({ task }) {
 
 	return (
 		<>
-			<div className="w-[200px] rounded-[15px] bg-[#DAF0FD] flex flex-col">
+			<div className="xl:w-[200px] md:w-full rounded-lg bg-[#DAF0FD] flex flex-col">
 				<div className="ps-2 pe-2 pt-[4px]">
 					<h2 className="px-1 font-outfit font-[500] text-[15px] row-start-1 col-start-1 col-span-5">
 						{task.title}
 					</h2>
 
-					<div className="w-[95%] my-1 mx-auto flex justify-end">
+					<div className="w-[95%] my-1 mx-auto flex justify-end md:hidden">
 						{task.assignee ? (
 							<Avatar
 								src={
@@ -47,7 +47,7 @@ function SingleTaskLayout({ task }) {
 						)}
 					</div>
 				</div>
-				<div className="flex justify-center items-center border-t-[1px] border-[#00000067] px-1 ">
+				<div className="flex justify-center items-center border-t-[1px] border-[#00000067] px-1 mt-2 ">
 					{dateParts.map((part, index) => (
 						<span
 							key={index}

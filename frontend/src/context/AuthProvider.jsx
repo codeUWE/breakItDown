@@ -8,13 +8,14 @@ export default function AuthProvider({ children }) {
 	const navigate = useNavigate();
 	const [user, setUser] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
-	console.log(user);
+
 	useEffect(() => {
 		axiosClient
 			.get('/api/auth/profile')
 			.then((response) => {
-				setUser(response.data);
 				console.log(response.data);
+
+				setUser(response.data);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -29,8 +30,8 @@ export default function AuthProvider({ children }) {
 		axiosClient
 			.post('/api/auth/login', data)
 			.then((response) => {
+				console.log(response.data);
 				setUser(response.data);
-				// console.log(response.data);
 				if (response.data.role.name === 'Admin') {
 					navigate('/admin/dashboard/projects');
 				} else {
@@ -45,6 +46,7 @@ export default function AuthProvider({ children }) {
 				setIsLoading(false);
 			});
 	};
+
 	const logout = async (data) => {
 		axiosClient
 			.post('/api/auth/logout')
