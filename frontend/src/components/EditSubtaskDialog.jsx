@@ -9,16 +9,17 @@ export default function EditSubtaskDialog({
 	onUpdate,
 }) {
 	const [formData, setFormData] = useState({
-		title: '',
-		description: '',
-		detailedInformation: '',
-		deadline: '',
-		status: '',
-		priority: '',
-		assignee: '',
+		title: subtask.title,
+		description: subtask.description,
+		detailedInformation: subtask.detailedInformation,
+		deadline: subtask.deadline ? subtask.deadline.substring(0, 10) : '',
+		status: subtask.status,
+		priority: subtask.priority,
+		assignee: subtask.assignee ? subtask.assignee._id : '',
 	});
 
 	const [users, setUsers] = useState([]);
+	const [error, setError] = useState('');
 
 	useEffect(() => {
 		const fetchUsers = async () => {
@@ -27,20 +28,6 @@ export default function EditSubtaskDialog({
 		};
 		fetchUsers();
 	}, []);
-
-	useEffect(() => {
-		if (subtask && open) {
-			setFormData({
-				title: subtask.title || '',
-				description: subtask.description || '',
-				detailedInformation: subtask.detailedInformation || '',
-				deadline: subtask.deadline ? subtask.deadline.substring(0, 10) : '',
-				status: subtask.status || '',
-				priority: subtask.priority || '',
-				assignee: subtask.assignee ? subtask.assignee._id : '',
-			});
-		}
-	}, [subtask, open]);
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
@@ -53,6 +40,12 @@ export default function EditSubtaskDialog({
 	};
 
 	const handleSave = async () => {
+		if (!formData.assignee) {
+			setError('Please select an assignee.');
+			return;
+		}
+		setError('');
+
 		const updatedData = await updateSubtask(subtask._id, formData);
 		if (updatedData) {
 			onUpdate(updatedData);
@@ -156,6 +149,11 @@ export default function EditSubtaskDialog({
 							))}
 						</div>
 					</div>
+					{error && (
+						<div className="text-red-500 text-[18px] font-outfit font-[500]">
+							{error}
+						</div>
+					)}
 				</div>
 				<div className="flex justify-end mt-4">
 					<button
