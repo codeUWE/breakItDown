@@ -122,7 +122,7 @@ const ManageUsers = () => {
 
 	return (
 		<>
-			<div className="w-[97%] h-full sm:mt-5 md:mt-10 xl:mt-4 mx-auto bg-[#D4ECFC] rounded-[30px] p-4 shadow-md sm:w-11/12 sm:h-[450px] md:h-[680px] lg:h-[450px] xl:h-[480px]  sm:overflow-auto sm:no-scrollbar">
+			<div className="w-[97%] h-full sm:mt-5 md:mt-10 xl:mt-10 mx-auto bg-[#D4ECFC] rounded-[30px] p-4 shadow-md sm:w-11/12 sm:h-[450px] md:h-[680px] lg:h-[450px] xl:h-[500px]  sm:overflow-auto sm:no-scrollbar">
 				<div className="lg:w-full lg:h-full lg:flex lg:flex-row lg:justify-center lg:items-start md:gap-4 sm:w-full sm:flex-col sm:justify-center sm:items-center ">
 					{/* CreateUserForm */}
 					<div className="lg:w-[30%] h-full rounded-[20px] bg-[#EFF9FF] overflow-hidden sm:w-full xl:pt-10">

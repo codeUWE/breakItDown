@@ -18,7 +18,7 @@ function AddTaskDialog({ open, onClose, onUpdate }) {
 	const [formData, setFormData] = useState(initialFormData);
 	const [users, setUsers] = useState([]);
 	const [roles, setRoles] = useState([]);
-	const [error, setError] = useState('');
+	const [errors, setErrors] = useState({});
 
 	useEffect(() => {
 		if (open) {
@@ -56,10 +56,17 @@ function AddTaskDialog({ open, onClose, onUpdate }) {
 	};
 
 	const handleSave = async () => {
-		if (!formData.leader) {
-			setError('A leader must be selected.');
+		const newErrors = {};
+		if (!formData.title) newErrors.title = 'Title is required.';
+		if (!formData.description)
+			newErrors.description = 'Description is required.';
+		if (!formData.leader) newErrors.leader = 'A leader must be selected.';
+
+		if (Object.keys(newErrors).length > 0) {
+			setErrors(newErrors);
 			return;
 		}
+
 		try {
 			const newTask = await createTask(formData);
 			if (newTask) {
@@ -74,7 +81,7 @@ function AddTaskDialog({ open, onClose, onUpdate }) {
 
 	const resetForm = () => {
 		setFormData(initialFormData);
-		setError('');
+		setErrors({});
 	};
 
 	if (!open) {
@@ -96,6 +103,11 @@ function AddTaskDialog({ open, onClose, onUpdate }) {
 						className="text-[18px] font-outfit font-[500] text-black bg-transparent border border-black rounded-2xl px-3 py-2 "
 						placeholder="Title"
 					/>
+					{errors.title && (
+						<div className="text-red-500 text-[14px] font-outfit font-[500]">
+							{errors.title}
+						</div>
+					)}
 					<input
 						type="text"
 						name="description"
@@ -104,6 +116,11 @@ function AddTaskDialog({ open, onClose, onUpdate }) {
 						className="text-[18px] font-outfit font-[500] text-black bg-transparent border border-black rounded-2xl px-3 py-2"
 						placeholder="Description"
 					/>
+					{errors.description && (
+						<div className="text-red-500 text-[14px] font-outfit font-[500]">
+							{errors.description}
+						</div>
+					)}
 					<div className="w-full flex items-center justify-center gap-5">
 						<div className="w-1/2 flex flex-col items-start">
 							<h2 className="text-[18px] font-outfit font-[500]">Start Date</h2>
@@ -162,6 +179,11 @@ function AddTaskDialog({ open, onClose, onUpdate }) {
 								))}
 						</div>
 					</div>
+					{errors.leader && (
+						<div className="text-red-500 text-[14px] font-outfit font-[500]">
+							{errors.leader}
+						</div>
+					)}
 					<div className="bg-[#C1E1F5] p-4 rounded-xl">
 						<label className="text-[20px] font-outfit font-[500] text-black">
 							Collaborators:
@@ -189,11 +211,6 @@ function AddTaskDialog({ open, onClose, onUpdate }) {
 							))}
 						</div>
 					</div>
-					{error && (
-						<div className="text-red-500 text-[18px] font-outfit font-[500]">
-							{error}
-						</div>
-					)}
 				</div>
 				<div className="flex justify-end mt-4">
 					<button

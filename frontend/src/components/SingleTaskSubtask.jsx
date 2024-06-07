@@ -230,7 +230,7 @@ function SingleTaskSubtask({
 						)}
 					</div>
 					{!isClosed && (
-						<div className="xl:ms-[20%] flex justify-center items-center xl:gap-2 lg:gap-1 md:gap-3">
+						<div className=" flex justify-center items-center xl:gap-2 lg:gap-1 md:gap-3">
 							{isAssignee && (
 								<>
 									{status === 'backlog' && (

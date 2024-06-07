@@ -217,15 +217,14 @@ function SingleTaskBoard() {
 	}
 
 	// Permissions
-	const isLeader =
-		task && user.role.name === 'Team Leader' && task.leader._id === user._id;
+	const isLeader = task?.leader?._id === user._id;
 
 	const canEditTicket =
 		hasPermission(user.role.permissions, ['editTicket']) ||
 		(isLeader && hasPermission(user.role.permissions, ['leaderEditTicket']));
-	const canDeleteTicket = hasPermission(user.role.permissions, [
-		'deleteTicket',
-	]);
+	const canDeleteTicket =
+		hasPermission(user.role.permissions, ['deleteTicket']) ||
+		(isLeader && hasPermission(user.role.permissions, ['leaderDeleteTicket']));
 	const canAddSubtask =
 		hasPermission(user.role.permissions, ['addSubtask']) ||
 		(isLeader && hasPermission(user.role.permissions, ['leaderAddSubtask']));

@@ -16,6 +16,7 @@ function AddSubtaskDialog({ taskId, open, onClose, onUpdate }) {
 
 	const [formData, setFormData] = useState(initialFormData);
 	const [users, setUsers] = useState([]);
+	const [errors, setErrors] = useState({});
 
 	useEffect(() => {
 		const fetchUsers = async () => {
@@ -32,6 +33,18 @@ function AddSubtaskDialog({ taskId, open, onClose, onUpdate }) {
 	};
 
 	const handleSave = async () => {
+		const newErrors = {};
+		if (!formData.title) newErrors.title = 'Title is required.';
+		if (!formData.description)
+			newErrors.description = 'Description is required.';
+		if (!formData.detailedInformation)
+			newErrors.detailedInformation = 'Detailed Information is required.';
+
+		if (Object.keys(newErrors).length > 0) {
+			setErrors(newErrors);
+			return;
+		}
+
 		try {
 			const newSubtask = await createSubtask({ ...formData, task: taskId });
 			if (newSubtask) {
@@ -46,6 +59,7 @@ function AddSubtaskDialog({ taskId, open, onClose, onUpdate }) {
 
 	const resetForm = () => {
 		setFormData(initialFormData);
+		setErrors({});
 	};
 
 	if (!open) {
@@ -53,7 +67,7 @@ function AddSubtaskDialog({ taskId, open, onClose, onUpdate }) {
 	}
 
 	return (
-		<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 ">
+		<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
 			<div className="bg-[#EFF9FF] rounded-3xl p-6 w-full max-w-lg mx-auto md:h-[700px] md:overflow-scroll">
 				<div className="font-outfit text-[32px] font-[500] text-[#F55D3E] mb-4">
 					Add Subtask
@@ -67,6 +81,11 @@ function AddSubtaskDialog({ taskId, open, onClose, onUpdate }) {
 						className="text-[18px] font-outfit font-[500] text-black bg-transparent border border-black rounded-2xl px-3 py-2"
 						placeholder="Title"
 					/>
+					{errors.title && (
+						<div className="text-red-500 text-[14px] font-outfit font-[500]">
+							{errors.title}
+						</div>
+					)}
 					<input
 						type="text"
 						name="description"
@@ -75,6 +94,11 @@ function AddSubtaskDialog({ taskId, open, onClose, onUpdate }) {
 						className="text-[18px] font-outfit font-[500] text-black bg-transparent border border-black rounded-2xl px-3 py-2"
 						placeholder="Description"
 					/>
+					{errors.description && (
+						<div className="text-red-500 text-[14px] font-outfit font-[500]">
+							{errors.description}
+						</div>
+					)}
 					<input
 						type="text"
 						name="detailedInformation"
@@ -83,6 +107,11 @@ function AddSubtaskDialog({ taskId, open, onClose, onUpdate }) {
 						className="text-[18px] font-outfit font-[500] text-black bg-transparent border border-black rounded-2xl px-3 py-2"
 						placeholder="Detailed Information"
 					/>
+					{errors.detailedInformation && (
+						<div className="text-red-500 text-[14px] font-outfit font-[500]">
+							{errors.detailedInformation}
+						</div>
+					)}
 					<div className="w-full">
 						<h2 className="text-[20px] font-outfit font-[500] text-black">
 							Deadline
