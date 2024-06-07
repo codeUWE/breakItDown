@@ -53,15 +53,15 @@ const ManageProjects = () => {
 	return (
 		<>
 			<div className="w-full flex justify-center items-center xl:gap-20 md:gap-12 md:mt-32 lg:mt-10 xl:mt-28">
-				<div className="flex flex-col items-center xl:w-1/3 xl:h-full md:h-full md:w-1/2 lg:w-2/5 rounded-3xl justify-start md:p-4 bg-[#EFF9FF] shadow-md ">
+				<div className="flex flex-col items-center xl:w-[30%] xl:h-full md:h-full md:w-1/2 lg:w-2/5 rounded-3xl justify-center md:p-4 bg-[#EFF9FF] shadow-md ">
 					<h1 className="font-outfit font-[600]  xl:text-[50px] md:text-[40px] lg:text-[45px] m-2 ">
 						Manage Projects
 					</h1>
-					<div className="bg-[#D4ECFC] rounded-2xl xl:p-12 lg:p-8 md:p-4">
+					<div className="bg-[#D4ECFC] w-full rounded-2xl xl:p-12 lg:p-8 md:p-4">
 						<label className="block font-outfit font-[300] md:text-[30px] mb-5 tracking-tight">
 							Enter project name:
 						</label>
-						<div className="flex ">
+						<div className="flex items-center justify-center ">
 							{project?.title === undefined ? (
 								<div className="flex flex-col items-center justify-center">
 									<input
