@@ -88,12 +88,9 @@ const ManageRoles = () => {
 
 	return (
 		<>
-			<div className="lg:w-8/12 sm:w-3/4 sm:h-[450px] md:h-[680px] lg:h-[450px] xl:h-[520px] sm:overflow-scroll sm:no-scrollbar mx-auto rounded-3xl bg-[#EFF9FF] shadow-md sm:mt-5 md:mt-10 lg:mt-8 xl:mt-14 lg:p-4 sm:p-6">
-				<h1 className="text-center font-outfit font-[600] xl:text-[60px]  md:text-[50px] lg:text-[45px] sm:text-[40px] mb-4 lg:mb-3">
-					Manage Roles
-				</h1>
-				<div className="sm:flex sm:flex-col sm:items-center sm:justify-center lg:flex lg:flex-row lg:justify-center lg:items-center lg:gap-6 lg:px-1">
-					<form className="mb-4 lg:w-1/2 lg:h-[330px] xl:h-[370px] sm:w-full bg-[#D4ECFC] lg:p-4 xl:p-6 sm:p-6 rounded-2xl overflow-scroll">
+			<div className="lg:w-8/12 sm:w-3/4 sm:h-[450px] md:h-[680px] lg:h-[370px] xl:h-[420px] sm:overflow-scroll sm:no-scrollbar mx-auto rounded-3xl bg-[#EFF9FF] shadow-md sm:mt-5 md:mt-10 lg:mt-10 xl:mt-5 lg:p-4 sm:p-6 xl:p-6">
+				<div className="sm:flex sm:flex-col sm:items-center sm:justify-center lg:flex lg:flex-row lg:justify-center lg:items-center xl:gap-14 lg:gap-6 lg:px-1">
+					<form className="mb-4 lg:w-1/2 lg:h-[330px] xl:h-[370px] sm:w-full bg-[#D4ECFC] lg:p-4 xl:p-4 sm:p-6 rounded-2xl overflow-scroll">
 						<label
 							htmlFor="role"
 							className="font-outfit font-[500] sm:text-[20px] md:text-[24px]"
@@ -139,7 +136,7 @@ const ManageRoles = () => {
 						</div>
 					</form>
 
-					<div className="overflow-x-auto lg:no-scrollbar sm:w-full sm:h-full lg:w-[45%] sm:self-stretch lg:max-h-[335px] rounded-2xl lg:mb-4 self-start">
+					<div className="overflow-scroll lg:no-scrollbar sm:w-full sm:h-full lg:w-[45%] sm:self-stretch lg:max-h-[335px] rounded-2xl lg:mb-4 self-start">
 						<table className="w-full divide-y divide-gray-200 md:text-[20px]">
 							<thead className="bg-gray-50">
 								<tr>
