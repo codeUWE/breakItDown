@@ -88,7 +88,7 @@ const createUser = async (req, res) => {
 		} = req.body;
 
 		// Logging to check if the name is received
-		console.log('Received data:', req.body);
+		// console.log('Received data:', req.body);
 
 		const found = await User.findOne({ email });
 		if (found) throw new Error('User already Exists');
@@ -129,7 +129,7 @@ const updateUser = async (req, res) => {
 			body,
 			params: { id },
 		} = req;
-		console.log(id, body, req.file);
+		// console.log(id, body, req.file);
 		const data = { ...body };
 		if (req.file) {
 			data.profilePicture = req.file.path;

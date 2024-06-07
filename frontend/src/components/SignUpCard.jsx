@@ -14,7 +14,6 @@ export default function SignUpCard() {
 		formState: { errors },
 	} = useForm();
 	const onSubmit = (data) => {
-		console.log('Form Data:', data); // Überprüfen der gesendeten Daten
 		axiosClient
 			.post('/api/auth/signup', data, {
 				withCredentials: true,

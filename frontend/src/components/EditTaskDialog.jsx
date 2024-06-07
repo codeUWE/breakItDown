@@ -71,7 +71,7 @@ function EditTaskDialog({ task, open, onClose, onUpdate }) {
 	};
 
 	const handleSave = async () => {
-		console.log('Final form data:', formData);
+		// console.log('Final form data:', formData);
 		try {
 			const updatedTask = await updateTask(task._id, formData);
 			onUpdate(updatedTask);

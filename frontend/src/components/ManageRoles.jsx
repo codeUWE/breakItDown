@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import Select from 'react-select';
 import {
 	createRole,
@@ -18,7 +18,9 @@ const ManageRoles = () => {
 	const [role, setRole] = useState('');
 	const [selectedPermissions, setSelectedPermissions] = useState([]);
 	const [permissions, setPermissions] = useState([]);
+	const [menuIsOpen, setMenuIsOpen] = useState(false);
 	const { user } = useContext(AuthContext);
+	const selectRef = useRef(null);
 
 	useEffect(() => {
 		getPermissions().then((data) => {
@@ -31,32 +33,26 @@ const ManageRoles = () => {
 			.catch((error) => {
 				console.log('Error fetching roles:', error);
 			});
-	}, []);
+	}, [user._id]);
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		// Add role/ send to backend?
-
 		createRole({
 			name: role,
-			permissions: selectedPermissions.map((permission) => {
-				return permission.value;
-			}),
+			permissions: selectedPermissions.map((permission) => permission.value),
 		}).then((data) => {
-			setRoles((prev) => {
-				return [...prev, data];
-			});
+			setRoles((prev) => [...prev, data]);
 		});
 
 		// Clear the input field after submission
 		setRole('');
+		setSelectedPermissions([]);
 	};
 
 	const handleRoleChange = (event) => {
 		setRole(event.target.value);
 	};
 
-	// Function to handle option selection
 	const handlePermissionChange = (selectedOption) => {
 		setSelectedPermissions(selectedOption);
 	};
@@ -77,6 +73,19 @@ const ManageRoles = () => {
 		label: permission.name,
 	}));
 
+	const handleClickOutside = (event) => {
+		if (selectRef.current && !selectRef.current.contains(event.target)) {
+			setMenuIsOpen(false);
+		}
+	};
+
+	useEffect(() => {
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, []);
+
 	return (
 		<>
 			<div className="lg:w-8/12 sm:w-3/4 sm:h-[450px] md:h-[680px] lg:h-[450px] xl:h-[520px] sm:overflow-scroll sm:no-scrollbar mx-auto rounded-3xl bg-[#EFF9FF] shadow-md sm:mt-5 md:mt-10 lg:mt-8 xl:mt-14 lg:p-4 sm:p-6">
@@ -84,7 +93,7 @@ const ManageRoles = () => {
 					Manage Roles
 				</h1>
 				<div className="sm:flex sm:flex-col sm:items-center sm:justify-center lg:flex lg:flex-row lg:justify-center lg:items-center lg:gap-6 lg:px-1">
-					<form className="mb-4 lg:w-1/2 lg:h-[330px] xl:h-[370px] sm:w-full bg-[#D4ECFC] lg:p-4 xl:p-6 sm:p-6 rounded-2xl">
+					<form className="mb-4 lg:w-1/2 lg:h-[330px] xl:h-[370px] sm:w-full bg-[#D4ECFC] lg:p-4 xl:p-6 sm:p-6 rounded-2xl overflow-scroll">
 						<label
 							htmlFor="role"
 							className="font-outfit font-[500] sm:text-[20px] md:text-[24px]"
@@ -92,14 +101,18 @@ const ManageRoles = () => {
 							Select Permissions:
 						</label>
 						<br />
-						<Select
-							isMulti={true}
-							value={selectedPermissions}
-							onChange={handlePermissionChange}
-							className="bg-white font-outfit font-[400] text-[20px]  px-4 py-2 rounded-3xl mt-2"
-							options={options}
-							placeholder="Select permissions..."
-						/>
+						<div ref={selectRef}>
+							<Select
+								isMulti={true}
+								value={selectedPermissions}
+								onChange={handlePermissionChange}
+								onMenuOpen={() => setMenuIsOpen(true)}
+								menuIsOpen={menuIsOpen}
+								className="bg-white font-outfit font-[400] text-[20px]  px-4 py-2 rounded-3xl mt-2"
+								options={options}
+								placeholder="Select permissions..."
+							/>
+						</div>
 						<br />
 						<label
 							htmlFor="roleInput"

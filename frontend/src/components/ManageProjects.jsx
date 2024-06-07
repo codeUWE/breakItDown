@@ -19,7 +19,7 @@ const ManageProjects = () => {
 	useEffect(() => {
 		getProjectByOwner(user._id)
 			.then((data) => {
-				console.log(data);
+				// console.log(data);
 				setProject(data);
 				setLoading(false);
 			})
@@ -30,14 +30,14 @@ const ManageProjects = () => {
 	}, []);
 
 	const handleClick = async () => {
-		console.log({ title: enteredProject });
+		// console.log({ title: enteredProject });
 		const project = await createProject({ title: enteredProject });
 		setProject(project);
 		navigate('/admin/dashboard/roles');
 	};
 
 	const handleUpdateClick = async () => {
-		console.log({ id: project._id }, { title: enteredProject });
+		// console.log({ id: project._id }, { title: enteredProject });
 		const updatedProject = await updateProject(project._id, {
 			...project,
 			title: enteredProject,

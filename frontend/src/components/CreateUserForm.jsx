@@ -21,7 +21,7 @@ const CreateUserForm = ({ setUsers }) => {
 
 	const onSubmit = (data) => {
 		data = { ...data, role, project: project._id };
-		console.log(data);
+		// console.log(data);
 		axiosClient
 			.post('/api/users', data)
 			.then((response) => {
@@ -37,7 +37,7 @@ const CreateUserForm = ({ setUsers }) => {
 	useEffect(() => {
 		getProjectByOwner(user._id)
 			.then((data) => {
-				console.log(data);
+				// console.log(data);
 				setRoles(data.roles);
 				setProject(data);
 			})

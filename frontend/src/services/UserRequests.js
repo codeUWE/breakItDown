@@ -13,7 +13,7 @@ export const getProject = async () => {
 
 export const getProjectByOwner = async (id) => {
 	const { data } = await axiosClient.get(`/api/projects/users/${id}`);
-	console.log(data);
+	// console.log(data);
 	return data;
 };
 

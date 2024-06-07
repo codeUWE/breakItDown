@@ -13,7 +13,7 @@ export default function AuthProvider({ children }) {
 		axiosClient
 			.get('/api/auth/profile')
 			.then((response) => {
-				console.log(response.data);
+				// console.log(response.data);
 
 				setUser(response.data);
 			})
@@ -30,7 +30,7 @@ export default function AuthProvider({ children }) {
 		axiosClient
 			.post('/api/auth/login', data)
 			.then((response) => {
-				console.log(response.data);
+				// console.log(response.data);
 				setUser(response.data);
 				if (response.data.role.name === 'Admin') {
 					navigate('/admin/dashboard/projects');

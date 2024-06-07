@@ -14,7 +14,7 @@ const createRole = async (req, res) => {
 		const project = await Project.findOne({ owner: req.user.id });
 		project.roles.push(role._id);
 		await project.save();
-		console.log(project);
+		// console.log(project);
 		res.status(201).json(role);
 	} catch (err) {
 		res.status(500).json({ error: err.message });

@@ -3,7 +3,7 @@ const Subtask = require('../models/subtasks');
 
 const getTasks = async (req, res) => {
 	try {
-		console.log(req.user);
+		// console.log(req.user);
 		const tasks = await Task.find({ project: req.user.project })
 			.sort('deadline')
 			.populate({

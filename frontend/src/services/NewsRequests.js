@@ -7,7 +7,7 @@ const BASE_URL = 'http://localhost:3001/news';
 export const createNews = async (newsData) => {
 	try {
 		const response = await axiosInstance.post('/api/news', newsData);
-		console.log('Create News Response:', response.data); // Logging the response data
+		// console.log('Create News Response:', response.data); // Logging the response data
 		return response.data;
 	} catch (error) {
 		console.error('Error creating news:', error);
@@ -37,7 +37,7 @@ export const getNews = async (userId) => {
 export const updateNews = async (id, newsData) => {
 	try {
 		const response = await axiosInstance.put(`${id}`, newsData);
-		console.log('Update News Response:', response.data); //
+		// console.log('Update News Response:', response.data); //
 		return response.data;
 	} catch (error) {
 		console.error('Error updating news:', error);
@@ -48,9 +48,9 @@ export const updateNews = async (id, newsData) => {
 /// Delete a news item by ID
 export const deleteNews = async (id) => {
 	try {
-		console.log('ID:', id); // Log the id variable
+		// console.log('ID:', id); // Log the id variable
 		const response = await axiosClient.delete(`/${id}`); //
-		console.log('Delete News Response:', response.data); //
+		// console.log('Delete News Response:', response.data); //
 		return response.data;
 	} catch (error) {
 		console.error('Error deleting news:', error);
