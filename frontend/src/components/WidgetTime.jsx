@@ -77,7 +77,7 @@ function WidgetTime() {
 			<div className="w-full text-[70px] font-[100] text-transparent tracking-tighter mt-2 md:hidden xl:inline-block">
 				{formatDate(currentTime)}
 			</div>
-			<div className="text-[70px] font-[500] xl:pe-[80px] md:ps-12 lg:ps-72 xl:ps-0 tracking-tighter flex items-center">
+			<div className="text-[70px] font-[500] xl:pe-[80px] md:ps-12 lg:ps-72 xl:ps-14 tracking-tighter flex items-center">
 				<h1 className="xl:text-[100px] md:text-[70px] md:font-[600] xl:font-[700] xl:w-32">
 					{widgetInfo.openTasksCount}
 				</h1>

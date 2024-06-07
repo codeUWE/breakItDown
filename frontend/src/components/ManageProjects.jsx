@@ -52,10 +52,10 @@ const ManageProjects = () => {
 
 	return (
 		<>
-			<div className="flex flex-col items-center lg:w-[500px] lg:h-[430px] md:h-[550px] sm:h-[450px] sm:w-3/5 md:w-3/4 h-full mx-auto rounded-3xl justify-start lg:p-4 md:p-4 sm:p-6 bg-[#EFF9FF] shadow-md sm:mt-5 md:mt-10 lg:mt-8 xl:mt-14">
-				<h1 className="font-outfit font-[600]  xl:text-[55px] md:text-[50px] sm:text-[40px] m-2 ">
+			<div className="flex flex-col items-center lg:w-[500px] lg:h-[430px] md:h-[550px] sm:h-[450px] sm:w-3/5 md:w-3/4 h-full mx-auto rounded-3xl justify-start lg:p-4 md:p-4 sm:p-6 bg-[#EFF9FF] shadow-md sm:mt-5 md:mt-10 lg:mt-10 xl:mt-5">
+				{/* <h1 className="font-outfit font-[600]  xl:text-[55px] md:text-[50px] sm:text-[40px] m-2 ">
 					Manage Projects
-				</h1>
+				</h1> */}
 				<div className="sm:mt-16 md:mt-10 lg:mt-6 bg-[#D4ECFC] rounded-2xl lg:px-16 lg:py-8 sm:px-4 sm:py-10 md:px-24 md:py-20">
 					<label className="block font-outfit font-[200] sm:text-[30px] md:text-[40px] mb-5">
 						Project:
