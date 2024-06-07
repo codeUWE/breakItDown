@@ -40,17 +40,23 @@ export default function EditSubtaskDialog({
 	};
 
 	const handleSave = async () => {
-		if (!formData.assignee) {
-			setError('Please select an assignee.');
-			return;
-		}
+		// console.log('Saving Subtask with data:', formData);
+
+		// Remove the error check for assignee to allow 'none' option
 		setError('');
 
-		const updatedData = await updateSubtask(subtask._id, formData);
-		if (updatedData) {
-			onUpdate(updatedData);
+		try {
+			const updatedData = await updateSubtask(subtask._id, formData);
+			if (updatedData) {
+				onUpdate(updatedData);
+			}
+			onClose();
+		} catch (error) {
+			console.error('Error updating subtask:', error);
+			setError(
+				'Failed to update subtask. Please try again. Assignee is required.'
+			);
 		}
-		onClose();
 	};
 
 	if (!open) {
