@@ -68,7 +68,7 @@ function TeamTable() {
 
 	return (
 		<>
-			<div className="w-[97%] h-full mt-5 mx-auto bg-[#D4ECFC] rounded-[30px] p-4">
+			<div className="w-[97%] h-full mt-5 mx-auto bg-[#D4ECFC] rounded-[30px] p-4 xl:mb-4">
 				<div className="w-full h-full lg:flex-row lg:justify-center lg:items-start lg:gap-4 md:flex md:flex-col md:gap-3">
 					{/* User Profile */}
 					<div className="rounded-[20px] bg-[#EFF9FF] relative lg:w-[30%] xl:h-full xl:pb-40 md:w-full md:h-[300px] lg:h-[550px]">
