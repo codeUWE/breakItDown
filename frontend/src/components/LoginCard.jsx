@@ -16,17 +16,7 @@ export default function LoginCard() {
 		formState: { errors },
 	} = useForm();
 	const onSubmit = (data) => {
-		console.log(data);
 		login(data);
-		// axiosClient
-		//   .post("auth/login", data)
-		//   .then((response) => {
-		//     console.log(response);
-		//     navigate("/dashboard");
-		//   })
-		//   .catch((err) => {
-		//     console.log(err);
-		//   });
 	};
 
 	return (

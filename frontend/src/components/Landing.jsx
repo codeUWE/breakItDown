@@ -5,7 +5,7 @@ const LandingPage = () => {
 	const navigate = useNavigate();
 	return (
 		<div className="min-h-screen bg-[#f18a75] pt-5">
-			<nav className="w-[97%] h-[100px] mx-auto lg:rounded-3xl sm:rounded-2xl bg-[#6A66A3] flex items-center justify-between font-Inter font-[500] xl:text-[45px] lg:text-[35px] md:text-[24px] sm:text-[20px]  shadow-xl relative md:py-2 sm:py-1 xl:ps-10 xl:pe-40 md:ps-10 md:pe-28">
+			<nav className="w-[97%] h-[100px] mx-auto lg:rounded-3xl sm:rounded-2xl bg-[#6A66A3] flex items-center justify-between font-Inter font-[500] xl:text-[45px] lg:text-[35px] md:text-[24px] sm:text-[20px]  shadow-xl relative md:py-2 sm:py-1 xl:ps-10 xl:pe-40 md:ps-10 md:pe-28 lg:pe-32">
 				<h2 className="font-outfit font-[600] text-white">
 					Welcome at Break it Down!
 				</h2>

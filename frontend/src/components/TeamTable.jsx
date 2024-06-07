@@ -29,7 +29,7 @@ function TeamTable() {
 	useEffect(() => {
 		getAllUsers('project=true')
 			.then((data) => {
-				console.log(data);
+				// console.log(data);
 				setUsers(data);
 			})
 			.catch((error) => {

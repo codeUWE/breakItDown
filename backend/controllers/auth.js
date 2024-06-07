@@ -16,7 +16,7 @@ const register = async (req, res) => {
 
 		//get admin role
 		const role = await Role.findOne({ name: 'Admin' });
-		console.log(role);
+		// console.log(role);
 		const user = await User.create({
 			email,
 			password: hash,
@@ -47,7 +47,7 @@ const login = async (req, res) => {
 			});
 
 		if (!user) throw new Error("User doesn't Exists");
-		console.log(user);
+		// console.log(user);
 
 		const match = await bcrypt.compare(password, user.password);
 

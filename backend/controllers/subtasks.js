@@ -24,7 +24,7 @@ const updateTaskStatusBasedOnSubtasks = async (taskId) => {
 
 		task.status = newStatus;
 		await task.save();
-		console.log(`Task ${task._id} status updated to ${newStatus}`);
+		// console.log(`Task ${task._id} status updated to ${newStatus}`);
 	} catch (error) {
 		console.error('Error updating task status based on subtasks:', error);
 	}
