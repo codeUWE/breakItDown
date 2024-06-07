@@ -98,22 +98,6 @@ export default function LoginCard() {
 								Sign Up
 							</Link>
 						</p>
-						<div className="flex items-center justify-evenly w-full">
-							<a
-								href="https://accounts.google.com/v3/signin/identifier?hl=en-gb&ifkv=AaSxoQyF06yyB3ylAy1z0fDai3yEb7r-RslV7Re-4ja3is33TOPa8qwLA92lvjuZQaJvTJi419r7Ew&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-2080213894%3A1714640364798073&theme=mn&ddm=0"
-								className="flex w-32 items-center gap-3 border border-gray-300 p-2 rounded-full m-2 hover:bg-gray-100 transition"
-							>
-								<img src={google48} alt="Gmail sign in" className="h-6 w-6" />
-								Sign In
-							</a>
-							<a
-								href="https://github.com/login"
-								className="flex w-32 items-center gap-3 border border-gray-300 p-2 rounded-full m-2 hover:bg-gray-100 transition"
-							>
-								<img src={github48} alt="Github sign in" className="h-6 w-6" />
-								Sign In
-							</a>
-						</div>
 					</div>
 				</div>
 			</form>

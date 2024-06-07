@@ -76,8 +76,7 @@ function TaskBoard() {
 			<div className="w-full h-full rounded-3xl flex flex-col justify-center items-center bg-[#EFF9FF] mb-5">
 				<div className="w-full px-6 pt-4 flex justify-between items-center mb-3">
 					<h2 className="font-outfit font-[600]  text-[32px]">All Tasks</h2>
-					{hasPermission(user.role.permissions, ['addTicket']) ||
-					hasPermission(user.role.permissions, ['leaderAddTicket']) ? (
+					{hasPermission(user.role.permissions, ['addTicket']) ? (
 						<button
 							onClick={handleAddOpen}
 							className="py-1 px-4 bg-[#575761] text-white rounded-2xl flex items-center gap-2 shadow-md"
