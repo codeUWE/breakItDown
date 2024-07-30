@@ -1,4 +1,4 @@
-import axiosClient from '../axiosClient';
+import axiosClient from "../axiosClient";
 
 export const updateProject = async (id, updates) => {
 	const { data } = await axiosClient.put(`/api/projects/${id}`, updates);
@@ -7,13 +7,12 @@ export const updateProject = async (id, updates) => {
 
 // Get Projects
 export const getProject = async () => {
-	const { data } = await axiosClient.get('/api/projects');
+	const { data } = await axiosClient.get("/api/projects");
 	return data;
 };
 
 export const getProjectByOwner = async (id) => {
 	const { data } = await axiosClient.get(`/api/projects/users/${id}`);
-	// console.log(data);
 	return data;
 };
 
@@ -30,17 +29,17 @@ export const getRoles = async (query) => {
 
 //Get Permissions
 export const getPermissions = async () => {
-	const { data } = await axiosClient.get('/api/permissions');
+	const { data } = await axiosClient.get("/api/permissions");
 	return data;
 };
 //Get users
 export const getUsers = async () => {
-	const { data } = await axiosClient.get('/api/users');
+	const { data } = await axiosClient.get("/api/users");
 	return data;
 };
 // Create User
 export const createUser = async (payload) => {
-	const { data } = await axiosClient.post('/api/users', payload);
+	const { data } = await axiosClient.post("/api/users", payload);
 	return data;
 };
 
@@ -57,7 +56,7 @@ export const updateUser = async (id, updates) => {
 
 // Create Role
 export const createRole = async (payload) => {
-	const { data } = await axiosClient.post('/api/roles', payload);
+	const { data } = await axiosClient.post("/api/roles", payload);
 	return data;
 };
 

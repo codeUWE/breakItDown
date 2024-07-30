@@ -1,22 +1,22 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 const authenticate = async (req, res, next) => {
 	try {
 		const {
 			cookies: { access_token: token },
 		} = req;
-		if (!token) throw new Error('Forbidden');
+		if (!token) throw new Error("Forbidden");
 		const payload = jwt.verify(token, process.env.JWT_SECRET);
 		req.user = payload;
 		next();
 	} catch (error) {
 		console.log(error);
-		res.status(403).send('Forbidden');
+		res.status(403).send("Forbidden");
 	}
 };
 const authorize = (role) => {
 	return (req, res, next) => {
 		if (role === req.user.role.name) return next();
-		res.status(401).send('Unauthorized');
+		res.status(401).send("Unauthorized");
 	};
 };
 module.exports = { authenticate, authorize };

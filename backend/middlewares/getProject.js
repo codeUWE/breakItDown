@@ -1,4 +1,4 @@
-const Project = require('../models/projects');
+const Project = require("../models/projects");
 
 const getProject = async (req, res, next) => {
 	try {
@@ -10,7 +10,7 @@ const getProject = async (req, res, next) => {
 		next();
 	} catch (error) {
 		console.log(error);
-		res.status(404).send('Project not found');
+		res.status(404).send("Project not found");
 	}
 };
 

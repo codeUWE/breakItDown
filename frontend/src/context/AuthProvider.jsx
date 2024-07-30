@@ -1,6 +1,6 @@
-import { createContext, useEffect, useState } from 'react';
-import axiosClient from '../axiosClient';
-import { useNavigate } from 'react-router-dom';
+import { createContext, useEffect, useState } from "react";
+import axiosClient from "../axiosClient";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
@@ -11,9 +11,9 @@ export default function AuthProvider({ children }) {
 
 	useEffect(() => {
 		axiosClient
-			.get('/api/auth/profile')
+			.get("/api/auth/profile")
 			.then((response) => {
-				// console.log(response.data);
+				console.log(response.data);
 
 				setUser(response.data);
 			})
@@ -28,14 +28,14 @@ export default function AuthProvider({ children }) {
 
 	const login = async (data) => {
 		axiosClient
-			.post('/api/auth/login', data)
+			.post("/api/auth/login", data)
 			.then((response) => {
 				// console.log(response.data);
 				setUser(response.data);
-				if (response.data.role.name === 'Admin') {
-					navigate('/admin/dashboard/projects');
+				if (response.data.role.name === "Admin") {
+					navigate("/admin/dashboard/projects");
 				} else {
-					navigate('/dashboard');
+					navigate("/dashboard");
 				}
 			})
 			.catch((err) => {
@@ -49,10 +49,10 @@ export default function AuthProvider({ children }) {
 
 	const logout = async (data) => {
 		axiosClient
-			.post('/api/auth/logout')
+			.post("/api/auth/logout")
 			.then((response) => {
 				setUser(null);
-				navigate('/login');
+				navigate("/login");
 			})
 			.catch((err) => {
 				console.log(err);

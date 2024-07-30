@@ -1,9 +1,7 @@
-import { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import google48 from '../assets/google48.png';
-import github48 from '../assets/github48.png';
-import { useForm } from 'react-hook-form';
-import axiosClient from '../axiosClient';
+import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import axiosClient from "../axiosClient";
 
 export default function SignUpCard() {
 	const navigate = useNavigate();
@@ -15,12 +13,12 @@ export default function SignUpCard() {
 	} = useForm();
 	const onSubmit = (data) => {
 		axiosClient
-			.post('/api/auth/signup', data, {
+			.post("/api/auth/signup", data, {
 				withCredentials: true,
 			})
 			.then((response) => {
 				console.log(response);
-				navigate('/login');
+				navigate("/login");
 			})
 			.catch((err) => {
 				console.log(err);
@@ -56,7 +54,7 @@ export default function SignUpCard() {
 							<input
 								type="text"
 								id="name"
-								{...register('name', { required: 'Name is required' })}
+								{...register("name", { required: "Name is required" })}
 								className="mt-1 p-2 border border-gray-300 rounded-md w-full"
 							/>
 							{errors.name && (
@@ -73,7 +71,7 @@ export default function SignUpCard() {
 							<input
 								type="email"
 								id="email"
-								{...register('email', { required: 'Email is required' })}
+								{...register("email", { required: "Email is required" })}
 								className="mt-1 p-2 border border-gray-300 rounded-md w-full"
 							/>
 							{errors.email && (
@@ -90,11 +88,11 @@ export default function SignUpCard() {
 							<input
 								type="password"
 								id="password"
-								{...register('password', {
-									required: 'Password is required',
+								{...register("password", {
+									required: "Password is required",
 									minLength: {
 										value: 8,
-										message: 'Must be at least 8 characters',
+										message: "Must be at least 8 characters",
 									},
 								})}
 								className="mt-1 p-2 border border-gray-300 rounded-md w-full"
