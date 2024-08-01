@@ -31,7 +31,7 @@ To use the application locally, follow these steps:
     CLOUD_NAME=
     API_KEY=
     API_SECRET=
-    Provide your own credentials for MongoDB, Cloudinary, and a custom JWT code.
+    Provide your own credentials for MongoDB, Cloudinary, and a secret JWT code.
 
     3.	Install dependencies and start the application:
     npm run install-all
