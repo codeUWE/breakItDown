@@ -1,5 +1,6 @@
 const Task = require('../models/tasks');
 const Subtask = require('../models/subtasks');
+const { buildGanttRow } = require('../utils/gantt');
 
 const getTasks = async (req, res) => {
 	try {
@@ -112,43 +113,13 @@ const getTask = async (req, res) => {
 
 const getTasksForGantt = async (req, res) => {
 	try {
-		const tasks = await Task.find({})
+		const query = req.user?.project ? { project: req.user.project } : {};
+		const tasks = await Task.find(query)
 			.select('title startDate deadline subtasks')
 			.populate('subtasks', 'status')
 			.lean();
 
-		const tasksWithGanttData = tasks.map((task) => {
-			// Start- und Enddatum zu Date-Objekten umwandeln
-			const startDate = task.startDate ? new Date(task.startDate) : null;
-			const endDate = task.deadline ? new Date(task.deadline) : null;
-
-			// Dauer berechnen, falls keine Daten vorhanden sind
-			const duration = startDate && endDate ? null : daysToMilliseconds(3);
-
-			// Berechnung des Fortschritts in Prozent
-			const totalSubtasks = task.subtasks.length;
-			const completedSubtasks = task.subtasks.filter(
-				(subtask) => subtask.status === 'done'
-			).length;
-			const percentComplete =
-				totalSubtasks > 0
-					? Math.round((completedSubtasks / totalSubtasks) * 100)
-					: 0;
-
-			return [
-				task._id.toString(), // Task ID
-				task.title, // Task Name
-				{
-					v: `Date(${startDate.getFullYear()}, ${startDate.getMonth()}, ${startDate.getDate()})`,
-				}, // Start Date
-				{
-					v: `Date(${endDate.getFullYear()}, ${endDate.getMonth()}, ${endDate.getDate()})`,
-				}, // End Date
-				duration, // Duration
-				percentComplete, // Percent Complete
-				null, // Dependencies
-			];
-		});
+		const tasksWithGanttData = tasks.map((task) => buildGanttRow(task));
 
 		res.json([columns, ...tasksWithGanttData]);
 	} catch (error) {
@@ -156,10 +127,6 @@ const getTasksForGantt = async (req, res) => {
 		res.status(500).send('Something went wrong!');
 	}
 };
-
-function daysToMilliseconds(days) {
-	return days * 24 * 60 * 60 * 1000;
-}
 
 const columns = [
 	{ type: 'string', label: 'Task ID' },

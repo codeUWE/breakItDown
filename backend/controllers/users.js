@@ -57,11 +57,11 @@ const getUsers = async (req, res) => {
 const getUser = async (req, res) => {
 	try {
 		const { id } = req.params;
-		const user = await User.findById(id).populate({
-			path: 'roles',
-			populate: {
-				path: 'permissions',
-				model: 'Permission',
+	const user = await User.findById(id).populate({
+		path: 'role',
+		populate: {
+			path: 'permissions',
+			model: 'Permission',
 				select: 'name',
 			},
 		});

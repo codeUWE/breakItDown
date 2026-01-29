@@ -59,7 +59,7 @@ const getProjects = async (req, res) => {
 const deleteProject = async (req, res) => {
 	try {
 		const { id } = req.params;
-		const deletedProject = await Task.findByIdAndDelete(id);
+		const deletedProject = await Project.findByIdAndDelete(id);
 		res.send(deletedProject);
 	} catch (error) {
 		console.log(error);

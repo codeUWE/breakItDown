@@ -1,5 +1,6 @@
 const Subtask = require('../models/subtasks');
 const Task = require('../models/tasks');
+const { getTaskStatusFromSubtasks } = require('../utils/taskStatus');
 
 const updateTaskStatusBasedOnSubtasks = async (taskId) => {
 	try {
@@ -9,20 +10,12 @@ const updateTaskStatusBasedOnSubtasks = async (taskId) => {
 			return;
 		}
 
-		let newStatus = '';
 		const subtaskStatuses = task.subtasks.map((subtask) => subtask.status);
-
-		if (subtaskStatuses.every((status) => status === 'done')) {
-			newStatus = 'done';
-		} else if (subtaskStatuses.some((status) => status === 'done')) {
-			newStatus = 'inProgress';
-		} else if (subtaskStatuses.every((status) => status === 'backlog')) {
-			newStatus = 'backlog';
-		} else {
-			newStatus = 'inProgress';
+		const derivedStatus = getTaskStatusFromSubtasks(subtaskStatuses);
+		if (!derivedStatus) {
+			return;
 		}
-
-		task.status = newStatus;
+		task.status = derivedStatus;
 		await task.save();
 		// console.log(`Task ${task._id} status updated to ${newStatus}`);
 	} catch (error) {
@@ -90,6 +83,7 @@ const createSubtask = async (req, res) => {
 			detailedInformation,
 			status,
 			priority,
+			deadline,
 			task,
 			assignee: assignee || null, // Stelle sicher, dass assignee null ist, wenn nicht gesetzt
 		});
